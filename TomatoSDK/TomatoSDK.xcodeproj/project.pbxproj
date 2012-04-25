@@ -51,6 +51,13 @@
 		B9300A57154136C6008EAF1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9300A56154136C5008EAF1E /* UIKit.framework */; };
 		B9300A5A154136CF008EAF1E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9300A59154136CF008EAF1E /* CoreLocation.framework */; };
 		B9300A6E1541555D008EAF1E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9300A6D1541555D008EAF1E /* MediaPlayer.framework */; };
+		B93013EF1547D551008EAF1E /* PBHardwareUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = B93013ED1547D551008EAF1E /* PBHardwareUtil.h */; };
+		B93013F01547D551008EAF1E /* PBHardwareUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = B93013EE1547D551008EAF1E /* PBHardwareUtil.m */; };
+		B93014071547D5FB008EAF1E /* PBGTMBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = B93014041547D5FB008EAF1E /* PBGTMBase64.h */; };
+		B93014081547D5FB008EAF1E /* PBGTMBase64.m in Sources */ = {isa = PBXBuildFile; fileRef = B93014051547D5FB008EAF1E /* PBGTMBase64.m */; };
+		B93014091547D5FB008EAF1E /* PBGTMDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = B93014061547D5FB008EAF1E /* PBGTMDefines.h */; };
+		B930140C1547D6BB008EAF1E /* PBUuidManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B930140A1547D6BB008EAF1E /* PBUuidManager.h */; };
+		B930140D1547D6BB008EAF1E /* PBUuidManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B930140B1547D6BB008EAF1E /* PBUuidManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +108,13 @@
 		B9300A56154136C5008EAF1E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B9300A59154136CF008EAF1E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B9300A6D1541555D008EAF1E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		B93013ED1547D551008EAF1E /* PBHardwareUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBHardwareUtil.h; sourceTree = "<group>"; };
+		B93013EE1547D551008EAF1E /* PBHardwareUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBHardwareUtil.m; sourceTree = "<group>"; };
+		B93014041547D5FB008EAF1E /* PBGTMBase64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBGTMBase64.h; sourceTree = "<group>"; };
+		B93014051547D5FB008EAF1E /* PBGTMBase64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBGTMBase64.m; sourceTree = "<group>"; };
+		B93014061547D5FB008EAF1E /* PBGTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBGTMDefines.h; sourceTree = "<group>"; };
+		B930140A1547D6BB008EAF1E /* PBUuidManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBUuidManager.h; sourceTree = "<group>"; };
+		B930140B1547D6BB008EAF1E /* PBUuidManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBUuidManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,6 +165,11 @@
 			children = (
 				B93008B815400652008EAF1E /* TomatoSDK.h */,
 				B93008B915400652008EAF1E /* TomatoSDK.m */,
+				B93013ED1547D551008EAF1E /* PBHardwareUtil.h */,
+				B93013EE1547D551008EAF1E /* PBHardwareUtil.m */,
+				B930140A1547D6BB008EAF1E /* PBUuidManager.h */,
+				B930140B1547D6BB008EAF1E /* PBUuidManager.m */,
+				B93014031547D5FB008EAF1E /* CTMBase64 */,
 				B930096115400794008EAF1E /* PBASIHttp */,
 				B930097615400794008EAF1E /* PBReachability */,
 				B930097915400794008EAF1E /* PBTouchJSON */,
@@ -246,6 +265,16 @@
 			path = JSON;
 			sourceTree = "<group>";
 		};
+		B93014031547D5FB008EAF1E /* CTMBase64 */ = {
+			isa = PBXGroup;
+			children = (
+				B93014041547D5FB008EAF1E /* PBGTMBase64.h */,
+				B93014051547D5FB008EAF1E /* PBGTMBase64.m */,
+				B93014061547D5FB008EAF1E /* PBGTMDefines.h */,
+			);
+			path = CTMBase64;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -275,6 +304,10 @@
 				750FA0071547C4E4005CB3FE /* PBASIInputStream.h in Headers */,
 				750FA0091547C57E005CB3FE /* PBCDataScanner.h in Headers */,
 				750FA00C1547C69F005CB3FE /* PBCJSONScanner.h in Headers */,
+				B93013EF1547D551008EAF1E /* PBHardwareUtil.h in Headers */,
+				B93014071547D5FB008EAF1E /* PBGTMBase64.h in Headers */,
+				B93014091547D5FB008EAF1E /* PBGTMDefines.h in Headers */,
+				B930140C1547D6BB008EAF1E /* PBUuidManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,6 +397,9 @@
 				B93009AE15400794008EAF1E /* PBCJSONDeserializer.m in Sources */,
 				B93009B215400794008EAF1E /* PBCJSONSerializer.m in Sources */,
 				750FA00D1547C69F005CB3FE /* PBCJSONScanner.m in Sources */,
+				B93013F01547D551008EAF1E /* PBHardwareUtil.m in Sources */,
+				B93014081547D5FB008EAF1E /* PBGTMBase64.m in Sources */,
+				B930140D1547D6BB008EAF1E /* PBUuidManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
