@@ -1,0 +1,326 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B93009421540075C008EAF1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009411540075C008EAF1E /* UIKit.framework */; };
+		B93009441540075C008EAF1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009431540075C008EAF1E /* Foundation.framework */; };
+		B93009461540075C008EAF1E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009451540075C008EAF1E /* CoreGraphics.framework */; };
+		B930094C1540075C008EAF1E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = B930094A1540075C008EAF1E /* InfoPlist.strings */; };
+		B930094E1540075C008EAF1E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B930094D1540075C008EAF1E /* main.m */; };
+		B93009521540075C008EAF1E /* SXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B93009511540075C008EAF1E /* SXAppDelegate.m */; };
+		B93009551540075C008EAF1E /* SXViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B93009541540075C008EAF1E /* SXViewController.m */; };
+		B93009581540075C008EAF1E /* SXViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = B93009561540075C008EAF1E /* SXViewController_iPhone.xib */; };
+		B930095B1540075C008EAF1E /* SXViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = B93009591540075C008EAF1E /* SXViewController_iPad.xib */; };
+		B93009C315400999008EAF1E /* libTomatoSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009C115400999008EAF1E /* libTomatoSDK.a */; };
+		B9300A5D1541460C008EAF1E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9300A5C1541460C008EAF1E /* CoreLocation.framework */; };
+		B9300A711541585B008EAF1E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9300A701541585B008EAF1E /* MediaPlayer.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B930093D1540075C008EAF1E /* TestADSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestADSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B93009411540075C008EAF1E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		B93009431540075C008EAF1E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		B93009451540075C008EAF1E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		B93009491540075C008EAF1E /* TestADSDK-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TestADSDK-Info.plist"; sourceTree = "<group>"; };
+		B930094B1540075C008EAF1E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B930094D1540075C008EAF1E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B930094F1540075C008EAF1E /* TestADSDK-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TestADSDK-Prefix.pch"; sourceTree = "<group>"; };
+		B93009501540075C008EAF1E /* SXAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SXAppDelegate.h; sourceTree = "<group>"; };
+		B93009511540075C008EAF1E /* SXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SXAppDelegate.m; sourceTree = "<group>"; };
+		B93009531540075C008EAF1E /* SXViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SXViewController.h; sourceTree = "<group>"; };
+		B93009541540075C008EAF1E /* SXViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SXViewController.m; sourceTree = "<group>"; };
+		B93009571540075C008EAF1E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SXViewController_iPhone.xib; sourceTree = "<group>"; };
+		B930095A1540075C008EAF1E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/SXViewController_iPad.xib; sourceTree = "<group>"; };
+		B93009C115400999008EAF1E /* libTomatoSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTomatoSDK.a; sourceTree = "<group>"; };
+		B93009C215400999008EAF1E /* TomatoSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TomatoSDK.h; sourceTree = "<group>"; };
+		B9300A5C1541460C008EAF1E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		B9300A701541585B008EAF1E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B930093A1540075C008EAF1E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9300A711541585B008EAF1E /* MediaPlayer.framework in Frameworks */,
+				B9300A5D1541460C008EAF1E /* CoreLocation.framework in Frameworks */,
+				B93009421540075C008EAF1E /* UIKit.framework in Frameworks */,
+				B93009441540075C008EAF1E /* Foundation.framework in Frameworks */,
+				B93009461540075C008EAF1E /* CoreGraphics.framework in Frameworks */,
+				B93009C315400999008EAF1E /* libTomatoSDK.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B93009321540075C008EAF1E = {
+			isa = PBXGroup;
+			children = (
+				B93009471540075C008EAF1E /* TestADSDK */,
+				B93009401540075C008EAF1E /* Frameworks */,
+				B930093E1540075C008EAF1E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B930093E1540075C008EAF1E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B930093D1540075C008EAF1E /* TestADSDK.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B93009401540075C008EAF1E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B9300A701541585B008EAF1E /* MediaPlayer.framework */,
+				B9300A5C1541460C008EAF1E /* CoreLocation.framework */,
+				B93009411540075C008EAF1E /* UIKit.framework */,
+				B93009431540075C008EAF1E /* Foundation.framework */,
+				B93009451540075C008EAF1E /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B93009471540075C008EAF1E /* TestADSDK */ = {
+			isa = PBXGroup;
+			children = (
+				B93009C01540098D008EAF1E /* TomatoSDK */,
+				B93009501540075C008EAF1E /* SXAppDelegate.h */,
+				B93009511540075C008EAF1E /* SXAppDelegate.m */,
+				B93009531540075C008EAF1E /* SXViewController.h */,
+				B93009541540075C008EAF1E /* SXViewController.m */,
+				B93009561540075C008EAF1E /* SXViewController_iPhone.xib */,
+				B93009591540075C008EAF1E /* SXViewController_iPad.xib */,
+				B93009481540075C008EAF1E /* Supporting Files */,
+			);
+			path = TestADSDK;
+			sourceTree = "<group>";
+		};
+		B93009481540075C008EAF1E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B93009491540075C008EAF1E /* TestADSDK-Info.plist */,
+				B930094A1540075C008EAF1E /* InfoPlist.strings */,
+				B930094D1540075C008EAF1E /* main.m */,
+				B930094F1540075C008EAF1E /* TestADSDK-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B93009C01540098D008EAF1E /* TomatoSDK */ = {
+			isa = PBXGroup;
+			children = (
+				B93009C115400999008EAF1E /* libTomatoSDK.a */,
+				B93009C215400999008EAF1E /* TomatoSDK.h */,
+			);
+			name = TomatoSDK;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B930093C1540075C008EAF1E /* TestADSDK */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B930095E1540075C008EAF1E /* Build configuration list for PBXNativeTarget "TestADSDK" */;
+			buildPhases = (
+				B93009391540075C008EAF1E /* Sources */,
+				B930093A1540075C008EAF1E /* Frameworks */,
+				B930093B1540075C008EAF1E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TestADSDK;
+			productName = TestADSDK;
+			productReference = B930093D1540075C008EAF1E /* TestADSDK.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B93009341540075C008EAF1E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = SX;
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = CocoaChina;
+			};
+			buildConfigurationList = B93009371540075C008EAF1E /* Build configuration list for PBXProject "TestADSDK" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B93009321540075C008EAF1E;
+			productRefGroup = B930093E1540075C008EAF1E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B930093C1540075C008EAF1E /* TestADSDK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B930093B1540075C008EAF1E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B930094C1540075C008EAF1E /* InfoPlist.strings in Resources */,
+				B93009581540075C008EAF1E /* SXViewController_iPhone.xib in Resources */,
+				B930095B1540075C008EAF1E /* SXViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B93009391540075C008EAF1E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B930094E1540075C008EAF1E /* main.m in Sources */,
+				B93009521540075C008EAF1E /* SXAppDelegate.m in Sources */,
+				B93009551540075C008EAF1E /* SXViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		B930094A1540075C008EAF1E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B930094B1540075C008EAF1E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		B93009561540075C008EAF1E /* SXViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B93009571540075C008EAF1E /* en */,
+			);
+			name = SXViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		B93009591540075C008EAF1E /* SXViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B930095A1540075C008EAF1E /* en */,
+			);
+			name = SXViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B930095C1540075C008EAF1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B930095D1540075C008EAF1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B930095F1540075C008EAF1E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TestADSDK/TestADSDK-Prefix.pch";
+				INFOPLIST_FILE = "TestADSDK/TestADSDK-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TestADSDK\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		B93009601540075C008EAF1E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TestADSDK/TestADSDK-Prefix.pch";
+				INFOPLIST_FILE = "TestADSDK/TestADSDK-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/TestADSDK\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B93009371540075C008EAF1E /* Build configuration list for PBXProject "TestADSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B930095C1540075C008EAF1E /* Debug */,
+				B930095D1540075C008EAF1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B930095E1540075C008EAF1E /* Build configuration list for PBXNativeTarget "TestADSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B930095F1540075C008EAF1E /* Debug */,
+				B93009601540075C008EAF1E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B93009341540075C008EAF1E /* Project object */;
+}
