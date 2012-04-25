@@ -35,10 +35,6 @@
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     
-    //use TomatoSDK
-    [TomatoSDK startSession:@"test"];
-    [TomatoSDK setDelegate:self];
-    
     return YES;
 }
 
@@ -67,14 +63,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
-#pragma mark TomatoSDKDelegate
-- (void)addADView:(UIView *)adView
-{
-    NSLog(@"call addADView");
-    UIWebView *webView = (UIWebView *)adView;
-    [self.viewController.view addSubview:webView];
 }
 
 @end

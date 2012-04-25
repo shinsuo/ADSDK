@@ -47,16 +47,16 @@ typedef enum {
 /*
  log events or errors after session has started
  */
-+ (void)logEvent:(NSString *)eventName;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters;
++ (void)logEvent:(NSString *)eventName withView:(UIView *)view;
++ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters withView:(UIView *)view;
 + (void)logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception;
 + (void)logError:(NSString *)errorID message:(NSString *)message error:(NSError *)error;
 
 /* 
  start or end timed events
  */
-+ (void)logEvent:(NSString *)eventName timed:(BOOL)timed;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed;
++ (void)logEvent:(NSString *)eventName timed:(BOOL)timed withView:(UIView *)view;
++ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed withView:(UIView *)view;
 + (void)endTimedEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters;	// non-nil parameters will update the parameters
 
 + (void)setDelegate:(id <TomatoSDKDelegate>)delegate;

@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "TomatoSDK.h"
 
 @class SXViewController;
 
-@interface SXAppDelegate : UIResponder <UIApplicationDelegate,TomatoSDKDelegate>
+@interface SXAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

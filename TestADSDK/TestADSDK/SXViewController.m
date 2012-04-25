@@ -7,6 +7,7 @@
 //
 
 #import "SXViewController.h"
+#import "TomatoSDK.h"
 
 @interface SXViewController ()
 
@@ -18,6 +19,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    [TomatoSDK startSession:@"apiKey"];
 }
 
 - (void)viewDidUnload
@@ -35,4 +37,9 @@
     }
 }
 
+- (IBAction)btnClicked:(id)sender {
+    UIButton *btn = (UIButton *)sender;
+    [TomatoSDK logEvent:[NSString stringWithFormat:@"Event%i",btn.tag] withView:self.view];
+    
+}
 @end

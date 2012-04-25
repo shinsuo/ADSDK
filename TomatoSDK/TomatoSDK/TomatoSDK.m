@@ -7,6 +7,7 @@
 //
 
 #import "TomatoSDK.h"
+#import "PBHardwareUtil.h"
 
 //URL接口版本
 static NSUInteger   URLVersion      = 2;
@@ -53,8 +54,11 @@ static NSString     *wmac;
 
 static NSUInteger testViewIndex;
 
+static BOOL apiKeyValid = false;
+
 @interface TomatoSDK()
 
++ (BOOL)checkApiKey:(NSString *)apiKey;
 + (void)getBaseInfo;
 
 @end
@@ -63,7 +67,18 @@ static NSUInteger testViewIndex;
 
 + (void)startSession:(NSString *)apiKey
 {
-    [TomatoSDK getBaseInfo];
+    if ([self checkApiKey:apiKey]) {
+        [TomatoSDK getBaseInfo];
+    }else {
+        NSLog(@"apiKey invalid!");
+    }
+}
+
+#pragma mark Private Method
++ (BOOL)checkApiKey:(NSString *)apiKey
+{
+    apiKeyValid = YES;
+    return YES;
 }
 
 + (void)setDelegate:(id<TomatoSDKDelegate>)delegate
@@ -102,6 +117,7 @@ static NSUInteger testViewIndex;
 #pragma mark Private Method
 + (void)getBaseInfo
 {
+    /*
     UIDevice *currentDevice = [UIDevice currentDevice];
     NSLog(@"name:%@",currentDevice.name);
     NSLog(@"model:%@",currentDevice.model);
@@ -110,8 +126,37 @@ static NSUInteger testViewIndex;
     NSLog(@"systemVersion:%@",currentDevice.systemVersion);
     NSLog(@"orientation:%i",currentDevice.orientation);
     NSLog(@"uniqueIdentifier:%@",currentDevice.uniqueIdentifier);
-
+    */
+    UIDeviceExtend *device = [UIDeviceExtend currentDevice];
+    NSLog(@"device.name:%@",device.name);
+    NSLog(@"device.model:%@",device.model);
+    NSLog(@"device.systemName:%@",device.systemName);
+    NSLog(@"device.systemVersion:%@",device.systemVersion);
+    NSLog(@"device.orientation:%i",device.orientation);
+    NSLog(@"device.PBIdentifier:%@",device.PBIdentifier);
+    NSLog(@"device.platform:%@",device.platform);
+    NSLog(@"device.hwmodel:%@",device.hwmodel);
+    NSLog(@"device.platformType:%i",device.platformType);
+    NSLog(@"device.platformString:%@",device.platformString);
+    NSLog(@"device.platformCode:%@",device.platformCode);
+    NSLog(@"device.cpuFrequency:%i",device.cpuFrequency);
+    NSLog(@"device.busFrequency:%i",device.busFrequency);
+    NSLog(@"device.totalMemory:%i",device.totalMemory);
+    NSLog(@"device.freeDiskSpace:%@",device.freeDiskSpace);
+    NSLog(@"device.macaddress:%@",device.macaddress);
 }
 
++ (void)logEvent:(NSString *)eventName withView:(UIView *)view
+{
+    if (apiKeyValid) {
+        NSURL *movieURL = [NSURL URLWithString:@"http://www.baidu.com"];
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 240)];
+        NSURLRequest *request = [NSURLRequest requestWithURL:movieURL];
+        [webView loadRequest:request];
+        [view addSubview:webView];
+        
+        [webView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:10];
+    }
+}
 
 @end

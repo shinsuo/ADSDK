@@ -10,4 +10,6 @@
 
 @interface SXViewController : UIViewController
 
+- (IBAction)btnClicked:(id)sender;
+
 @end

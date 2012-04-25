@@ -115,6 +115,7 @@
 		B93014061547D5FB008EAF1E /* PBGTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBGTMDefines.h; sourceTree = "<group>"; };
 		B930140A1547D6BB008EAF1E /* PBUuidManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBUuidManager.h; sourceTree = "<group>"; };
 		B930140B1547D6BB008EAF1E /* PBUuidManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBUuidManager.m; sourceTree = "<group>"; };
+		B930140E1547D7F6008EAF1E /* TomatoADConstant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TomatoADConstant.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +166,7 @@
 			children = (
 				B93008B815400652008EAF1E /* TomatoSDK.h */,
 				B93008B915400652008EAF1E /* TomatoSDK.m */,
+				B930140E1547D7F6008EAF1E /* TomatoADConstant.h */,
 				B93013ED1547D551008EAF1E /* PBHardwareUtil.h */,
 				B93013EE1547D551008EAF1E /* PBHardwareUtil.m */,
 				B930140A1547D6BB008EAF1E /* PBUuidManager.h */,
