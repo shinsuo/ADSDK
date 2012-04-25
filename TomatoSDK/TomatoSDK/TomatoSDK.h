@@ -21,6 +21,15 @@ typedef enum {
     ADMax
 }ADType;
 
+typedef enum {
+    EventGeneral,
+    EventPurchase,
+    EventScore,
+    EventSpendSeconds,
+    
+    EventMax,
+}EventType;
+
 @protocol TomatoSDKDelegate <NSObject>
 
 @required
