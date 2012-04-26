@@ -11,25 +11,6 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-
-typedef enum {
-    ADHtml4Type = 0,
-    ADHtml5Type,
-    ADVideoType,
-    ADScoreRankingType,
-    
-    ADMax
-}ADType;
-
-typedef enum {
-    EventGeneral,
-    EventPurchase,
-    EventScore,
-    EventSpendSeconds,
-    
-    EventMax,
-}EventType;
-
 //@protocol PBASIHTTPRequestDelegate ;
 
 @interface TomatoSDK : NSObject /*<PBASIHTTPRequestDelegate>*/

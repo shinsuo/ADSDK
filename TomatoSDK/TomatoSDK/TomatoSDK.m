@@ -59,12 +59,10 @@ static NSUInteger testViewIndex;
 
  */
 
-static BOOL apiKeyValid = false;
 static TomatoSDKConnection *connection = nil;
 
 @interface TomatoSDK()
 
-+ (BOOL)checkApiKey:(NSString *)apiKey;
 + (void)getBaseInfo;
 
 @end
@@ -73,11 +71,6 @@ static TomatoSDKConnection *connection = nil;
 
 
 #pragma mark Private Method
-+ (BOOL)checkApiKey:(NSString *)apiKey
-{
-    apiKeyValid = YES;
-    return YES;
-}
 
 + (void)getBaseInfo
 {
@@ -103,11 +96,10 @@ static TomatoSDKConnection *connection = nil;
 #pragma mark Public Method
 + (void)startSession:(NSString *)apiKey
 {
-    if ([self checkApiKey:apiKey]) {
-//        [TomatoSDK getBaseInfo];
+    if (!connection) {
+        //        [TomatoSDK getBaseInfo];
         connection = [[TomatoSDKConnection alloc] init];
-    }else {
-        NSLog(@"apiKey invalid!");
+        [connection requestSession:apiKey];
     }
 }
 

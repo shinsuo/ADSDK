@@ -12,6 +12,10 @@
 
 @interface TomatoSDKConnection : NSObject <PBASIHTTPRequestDelegate >
 
+@property (nonatomic,retain)NSString *apiKey;
+@property (nonatomic) BOOL apiKeyValid;
+
+- (void)requestSession:(NSString *)apiKey_;
 - (void)requestURL:(NSURL *)url withView:(UIView *)view;
 
 @end

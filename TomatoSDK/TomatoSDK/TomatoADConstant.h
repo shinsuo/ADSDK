@@ -18,4 +18,23 @@
 
 #define REQUEST_TIME        10
 
+
+typedef enum {
+    ADHtml4Type = 0,
+    ADHtml5Type,
+    ADVideoType,
+    ADScoreRankingType,
+    
+    ADMax
+}ADType;
+
+typedef enum {
+    EventGeneral,
+    EventPurchase,
+    EventScore,
+    EventSpendSeconds,
+    
+    EventMax,
+}EventType;
+
 #endif
