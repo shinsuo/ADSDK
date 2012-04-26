@@ -8,8 +8,9 @@
 
 #import "TomatoSDK.h"
 #import "PBHardwareUtil.h"
-#import "PBASIHTTPRequest.h"
+//#import "PBASIHTTPRequest.h"
 #import "TomatoADConstant.h"
+#import "TomatoSDKConnection.h"
 /*
 //URL接口版本
 static NSUInteger   URLVersion      = 2;
@@ -60,6 +61,7 @@ static NSUInteger testViewIndex;
 
 static BOOL apiKeyValid = false;
 static UIView *adParentView = nil;
+static TomatoSDKConnection *connection = nil;
 
 @interface TomatoSDK()
 
@@ -114,6 +116,7 @@ static UIView *adParentView = nil;
 {
     if ([self checkApiKey:apiKey]) {
         [TomatoSDK getBaseInfo];
+        connection = [[TomatoSDKConnection alloc] init];
     }else {
         NSLog(@"apiKey invalid!");
     }
@@ -154,7 +157,11 @@ static UIView *adParentView = nil;
 
 + (void)logEvent:(NSString *)eventName withView:(UIView *)view
 {
-    if (apiKeyValid) {
+    NSString *urlString = [NSString stringWithFormat:@"http://www.baidu.com"];
+    NSURL *url = [NSURL URLWithString:urlString];
+    [connection requestURL:url];
+    
+    /*
         adParentView = view;
 //        NSString *urlString = [NSString stringWithFormat:@"%@/_index.php",SERVER_URL];
         NSString *urlString = [NSString stringWithFormat:@"http://www.baidu.com"];
@@ -165,6 +172,7 @@ static UIView *adParentView = nil;
         [request startAsynchronous];
         
         NSURL *movieURL = [NSURL URLWithString:@"http://192.168.202.49/TestADSDK/sanguo.mp4"];
+    */
 
         /* webView Test
         // http://192.168.202.49/TestADSDK/iPhone_gangtie1.png
@@ -190,9 +198,9 @@ static UIView *adParentView = nil;
         
         [player.view performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:10];
         // */
-    }
 }
 
+/*
 #pragma mark PBASIHttpRequest Delegate Method
 - (void)requestFinished:(PBASIHTTPRequest *)request
 {
@@ -222,5 +230,7 @@ static UIView *adParentView = nil;
 {
     NSLog(@"didReceiveData");
 }
+*/
+
 
 @end

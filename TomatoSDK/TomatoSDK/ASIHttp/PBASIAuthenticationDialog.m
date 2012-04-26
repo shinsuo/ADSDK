@@ -61,7 +61,7 @@ static const NSUInteger kDomainSection = 1;
 	if (!sharedDialog) {
 		sharedDialog = [[self alloc] init];
 		[sharedDialog setRequest:theRequest];
-		if ([theRequest authenticationNeeded] == ASIProxyAuthenticationNeeded) {
+		if ([theRequest authenticationNeeded] == PBASIProxyAuthenticationNeeded) {
 			[sharedDialog setType:ASIProxyAuthenticationType];
 		} else {
 			[sharedDialog setType:ASIStandardAuthenticationType];

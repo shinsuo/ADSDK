@@ -63,6 +63,8 @@
 		B93014091547D5FB008EAF1E /* PBGTMDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = B93014061547D5FB008EAF1E /* PBGTMDefines.h */; };
 		B930140C1547D6BB008EAF1E /* PBUuidManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B930140A1547D6BB008EAF1E /* PBUuidManager.h */; };
 		B930140D1547D6BB008EAF1E /* PBUuidManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B930140B1547D6BB008EAF1E /* PBUuidManager.m */; };
+		B9DFD3191549169A00FC6C17 /* TomatoSDKConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = B9DFD3171549169A00FC6C17 /* TomatoSDKConnection.h */; };
+		B9DFD31A1549169A00FC6C17 /* TomatoSDKConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = B9DFD3181549169A00FC6C17 /* TomatoSDKConnection.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -126,6 +128,8 @@
 		B930140A1547D6BB008EAF1E /* PBUuidManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PBUuidManager.h; sourceTree = "<group>"; };
 		B930140B1547D6BB008EAF1E /* PBUuidManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PBUuidManager.m; sourceTree = "<group>"; };
 		B930140E1547D7F6008EAF1E /* TomatoADConstant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TomatoADConstant.h; sourceTree = "<group>"; };
+		B9DFD3171549169A00FC6C17 /* TomatoSDKConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TomatoSDKConnection.h; sourceTree = "<group>"; };
+		B9DFD3181549169A00FC6C17 /* TomatoSDKConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TomatoSDKConnection.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -191,6 +195,8 @@
 				B93013EE1547D551008EAF1E /* PBHardwareUtil.m */,
 				B930140A1547D6BB008EAF1E /* PBUuidManager.h */,
 				B930140B1547D6BB008EAF1E /* PBUuidManager.m */,
+				B9DFD3171549169A00FC6C17 /* TomatoSDKConnection.h */,
+				B9DFD3181549169A00FC6C17 /* TomatoSDKConnection.m */,
 				B93014031547D5FB008EAF1E /* CTMBase64 */,
 				B930096115400794008EAF1E /* PBASIHttp */,
 				B930097615400794008EAF1E /* PBReachability */,
@@ -330,6 +336,7 @@
 				B93014071547D5FB008EAF1E /* PBGTMBase64.h in Headers */,
 				B93014091547D5FB008EAF1E /* PBGTMDefines.h in Headers */,
 				B930140C1547D6BB008EAF1E /* PBUuidManager.h in Headers */,
+				B9DFD3191549169A00FC6C17 /* TomatoSDKConnection.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,6 +429,7 @@
 				B93013F01547D551008EAF1E /* PBHardwareUtil.m in Sources */,
 				B93014081547D5FB008EAF1E /* PBGTMBase64.m in Sources */,
 				B930140D1547D6BB008EAF1E /* PBUuidManager.m in Sources */,
+				B9DFD31A1549169A00FC6C17 /* TomatoSDKConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

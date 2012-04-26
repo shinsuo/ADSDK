@@ -264,11 +264,11 @@ static NSOperationQueue *sharedQueue = nil;
 		sessionCredentialsLock = [[NSRecursiveLock alloc] init];
 		delegateAuthenticationLock = [[NSRecursiveLock alloc] init];
 		bandwidthUsageTracker = [[NSMutableArray alloc] initWithCapacity:5];
-		ASIRequestTimedOutError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:ASIRequestTimedOutErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request timed out",NSLocalizedDescriptionKey,nil]];  
-		ASIAuthenticationError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:ASIAuthenticationErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Authentication needed",NSLocalizedDescriptionKey,nil]];
-		ASIRequestCancelledError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:ASIRequestCancelledErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request was cancelled",NSLocalizedDescriptionKey,nil]];
-		ASIUnableToCreateRequestError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:ASIUnableToCreateRequestErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to create request (bad url?)",NSLocalizedDescriptionKey,nil]];
-		ASITooMuchRedirectionError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:ASITooMuchRedirectionErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request failed because it redirected too many times",NSLocalizedDescriptionKey,nil]];
+		ASIRequestTimedOutError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:PBASIRequestTimedOutErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request timed out",NSLocalizedDescriptionKey,nil]];  
+		ASIAuthenticationError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:PBASIAuthenticationErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Authentication needed",NSLocalizedDescriptionKey,nil]];
+		ASIRequestCancelledError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:PBASIRequestCancelledErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request was cancelled",NSLocalizedDescriptionKey,nil]];
+		ASIUnableToCreateRequestError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:PBASIUnableToCreateRequestErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to create request (bad url?)",NSLocalizedDescriptionKey,nil]];
+		ASITooMuchRedirectionError = [[NSError alloc] initWithDomain:PBNetworkRequestErrorDomain code:PBASITooMuchRedirectionErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"The request failed because it redirected too many times",NSLocalizedDescriptionKey,nil]];
 		sharedQueue = [[NSOperationQueue alloc] init];
 		[sharedQueue setMaxConcurrentOperationCount:4];
 
@@ -331,7 +331,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 - (void)dealloc
 {
-	[self setAuthenticationNeeded:ASINoAuthenticationNeededYet];
+	[self setAuthenticationNeeded:PBASINoAuthenticationNeededYet];
 	if (requestAuthentication) {
 		CFRelease(requestAuthentication);
 	}
@@ -522,7 +522,7 @@ static NSOperationQueue *sharedQueue = nil;
 		NSError *err = nil;
 		[self setPostLength:[[[[[NSFileManager alloc] init] autorelease] attributesOfItemAtPath:path error:&err] fileSize]];
 		if (err) {
-			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to get attributes for file at path '%@'",path],NSLocalizedDescriptionKey,error,NSUnderlyingErrorKey,nil]]];
+			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to get attributes for file at path '%@'",path],NSLocalizedDescriptionKey,error,NSUnderlyingErrorKey,nil]]];
 			return;
 		}
 		
@@ -956,8 +956,8 @@ static NSOperationQueue *sharedQueue = nil;
 		}
 
 	} @catch (NSException *exception) {
-		NSError *underlyingError = [NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIUnhandledExceptionError userInfo:[exception userInfo]];
-		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIUnhandledExceptionError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[exception name],NSLocalizedDescriptionKey,[exception reason],NSLocalizedFailureReasonErrorKey,underlyingError,NSUnderlyingErrorKey,nil]]];
+		NSError *underlyingError = [NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIUnhandledExceptionError userInfo:[exception userInfo]];
+		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIUnhandledExceptionError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[exception name],NSLocalizedDescriptionKey,[exception reason],NSLocalizedFailureReasonErrorKey,underlyingError,NSUnderlyingErrorKey,nil]]];
 
 	} @finally {
 		[[self cancelledLock] unlock];
@@ -1123,7 +1123,7 @@ static NSOperationQueue *sharedQueue = nil;
 		NSError *err = nil;
 		[self setPartialDownloadSize:[[fileManager attributesOfItemAtPath:[self temporaryFileDownloadPath] error:&err] fileSize]];
 		if (err) {
-			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to get attributes for file at path '%@'",[self temporaryFileDownloadPath]],NSLocalizedDescriptionKey,error,NSUnderlyingErrorKey,nil]]];
+			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to get attributes for file at path '%@'",[self temporaryFileDownloadPath]],NSLocalizedDescriptionKey,error,NSUnderlyingErrorKey,nil]]];
 			return;
 		}
 	}
@@ -1194,7 +1194,7 @@ static NSOperationQueue *sharedQueue = nil;
 	}
 
 	if (![self readStream]) {
-		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIInternalErrorWhileBuildingRequestType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to create read stream",NSLocalizedDescriptionKey,nil]]];
+		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIInternalErrorWhileBuildingRequestType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to create read stream",NSLocalizedDescriptionKey,nil]]];
         return;
     }
 
@@ -1405,7 +1405,7 @@ static NSOperationQueue *sharedQueue = nil;
 	if (!streamSuccessfullyOpened) {
 		[self setConnectionCanBeReused:NO];
 		[self destroyReadStream];
-		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIInternalErrorWhileBuildingRequestType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to start HTTP connection",NSLocalizedDescriptionKey,nil]]];
+		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIInternalErrorWhileBuildingRequestType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to start HTTP connection",NSLocalizedDescriptionKey,nil]]];
 		return;	
 	}
 	
@@ -2077,7 +2077,7 @@ static NSOperationQueue *sharedQueue = nil;
 	[self setComplete:YES];
 	
 	// Invalidate the current connection so subsequent requests don't attempt to reuse it
-	if (theError && [theError code] != ASIAuthenticationErrorType && [theError code] != ASITooMuchRedirectionErrorType) {
+	if (theError && [theError code] != PBASIAuthenticationErrorType && [theError code] != PBASITooMuchRedirectionErrorType) {
 		[connectionsLock lock];
 		#if DEBUG_PERSISTENT_CONNECTIONS
 		ASI_DEBUG_LOG(@"[CONNECTION] Request #%@ failed and will invalidate connection #%@",[self requestID],[[self connectionInfo] objectForKey:@"id"]);
@@ -2133,7 +2133,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 - (void)readResponseHeaders
 {
-	[self setAuthenticationNeeded:ASINoAuthenticationNeededYet];
+	[self setAuthenticationNeeded:PBASINoAuthenticationNeededYet];
 
 	CFHTTPMessageRef message = (CFHTTPMessageRef)CFReadStreamCopyProperty((CFReadStreamRef)[self readStream], kCFStreamPropertyHTTPResponseHeader);
 	if (!message) {
@@ -2170,9 +2170,9 @@ static NSOperationQueue *sharedQueue = nil;
 
 	// Is the server response a challenge for credentials?
 	if ([self responseStatusCode] == 401) {
-		[self setAuthenticationNeeded:ASIHTTPAuthenticationNeeded];
+		[self setAuthenticationNeeded:PBASIHTTPAuthenticationNeeded];
 	} else if ([self responseStatusCode] == 407) {
-		[self setAuthenticationNeeded:ASIProxyAuthenticationNeeded];
+		[self setAuthenticationNeeded:PBASIProxyAuthenticationNeeded];
 	} else {
 		#if DEBUG_HTTP_AUTHENTICATION
 		if ([self authenticationScheme]) {
@@ -2775,7 +2775,7 @@ static NSOperationQueue *sharedQueue = nil;
 	// If we haven't got a CFHTTPAuthenticationRef by now, something is badly wrong, so we'll have to give up
 	if (!proxyAuthentication) {
 		[self cancelLoad];
-		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to get authentication object from response headers",NSLocalizedDescriptionKey,nil]]];
+		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to get authentication object from response headers",NSLocalizedDescriptionKey,nil]]];
 		return;
 	}
 	
@@ -2853,7 +2853,7 @@ static NSOperationQueue *sharedQueue = nil;
 			
 		// Something went wrong, we'll have to give up
 		} else {
-			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to apply proxy credentials to request",NSLocalizedDescriptionKey,nil]]];
+			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to apply proxy credentials to request",NSLocalizedDescriptionKey,nil]]];
 		}
 		
 	// Are a user name & password needed?
@@ -2888,7 +2888,7 @@ static NSOperationQueue *sharedQueue = nil;
 				[self startRequest];
 			} else {
 				[delegateAuthenticationLock unlock];
-				[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to apply proxy credentials to request",NSLocalizedDescriptionKey,nil]]];
+				[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to apply proxy credentials to request",NSLocalizedDescriptionKey,nil]]];
 			}
 			
 			return;
@@ -2936,7 +2936,7 @@ static NSOperationQueue *sharedQueue = nil;
 	}
 	
 	// Do we actually need to authenticate with a proxy?
-	if ([self authenticationNeeded] == ASIProxyAuthenticationNeeded) {
+	if ([self authenticationNeeded] == PBASIProxyAuthenticationNeeded) {
 		[self attemptToApplyProxyCredentialsAndResume];
 		return;
 	}
@@ -2955,7 +2955,7 @@ static NSOperationQueue *sharedQueue = nil;
 		#endif
 
 		[self cancelLoad];
-		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to get authentication object from response headers",NSLocalizedDescriptionKey,nil]]];
+		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to get authentication object from response headers",NSLocalizedDescriptionKey,nil]]];
 		return;
 	}
 	
@@ -3079,7 +3079,7 @@ static NSOperationQueue *sharedQueue = nil;
 			ASI_DEBUG_LOG(@"[AUTH] Request %@ had credentials and they were not marked as bad, but we got a 401 all the same.",self);
 			#endif
 
-			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to apply credentials to request",NSLocalizedDescriptionKey,nil]]];
+			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to apply credentials to request",NSLocalizedDescriptionKey,nil]]];
 		}
 		
 		// Are a user name & password needed?
@@ -3128,7 +3128,7 @@ static NSOperationQueue *sharedQueue = nil;
 				ASI_DEBUG_LOG(@"[AUTH] Request %@ failed to apply credentials",self);
 				#endif
 				[delegateAuthenticationLock unlock];
-				[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to apply credentials to request",NSLocalizedDescriptionKey,nil]]];
+				[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIInternalErrorWhileApplyingCredentialsType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Failed to apply credentials to request",NSLocalizedDescriptionKey,nil]]];
 			}
 			return;
 		}
@@ -3449,7 +3449,7 @@ static NSOperationQueue *sharedQueue = nil;
 				NSError *moveError = nil;
 				[[[[NSFileManager alloc] init] autorelease] moveItemAtPath:[self temporaryUncompressedDataDownloadPath] toPath:[self downloadDestinationPath] error:&moveError];
 				if (moveError) {
-					fileError = [NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to move file from '%@' to '%@'",[self temporaryFileDownloadPath],[self downloadDestinationPath]],NSLocalizedDescriptionKey,moveError,NSUnderlyingErrorKey,nil]];
+					fileError = [NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to move file from '%@' to '%@'",[self temporaryFileDownloadPath],[self downloadDestinationPath]],NSLocalizedDescriptionKey,moveError,NSUnderlyingErrorKey,nil]];
 				}
 				[self setTemporaryUncompressedDataDownloadPath:nil];
 
@@ -3469,7 +3469,7 @@ static NSOperationQueue *sharedQueue = nil;
 			if (!fileError) {
 				[[[[NSFileManager alloc] init] autorelease] moveItemAtPath:[self temporaryFileDownloadPath] toPath:[self downloadDestinationPath] error:&moveError];
 				if (moveError) {
-					fileError = [NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to move file from '%@' to '%@'",[self temporaryFileDownloadPath],[self downloadDestinationPath]],NSLocalizedDescriptionKey,moveError,NSUnderlyingErrorKey,nil]];
+					fileError = [NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to move file from '%@' to '%@'",[self temporaryFileDownloadPath],[self downloadDestinationPath]],NSLocalizedDescriptionKey,moveError,NSUnderlyingErrorKey,nil]];
 				}
 				[self setTemporaryFileDownloadPath:nil];
 			}
@@ -3677,7 +3677,7 @@ static NSOperationQueue *sharedQueue = nil;
 			}
 		}
 		[self cancelLoad];
-		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIConnectionFailureErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:reason,NSLocalizedDescriptionKey,underlyingError,NSUnderlyingErrorKey,nil]]];
+		[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIConnectionFailureErrorType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:reason,NSLocalizedDescriptionKey,underlyingError,NSUnderlyingErrorKey,nil]]];
 	} else {
 		[self cancelLoad];
 	}
@@ -3799,7 +3799,7 @@ static NSOperationQueue *sharedQueue = nil;
 		[fileManager removeItemAtPath:path error:&removeError];
 		if (removeError) {
 			if (err) {
-				*err = [NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to delete file at path '%@'",path],NSLocalizedDescriptionKey,removeError,NSUnderlyingErrorKey,nil]];
+				*err = [NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIFileManagementError userInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Failed to delete file at path '%@'",path],NSLocalizedDescriptionKey,removeError,NSUnderlyingErrorKey,nil]];
 			}
 			return NO;
 		}
@@ -3846,7 +3846,7 @@ static NSOperationQueue *sharedQueue = nil;
 
 		if (!proxies) {
 			[self setReadStream:nil];
-			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:ASIInternalErrorWhileBuildingRequestType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to obtain information on proxy servers needed for request",NSLocalizedDescriptionKey,nil]]];
+			[self failWithError:[NSError errorWithDomain:PBNetworkRequestErrorDomain code:PBASIInternalErrorWhileBuildingRequestType userInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"Unable to obtain information on proxy servers needed for request",NSLocalizedDescriptionKey,nil]]];
 			return NO;
 		}
 		// I don't really understand why the dictionary returned by CFNetworkCopyProxiesForURL uses different key names from CFNetworkCopySystemProxySettings/SCDynamicStoreCopyProxies

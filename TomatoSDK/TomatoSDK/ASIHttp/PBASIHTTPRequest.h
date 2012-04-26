@@ -43,24 +43,24 @@ extern NSString *PBASIHTTPRequestVersion;
 	#define __MAC_10_6 1060
 #endif
 
-typedef enum _ASIAuthenticationState {
-	ASINoAuthenticationNeededYet = 0,
-	ASIHTTPAuthenticationNeeded = 1,
-	ASIProxyAuthenticationNeeded = 2
+typedef enum _PBASIAuthenticationState {
+	PBASINoAuthenticationNeededYet = 0,
+	PBASIHTTPAuthenticationNeeded = 1,
+	PBASIProxyAuthenticationNeeded = 2
 } PBASIAuthenticationState;
 
-typedef enum _ASINetworkErrorType {
-    ASIConnectionFailureErrorType = 1,
-    ASIRequestTimedOutErrorType = 2,
-    ASIAuthenticationErrorType = 3,
-    ASIRequestCancelledErrorType = 4,
-    ASIUnableToCreateRequestErrorType = 5,
-    ASIInternalErrorWhileBuildingRequestType  = 6,
-    ASIInternalErrorWhileApplyingCredentialsType  = 7,
-	ASIFileManagementError = 8,
-	ASITooMuchRedirectionErrorType = 9,
-	ASIUnhandledExceptionError = 10,
-	ASICompressionError = 11
+typedef enum _PBASINetworkErrorType {
+    PBASIConnectionFailureErrorType = 1,
+    PBASIRequestTimedOutErrorType = 2,
+    PBASIAuthenticationErrorType = 3,
+    PBASIRequestCancelledErrorType = 4,
+    PBASIUnableToCreateRequestErrorType = 5,
+    PBASIInternalErrorWhileBuildingRequestType  = 6,
+    PBASIInternalErrorWhileApplyingCredentialsType  = 7,
+	PBASIFileManagementError = 8,
+	PBASITooMuchRedirectionErrorType = 9,
+	PBASIUnhandledExceptionError = 10,
+	PBASICompressionError = 11
 	
 } PBASINetworkErrorType;
 
