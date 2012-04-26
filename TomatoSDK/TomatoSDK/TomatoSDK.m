@@ -9,7 +9,6 @@
 #import "TomatoSDK.h"
 #import "PBHardwareUtil.h"
 #import "PBASIHTTPRequest.h"
-#import "PBASIHTTPRequestDelegate.h"
 #import "TomatoADConstant.h"
 /*
 //URL接口版本
@@ -157,7 +156,8 @@ static UIView *adParentView = nil;
 {
     if (apiKeyValid) {
         adParentView = view;
-        NSString *urlString = [NSString stringWithFormat:@"%@/_index.php",SERVER_URL];
+//        NSString *urlString = [NSString stringWithFormat:@"%@/_index.php",SERVER_URL];
+        NSString *urlString = [NSString stringWithFormat:@"http://www.baidu.com"];
         NSURL *url = [NSURL URLWithString:urlString];
         PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:url];
         
@@ -215,12 +215,12 @@ static UIView *adParentView = nil;
 
 - (void)requestFailed:(PBASIHTTPRequest *)request
 {
-
+    NSLog(@"reqeustFailed");
 }
 
 - (void)request:(PBASIHTTPRequest *)request didReceiveData:(NSData *)data
 {
-    
+    NSLog(@"didReceiveData");
 }
 
 @end
