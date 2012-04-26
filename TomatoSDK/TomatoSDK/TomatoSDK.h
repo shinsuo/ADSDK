@@ -37,7 +37,9 @@ typedef enum {
 
 @end
 
-@interface TomatoSDK : NSObject
+@protocol PBASIHTTPRequestDelegate ;
+
+@interface TomatoSDK : NSObject <PBASIHTTPRequestDelegate>
 
 /*
  start session, attempt to send saved sessions to server 

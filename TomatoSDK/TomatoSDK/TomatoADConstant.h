@@ -9,7 +9,7 @@
 #ifndef TomatoSDK_TomatoADConstant_h
 #define TomatoSDK_TomatoADConstant_h
 
-#define SERVER_URL          @"http://192.168.41.134"
+#define SERVER_URL          @"http://192.168.202.49/TestADSDK"
 #define REQUEST_SESSION     @"/ses/?"
 #define APP_ACTIVE          @"/atv/?"
 #define APP_EVENT           @"/evt/?"

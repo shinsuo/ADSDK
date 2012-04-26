@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		751C6E3415482ABD00989868 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751C6E3315482ABD00989868 /* CFNetwork.framework */; };
+		751C6E3F15482BAC00989868 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751C6E3E15482BAC00989868 /* SystemConfiguration.framework */; };
+		751C6E4115482BB500989868 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 751C6E4015482BB500989868 /* libz.dylib */; };
+		751C6E4315482BC900989868 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751C6E4215482BC900989868 /* MobileCoreServices.framework */; };
 		B93009421540075C008EAF1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009411540075C008EAF1E /* UIKit.framework */; };
 		B93009441540075C008EAF1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009431540075C008EAF1E /* Foundation.framework */; };
 		B93009461540075C008EAF1E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009451540075C008EAF1E /* CoreGraphics.framework */; };
@@ -22,6 +26,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		751C6E3315482ABD00989868 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		751C6E3E15482BAC00989868 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		751C6E4015482BB500989868 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		751C6E4215482BC900989868 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		B930093D1540075C008EAF1E /* TestADSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestADSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B93009411540075C008EAF1E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B93009431540075C008EAF1E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -47,6 +55,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				751C6E4315482BC900989868 /* MobileCoreServices.framework in Frameworks */,
+				751C6E4115482BB500989868 /* libz.dylib in Frameworks */,
+				751C6E3F15482BAC00989868 /* SystemConfiguration.framework in Frameworks */,
+				751C6E3415482ABD00989868 /* CFNetwork.framework in Frameworks */,
 				B9300A711541585B008EAF1E /* MediaPlayer.framework in Frameworks */,
 				B9300A5D1541460C008EAF1E /* CoreLocation.framework in Frameworks */,
 				B93009421540075C008EAF1E /* UIKit.framework in Frameworks */,
@@ -62,6 +74,10 @@
 		B93009321540075C008EAF1E = {
 			isa = PBXGroup;
 			children = (
+				751C6E4215482BC900989868 /* MobileCoreServices.framework */,
+				751C6E4015482BB500989868 /* libz.dylib */,
+				751C6E3E15482BAC00989868 /* SystemConfiguration.framework */,
+				751C6E3315482ABD00989868 /* CFNetwork.framework */,
 				B93009471540075C008EAF1E /* TestADSDK */,
 				B93009401540075C008EAF1E /* Frameworks */,
 				B930093E1540075C008EAF1E /* Products */,

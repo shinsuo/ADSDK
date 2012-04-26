@@ -8,7 +8,10 @@
 
 #import "TomatoSDK.h"
 #import "PBHardwareUtil.h"
-
+#import "PBASIHTTPRequest.h"
+#import "PBASIHTTPRequestDelegate.h"
+#import "TomatoADConstant.h"
+/*
 //URL接口版本
 static NSUInteger   URLVersion      = 2;
 //终端设备唯一标识串
@@ -54,7 +57,10 @@ static NSString     *wmac;
 
 static NSUInteger testViewIndex;
 
+ */
+
 static BOOL apiKeyValid = false;
+static UIView *adParentView = nil;
 
 @interface TomatoSDK()
 
@@ -65,14 +71,6 @@ static BOOL apiKeyValid = false;
 
 @implementation TomatoSDK
 
-+ (void)startSession:(NSString *)apiKey
-{
-    if ([self checkApiKey:apiKey]) {
-        [TomatoSDK getBaseInfo];
-    }else {
-        NSLog(@"apiKey invalid!");
-    }
-}
 
 #pragma mark Private Method
 + (BOOL)checkApiKey:(NSString *)apiKey
@@ -81,40 +79,6 @@ static BOOL apiKeyValid = false;
     return YES;
 }
 
-+ (void)setDelegate:(id<TomatoSDKDelegate>)delegate
-{
-    testViewIndex = 1;
-    if ([delegate respondsToSelector:@selector(addADView:)]) {
-        UIView *view = nil;
-        NSURL *movieURL = [NSURL URLWithString:@"http://p.you.video.sina.com.cn/swf/quotePlayer20100721_V4_4_39_0.swf?autoPlay=1&as=0&vid=75320134&uid=1883974510"];
-        if (testViewIndex == 2) {
-            
-            MPMoviePlayerController *player = [[MPMoviePlayerController alloc] 
-                                                              initWithContentURL:movieURL];
-            player.repeatMode = MPMovieRepeatModeOne;
-            player.controlStyle = MPMovieControlStyleNone;
-            [player setContentURL:movieURL];
-            [player setMovieSourceType:MPMovieSourceTypeFile];
-            
-            player.view.frame = CGRectMake(0, 0, 320, 240);
-            view = player.view;
-            [player play];
-            
-        }else {
-            movieURL = [NSURL URLWithString:@"http://www.baidu.com"];
-            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 240)];
-            NSURLRequest *request = [NSURLRequest requestWithURL:movieURL];
-            [webView loadRequest:request];
-            view = webView;
-        }
-        
-        
-        [delegate addADView:view];
-        [view release];
-    }
-}
-
-#pragma mark Private Method
 + (void)getBaseInfo
 {
     /*
@@ -146,17 +110,114 @@ static BOOL apiKeyValid = false;
     NSLog(@"device.macaddress:%@",device.macaddress);
 }
 
+#pragma mark Public Method
++ (void)startSession:(NSString *)apiKey
+{
+    if ([self checkApiKey:apiKey]) {
+        [TomatoSDK getBaseInfo];
+    }else {
+        NSLog(@"apiKey invalid!");
+    }
+}
+
++ (void)setDelegate:(id<TomatoSDKDelegate>)delegate
+{/*
+  testViewIndex = 1;
+  if ([delegate respondsToSelector:@selector(addADView:)]) {
+  UIView *view = nil;
+  NSURL *movieURL = [NSURL URLWithString:@"http://p.you.video.sina.com.cn/swf/quotePlayer20100721_V4_4_39_0.swf?autoPlay=1&as=0&vid=75320134&uid=1883974510"];
+  if (testViewIndex == 2) {
+  
+  MPMoviePlayerController *player = [[MPMoviePlayerController alloc] 
+  initWithContentURL:movieURL];
+  player.repeatMode = MPMovieRepeatModeOne;
+  player.controlStyle = MPMovieControlStyleNone;
+  [player setContentURL:movieURL];
+  [player setMovieSourceType:MPMovieSourceTypeFile];
+  
+  player.view.frame = CGRectMake(0, 0, 320, 240);
+  view = player.view;
+  [player play];
+  
+  }else {
+  movieURL = [NSURL URLWithString:@"http://www.baidu.com"];
+  UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 240)];
+  NSURLRequest *request = [NSURLRequest requestWithURL:movieURL];
+  [webView loadRequest:request];
+  view = webView;
+  }
+  
+  
+  [delegate addADView:view];
+  [view release];
+  }*/
+}
+
 + (void)logEvent:(NSString *)eventName withView:(UIView *)view
 {
     if (apiKeyValid) {
-        NSURL *movieURL = [NSURL URLWithString:@"http://www.baidu.com"];
-        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 240)];
-        NSURLRequest *request = [NSURLRequest requestWithURL:movieURL];
-        [webView loadRequest:request];
+        adParentView = view;
+        NSString *urlString = [NSString stringWithFormat:@"%@/_index.php",SERVER_URL];
+        NSURL *url = [NSURL URLWithString:urlString];
+        PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:url];
+        
+        [request setDelegate:self];
+        [request startAsynchronous];
+        
+        NSURL *movieURL = [NSURL URLWithString:@"http://192.168.202.49/TestADSDK/sanguo.mp4"];
+
+        /* webView Test
+        // http://192.168.202.49/TestADSDK/iPhone_gangtie1.png
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+        NSURLRequest *_request = [NSURLRequest requestWithURL:movieURL];
+        [webView loadRequest:_request];
         [view addSubview:webView];
         
-        [webView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:10];
+        [webView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:5];
+         //*/
+        
+        /* video Test
+        MPMoviePlayerController *player = [[MPMoviePlayerController alloc] 
+                                           initWithContentURL:movieURL];
+        player.repeatMode = MPMovieRepeatModeOne;
+        player.controlStyle = MPMovieControlStyleEmbedded;
+        [player setContentURL:movieURL];
+        [player setMovieSourceType:MPMovieSourceTypeFile];
+        
+        player.view.frame = CGRectMake(0, 0, 320, 240);
+        [adParentView addSubview:player.view];
+        [player play];
+        
+        [player.view performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:10];
+        // */
     }
+}
+
+#pragma mark PBASIHttpRequest Delegate Method
+- (void)requestFinished:(PBASIHTTPRequest *)request
+{
+    NSString *responseString = [request responseString];
+    
+    NSString *tempString = [[NSString alloc] initWithData:[request responseData] encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"%@",responseString);
+    NSLog(@"%@",tempString);
+    
+    NSURL *movieURL = [NSURL URLWithString:@"http://192.168.202.49/TestADSDK/iPhone_gangtie1.png"];
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+    NSURLRequest *_request = [NSURLRequest requestWithURL:movieURL];
+    [webView loadRequest:_request];
+    [adParentView addSubview:webView];
+}
+
+- (void)requestFailed:(PBASIHTTPRequest *)request
+{
+
+}
+
+- (void)request:(PBASIHTTPRequest *)request didReceiveData:(NSData *)data
+{
+    
 }
 
 @end
