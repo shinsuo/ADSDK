@@ -30,13 +30,6 @@ typedef enum {
     EventMax,
 }EventType;
 
-@protocol TomatoSDKDelegate <NSObject>
-
-@required
-- (void)addADView:(UIView *)adView;
-
-@end
-
 //@protocol PBASIHTTPRequestDelegate ;
 
 @interface TomatoSDK : NSObject /*<PBASIHTTPRequestDelegate>*/
@@ -60,8 +53,5 @@ typedef enum {
 + (void)logEvent:(NSString *)eventName timed:(BOOL)timed withView:(UIView *)view;
 + (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed withView:(UIView *)view;
 + (void)endTimedEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters;	// non-nil parameters will update the parameters
-
-+ (void)setDelegate:(id <TomatoSDKDelegate>)delegate;
-
 
 @end

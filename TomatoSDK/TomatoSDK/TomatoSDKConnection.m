@@ -9,19 +9,44 @@
 #import "TomatoSDKConnection.h"
 #import "PBASIHTTPRequest.h"
 
+static UIView *adParentView = nil;
+
+@interface TomatoSDKConnection()
+
+- (void)addWebAD;
+- (void)addVideoAD;
+
+@end
+
 @implementation TomatoSDKConnection
 
-- (void)requestURL:(NSURL *)url
+#pragma mark Public Method
+- (void)requestURL:(NSURL *)url withView:(UIView *)view
 {
-    PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:url];
+    adParentView = view;
     
+    PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:url];
     [request setDelegate:self];
     [request startAsynchronous];
 }
 
+#pragma mark Private Method
+- (void)addWebAD
+{
+
+}
+
+- (void)addVideoAD
+{
+    
+}
+
+#pragma mark PBASIHttpRequest Delegate
 - (void)requestFinished:(PBASIHTTPRequest *)request
 {
     NSLog(@"requestFinished:%@",[request responseString]);
+    
+    NSURL *url = [NSURL URLWithString:@"http://192.168.202.49/TestADSDK/iPhone_gangtie1.png"];
 }
 
 - (void)requestFailed:(PBASIHTTPRequest *)request

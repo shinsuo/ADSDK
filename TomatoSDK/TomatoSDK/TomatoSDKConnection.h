@@ -12,6 +12,6 @@
 
 @interface TomatoSDKConnection : NSObject <PBASIHTTPRequestDelegate >
 
-- (void)requestURL:(NSURL *)url;
+- (void)requestURL:(NSURL *)url withView:(UIView *)view;
 
 @end
