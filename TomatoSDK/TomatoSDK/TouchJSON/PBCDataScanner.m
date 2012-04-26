@@ -37,7 +37,7 @@
 
 #pragma mark -
 
-inline static unichar CharacterAtPointer(void *start, void *end)
+inline static unichar PBCharacterAtPointer(void *start, void *end)
 {
 #pragma unused(end)
 
@@ -125,20 +125,20 @@ return(self.scanLocation >= length);
 
 - (unichar)currentCharacter
 {
-return(CharacterAtPointer(current, end));
+return(PBCharacterAtPointer(current, end));
 }
 
 #pragma mark -
 
 - (unichar)scanCharacter
 {
-const unichar theCharacter = CharacterAtPointer(current++, end);
+const unichar theCharacter = PBCharacterAtPointer(current++, end);
 return(theCharacter);
 }
 
 - (BOOL)scanCharacter:(unichar)inCharacter
 {
-unichar theCharacter = CharacterAtPointer(current, end);
+unichar theCharacter = PBCharacterAtPointer(current, end);
 if (theCharacter == inCharacter)
 	{
 	++current;

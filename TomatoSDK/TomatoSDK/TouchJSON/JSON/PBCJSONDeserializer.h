@@ -29,7 +29,7 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const kJSONDeserializerErrorDomain /* = @"CJSONDeserializerErrorDomain" */;
+extern NSString *const PBkJSONDeserializerErrorDomain /* = @"CJSONDeserializerErrorDomain" */;
 
 @protocol PBCDeserializerProtocol <NSObject>
 

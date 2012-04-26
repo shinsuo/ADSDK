@@ -40,4 +40,4 @@
 
 @end
 
-extern NSString *const kJSONScannerErrorDomain /* = @"CJSONScannerErrorDomain" */;
+extern NSString *const PBkJSONScannerErrorDomain /* = @"CJSONScannerErrorDomain" */;

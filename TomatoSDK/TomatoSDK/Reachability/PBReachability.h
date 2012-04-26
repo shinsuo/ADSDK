@@ -131,9 +131,9 @@ enum {
 };
 
 
-extern NSString *const kInternetConnection;
-extern NSString *const kLocalWiFiConnection;
-extern NSString *const kReachabilityChangedNotification;
+extern NSString *const PBkInternetConnection;
+extern NSString *const PBkLocalWiFiConnection;
+extern NSString *const PBkReachabilityChangedNotification;
 
 @interface PBReachability: NSObject {
 	

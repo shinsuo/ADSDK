@@ -106,9 +106,9 @@
 
 #import "PBReachability.h"
 
-NSString *const kInternetConnection  = @"InternetConnection";
-NSString *const kLocalWiFiConnection = @"LocalWiFiConnection";
-NSString *const kReachabilityChangedNotification = @"NetworkReachabilityChangedNotification";
+NSString *const PBkInternetConnection  = @"InternetConnection";
+NSString *const PBkLocalWiFiConnection = @"LocalWiFiConnection";
+NSString *const PBkReachabilityChangedNotification = @"NetworkReachabilityChangedNotification";
 
 #define CLASS_DEBUG 1 // Turn on logReachabilityFlags. Must also have a project wide defined DEBUG.
 
@@ -258,7 +258,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 	NSAutoreleasePool* pool = [NSAutoreleasePool new];
 	
 	// Post a notification to notify the client that the network reachability changed.
-	[[NSNotificationCenter defaultCenter] postNotificationName: kReachabilityChangedNotification 
+	[[NSNotificationCenter defaultCenter] postNotificationName: PBkReachabilityChangedNotification 
 														object: (PBReachability *) info];
 	
 	[pool release];
@@ -373,7 +373,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 	PBReachability *r = [self reachabilityWithAddress: &zeroAddress];
 
-	r.key = kInternetConnection;
+	r.key = PBkInternetConnection;
 	
 	return r;
 
@@ -391,7 +391,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 
 	PBReachability *r = [self reachabilityWithAddress: &localWifiAddress];
 
-	r.key = kLocalWiFiConnection;
+	r.key = PBkLocalWiFiConnection;
 
 	return r;
 
@@ -411,7 +411,7 @@ static void ReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkReach
 //         WiFi turned on:   Reachability Flag Status: -R ------- Reachable.
 // Local   WiFi turned on:   Reachability Flag Status: -R xxxxxxd Reachable.
 //         WiFi turned on:   Reachability Flag Status: -R ct----- Connection down. (Non-intuitive, empirically determined answer.)
-const SCNetworkReachabilityFlags kConnectionDown =  kSCNetworkReachabilityFlagsConnectionRequired | 
+const SCNetworkReachabilityFlags PBkConnectionDown =  kSCNetworkReachabilityFlagsConnectionRequired | 
 												    kSCNetworkReachabilityFlagsTransientConnection;
 //         WiFi turned on:   Reachability Flag Status: -R ct-i--- Reachable but it will require user intervention (e.g. enter a WiFi password).
 //         WiFi turned on:   Reachability Flag Status: -R -t----- Reachable via VPN.
@@ -427,7 +427,7 @@ const SCNetworkReachabilityFlags kConnectionDown =  kSCNetworkReachabilityFlagsC
 	if (flags & kSCNetworkReachabilityFlagsReachable) {
 		
 		// Local WiFi -- Test derived from Apple's code: -localWiFiStatusForFlags:.
-		if (self.key == kLocalWiFiConnection) {
+		if (self.key == PBkLocalWiFiConnection) {
 
 			// Reachability Flag Status: xR xxxxxxd Reachable.
 			return (flags & kSCNetworkReachabilityFlagsIsDirect) ? kReachableViaWiFi : kNotReachable;
@@ -444,10 +444,10 @@ const SCNetworkReachabilityFlags kConnectionDown =  kSCNetworkReachabilityFlagsC
 		// Clear moot bits.
 		flags &= ~kSCNetworkReachabilityFlagsReachable;
 		flags &= ~kSCNetworkReachabilityFlagsIsDirect;
-		flags &= ~kSCNetworkReachabilityFlagsIsLocalAddress; // kInternetConnection is local.
+		flags &= ~kSCNetworkReachabilityFlagsIsLocalAddress; // PBkInternetConnection is local.
 		
 		// Reachability Flag Status: -R ct---xx Connection down.
-		if (flags == kConnectionDown) { return kNotReachable; }
+		if (flags == PBkConnectionDown) { return kNotReachable; }
 		
 		// Reachability Flag Status: -R -t---xx Reachable. WiFi + VPN(is up) (Thank you Ling Wang)
 		if (flags & kSCNetworkReachabilityFlagsTransientConnection)  { return kReachableViaWiFi; }
@@ -742,7 +742,7 @@ static const SCNetworkReachabilityFlags kOnDemandConnection = kSCNetworkReachabi
 	SCNetworkReachabilityFlags flags;
 	if (SCNetworkReachabilityGetFlags(reachabilityRef, &flags))
 	{
-		if(self.key == kLocalWiFiConnection)
+		if(self.key == PBkLocalWiFiConnection)
 		{
 			retVal = [self localWiFiStatusForFlags: flags];
 		}
@@ -766,7 +766,7 @@ static const SCNetworkReachabilityFlags kOnDemandConnection = kSCNetworkReachabi
 		
 		logReachabilityFlags(flags);
 		
-		if(self.key == kLocalWiFiConnection) {
+		if(self.key == PBkLocalWiFiConnection) {
 			
 			status = [self localWiFiStatusForFlags: flags];
 			

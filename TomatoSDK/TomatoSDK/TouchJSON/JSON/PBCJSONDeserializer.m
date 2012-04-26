@@ -32,7 +32,7 @@
 #import "PBCJSONScanner.h"
 #import "PBCDataScanner.h"
 
-NSString *const kJSONDeserializerErrorDomain  = @"CJSONDeserializerErrorDomain";
+NSString *const PBkJSONDeserializerErrorDomain  = @"CJSONDeserializerErrorDomain";
 
 @implementation PBCJSONDeserializer
 
@@ -46,7 +46,7 @@ return([[[self alloc] init] autorelease]);
 if (inData == NULL || [inData length] == 0)
 	{
 	if (outError)
-		*outError = [NSError errorWithDomain:kJSONDeserializerErrorDomain code:-1 userInfo:NULL];
+		*outError = [NSError errorWithDomain:PBkJSONDeserializerErrorDomain code:-1 userInfo:NULL];
 
 	return(NULL);
 	}
@@ -69,7 +69,7 @@ else
 if (inData == NULL || [inData length] == 0)
 	{
 	if (outError)
-		*outError = [NSError errorWithDomain:kJSONDeserializerErrorDomain code:-1 userInfo:NULL];
+		*outError = [NSError errorWithDomain:PBkJSONDeserializerErrorDomain code:-1 userInfo:NULL];
 
 	return(NULL);
 	}
