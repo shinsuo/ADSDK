@@ -9,6 +9,9 @@
 #import "SXViewController.h"
 #import "TomatoSDK.h"
 
+//#import "ASIHTTPRequest.h"
+//#import "ASIHTTPRequestDelegate.h"
+
 @interface SXViewController ()
 
 @end
@@ -40,6 +43,13 @@
 - (IBAction)btnClicked:(id)sender {
     UIButton *btn = (UIButton *)sender;
     [TomatoSDK logEvent:[NSString stringWithFormat:@"Event%i",btn.tag] withView:self.view];
-    
+ 
+    /*
+    NSURL *url = [NSURL URLWithString:@"http://www.baidu.com"];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
+    [request setDelegate:self];
+    [request startAsynchronous];
+    */
 }
+
 @end

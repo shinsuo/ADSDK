@@ -208,6 +208,9 @@ static UIView *adParentView = nil;
     NSURLRequest *_request = [NSURLRequest requestWithURL:movieURL];
     [webView loadRequest:_request];
     [adParentView addSubview:webView];
+    
+    [webView release];
+    [movieURL release];
 }
 
 - (void)requestFailed:(PBASIHTTPRequest *)request
