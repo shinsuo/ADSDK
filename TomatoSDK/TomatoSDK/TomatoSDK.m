@@ -7,7 +7,6 @@
 //
 
 #import "TomatoSDK.h"
-#import "PBHardwareUtil.h"
 //#import "PBASIHTTPRequest.h"
 #import "TomatoADConstant.h"
 #import "TomatoSDKConnection.h"
@@ -49,10 +48,11 @@ static NSString     *Lang;
 //SDK版本号
 static NSString     *SDKVersion;
 //开发者ID
-static NSString     *devUID         = @"DF557FA2-C304-556BA442-960AB835CB5D";
+//static NSString     *devUID         = @"DF557FA2-C304-556BA442-960AB835CB5D";
 
 
 static NSString     *puid;
+//WIFI  MAC ADDRESS
 static NSString     *wmac;
 
 static NSUInteger testViewIndex;
@@ -74,23 +74,7 @@ static TomatoSDKConnection *connection = nil;
 
 + (void)getBaseInfo
 {
-    UIDeviceExtend *device = [UIDeviceExtend currentDevice];
-    NSLog(@"device.name:%@",device.name);
-    NSLog(@"device.model:%@",device.model);
-    NSLog(@"device.systemName:%@",device.systemName);
-    NSLog(@"device.systemVersion:%@",device.systemVersion);
-    NSLog(@"device.orientation:%i",device.orientation);
-    NSLog(@"device.PBIdentifier:%@",device.PBIdentifier);
-    NSLog(@"device.platform:%@",device.platform);
-    NSLog(@"device.hwmodel:%@",device.hwmodel);
-    NSLog(@"device.platformType:%i",device.platformType);
-    NSLog(@"device.platformString:%@",device.platformString);
-    NSLog(@"device.platformCode:%@",device.platformCode);
-    NSLog(@"device.cpuFrequency:%i",device.cpuFrequency);
-    NSLog(@"device.busFrequency:%i",device.busFrequency);
-    NSLog(@"device.totalMemory:%i",device.totalMemory);
-    NSLog(@"device.freeDiskSpace:%@",device.freeDiskSpace);
-    NSLog(@"device.macaddress:%@",device.macaddress);
+    
 }
 
 #pragma mark Public Method
@@ -103,11 +87,17 @@ static TomatoSDKConnection *connection = nil;
     }
 }
 
-+ (void)logEvent:(NSString *)eventName withView:(UIView *)view
++ (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType withView:(UIView *)view
 {
-    NSString *urlString = [NSString stringWithFormat:@"http://www.baidu.com"];
+    NSString *urlString = [NSString stringWithFormat:@"http://192.168.202.49/TestADSDK/form.php"];
     NSURL *url = [NSURL URLWithString:urlString];
     [connection requestURL:url withView:view];
+}
+
++ (void)endSession
+{
+    [connection release];
+    connection = nil;
 }
 
 @end

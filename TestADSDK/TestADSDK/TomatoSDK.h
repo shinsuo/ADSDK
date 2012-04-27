@@ -11,18 +11,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-
 typedef enum {
-    ADHtml4Type = 0,
-    ADHtml5Type,
-    ADVideoType,
-    ADScoreRankingType,
-    
-    ADMax
-}ADType;
-
-typedef enum {
-    EventGeneral,
+    EventGeneral = 0,
     EventPurchase,
     EventScore,
     EventSpendSeconds,
@@ -30,28 +20,27 @@ typedef enum {
     EventMax,
 }EventType;
 
-//@protocol PBASIHTTPRequestDelegate ;
-
-@interface TomatoSDK : NSObject /*<PBASIHTTPRequestDelegate>*/
+@interface TomatoSDK : NSObject
 
 /*
  start session, attempt to send saved sessions to server 
  */
 + (void)startSession:(NSString *)apiKey;
++ (void)endSession;
 
 /*
  log events or errors after session has started
  */
-+ (void)logEvent:(NSString *)eventName withView:(UIView *)view;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters withView:(UIView *)view;
++ (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType withView:(UIView *)view;
++ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters withEventType:(EventType)eventType withView:(UIView *)view;
 + (void)logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception;
 + (void)logError:(NSString *)errorID message:(NSString *)message error:(NSError *)error;
 
 /* 
  start or end timed events
  */
-+ (void)logEvent:(NSString *)eventName timed:(BOOL)timed withView:(UIView *)view;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed withView:(UIView *)view;
++ (void)logEvent:(NSString *)eventName timed:(BOOL)timed withEventType:(EventType)eventType withView:(UIView *)view;
++ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed withEventType:(EventType)eventType withView:(UIView *)view;
 + (void)endTimedEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters;	// non-nil parameters will update the parameters
 
 @end
