@@ -43,7 +43,7 @@
 - (IBAction)btnClicked:(id)sender {
     UIButton *btn = (UIButton *)sender;
     
-    [TomatoSDK logEvent:[NSString stringWithFormat:@"Event%i",btn.tag] withEventType:EventGeneral withView:self.view];
+    [TomatoSDK logSingleEvent:[NSString stringWithFormat:@"Event%i",btn.tag] withView:self.view];
  
     /*
     NSURL *url = [NSURL URLWithString:@"http://www.baidu.com"];

@@ -22,31 +22,50 @@
 #define PERSISTENT_AD       @"/imp/?"
 
 //BASIC-DATAS MACRO
-#define APPUID              @"APPUID"
-#define APPVERSION          @"APPVERSION"
-#define PARTID              @"PARTID"       
-#define SDKVERSION          @"SDKVERSION"
+#define APPUID              @"app"
+#define APPVERSION          @"appv"
+#define PARTID              @"part"       
+#define SDKVERSION          @"sdk"
 
-#define URLVersion          @"URLVersion"
-#define UDID                @"UDID"
-#define CKID                @"CKID"
-#define PUID                @"PUID"
-#define OSTYPE              @"OSTYPE"
-#define OSVERSION           @"OSVERSION"
-#define OSNAME              @"OSNAME"
-#define TERMINALTYPE        @"TERMINALTYPE"
-#define JAILBREAK           @"JAILBREAK"
-#define RESOLUTION          @"RESOLUTION"
-#define ORIENTATION         @"ORIENTATION"
+#define URLVERSION          @"v"
+#define UDID                @"uid"
+#define CKID                @"ckid"
+#define PUID                @"puid"
+#define OSTYPE              @"ost"
+#define OSVERSION           @"osv"
+#define OSNAME              @"os"
+#define TERMINALTYPE        @"dt"
+#define JAILBREAK           @"jb"
+#define RESOLUTION          @"sr"
+#define ORIENTATION         @"ori"
 
-#define COORDINATE          @"COORDINATE"
-#define NETTYPE             @"NETTYPE"
-#define CC                  @"CC"
-#define LANG                @"LANG"
-#define WMAC                @"WMAC"                
-//#define DEVUID              @"DEVUID"
+#define COORDINATE          @"gps"
+#define NETTYPE             @"net"
+#define CC                  @"cc"
+#define LANG                @"lang"
+#define WMAC                @"wmac"                
+//#define DEVUID              @"dev"
 
+//ONLINE OFFLINE
+#define ONLINEOFFLINE       @"oo"
 
+//EVENT-BASIC-DATAS MACRO
+#define EVENTNAME           @"n"
+#define EVENTTYPE           @"t"
+
+#define TOMATORANDOM        @"rnd"
+
+//EVENT-PURCHASE MACRO
+#define BUYCOUNT            @"dn"
+//#define TAKEMONEY           @"dm"
+//#define CASHUNIT            @"cu"
+
+//EVENT-SCORE MACRO
+#define SCORE               @"ds"
+
+//EVENT-SPENDSECONDS MACRO
+#define SPENDSECONDS        @"spt"
+#define ENDTIME             @"to"
 
 
 
@@ -59,6 +78,16 @@ typedef enum {
     ADMax
 }ADType;
 
-
+typedef enum {
+    EventOnLine = 0,
+    EventOffLine,
+    
+    EventSingle = 1,
+    EventPurchase,
+    EventScore,
+    EventSpendSeconds,
+    
+    EventMax,
+}EventType;
 
 #endif

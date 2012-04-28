@@ -11,15 +11,6 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-typedef enum {
-    EventGeneral = 0,
-    EventPurchase,
-    EventScore,
-    EventSpendSeconds,
-    
-    EventMax,
-}EventType;
-
 @interface TomatoSDK : NSObject
 
 /*
@@ -29,18 +20,21 @@ typedef enum {
 + (void)endSession;
 
 /*
- log events or errors after session has started
+ add Persisted Ad
  */
-+ (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType withView:(UIView *)view;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters withEventType:(EventType)eventType withView:(UIView *)view;
++ (void)addPersistedAd:(NSString *)persistedAdName;
+
+/*
+ log Event Method
+ */
++ (void)logSingleEvent:(NSString *)eventName withView:(UIView *)adParentView;
++ (void)logPurchaseEvent:(NSString *)eventName withView:(UIView *)adParentView;
++ (void)logScoreEvent:(NSString *)eventName withView:(UIView *)adParentView;
++ (void)logSpendSecondsEvnet:(NSString *)eventName withView:(UIView *)adParentView;
+
 + (void)logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception;
 + (void)logError:(NSString *)errorID message:(NSString *)message error:(NSError *)error;
 
-/* 
- start or end timed events
- */
-+ (void)logEvent:(NSString *)eventName timed:(BOOL)timed withEventType:(EventType)eventType withView:(UIView *)view;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed withEventType:(EventType)eventType withView:(UIView *)view;
 + (void)endTimedEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters;	// non-nil parameters will update the parameters
 
 @end
