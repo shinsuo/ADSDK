@@ -11,6 +11,7 @@
 		751C6E3F15482BAC00989868 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751C6E3E15482BAC00989868 /* SystemConfiguration.framework */; };
 		751C6E4115482BB500989868 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 751C6E4015482BB500989868 /* libz.dylib */; };
 		751C6E4315482BC900989868 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 751C6E4215482BC900989868 /* MobileCoreServices.framework */; };
+		B92C059A15525F050008A0D9 /* appInfo.plist in Resources */ = {isa = PBXBuildFile; fileRef = B92C059915525F050008A0D9 /* appInfo.plist */; };
 		B93009421540075C008EAF1E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009411540075C008EAF1E /* UIKit.framework */; };
 		B93009441540075C008EAF1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009431540075C008EAF1E /* Foundation.framework */; };
 		B93009461540075C008EAF1E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009451540075C008EAF1E /* CoreGraphics.framework */; };
@@ -30,6 +31,7 @@
 		751C6E3E15482BAC00989868 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		751C6E4015482BB500989868 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		751C6E4215482BC900989868 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		B92C059915525F050008A0D9 /* appInfo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = appInfo.plist; sourceTree = "<group>"; };
 		B930093D1540075C008EAF1E /* TestADSDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestADSDK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B93009411540075C008EAF1E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B93009431540075C008EAF1E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -133,6 +135,7 @@
 		B93009C01540098D008EAF1E /* TomatoSDK */ = {
 			isa = PBXGroup;
 			children = (
+				B92C059915525F050008A0D9 /* appInfo.plist */,
 				B93009C115400999008EAF1E /* libTomatoSDK.a */,
 				B93009C215400999008EAF1E /* TomatoSDK.h */,
 			);
@@ -194,6 +197,7 @@
 				B930094C1540075C008EAF1E /* InfoPlist.strings in Resources */,
 				B93009581540075C008EAF1E /* SXViewController_iPhone.xib in Resources */,
 				B930095B1540075C008EAF1E /* SXViewController_iPad.xib in Resources */,
+				B92C059A15525F050008A0D9 /* appInfo.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

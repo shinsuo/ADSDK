@@ -39,7 +39,7 @@
 #define RESOLUTION          @"sr"
 #define ORIENTATION         @"ori"
 
-#define COORDINATE          @"gps"
+#define GPS                 @"gps"
 #define NETTYPE             @"net"
 #define CC                  @"cc"
 #define LANG                @"lang"
@@ -102,8 +102,16 @@ typedef enum
 
 typedef enum 
 {
-    NoJailBroken,
+    UnJailBroken,
     JailBroken,
 }eJailBroken;
+
+typedef enum 
+{
+    TOMATO_AD_BANNERSIZE_320X50,
+    TOMATO_AD_BANNERSIZE_480X32,
+    TOMATO_AD_BANNERSIZE_480X40,
+    TOMATO_AD_BANNERSIZE_728X90,
+}AD_BANNERSIZE;
 
 #endif

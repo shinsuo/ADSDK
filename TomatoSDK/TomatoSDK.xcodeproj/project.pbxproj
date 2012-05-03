@@ -137,13 +137,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9300A5A154136CF008EAF1E /* CoreLocation.framework in Frameworks */,
 				751C6E3D15482B9B00989868 /* libz.dylib in Frameworks */,
 				751C6E3B15482B8B00989868 /* CoreGraphics.framework in Frameworks */,
 				751C6E3915482B7F00989868 /* MobileCoreServices.framework in Frameworks */,
 				751C6E3715482B7500989868 /* SystemConfiguration.framework in Frameworks */,
 				751C6E3115482A6700989868 /* CFNetwork.framework in Frameworks */,
 				B9300A6E1541555D008EAF1E /* MediaPlayer.framework in Frameworks */,
-				B9300A5A154136CF008EAF1E /* CoreLocation.framework in Frameworks */,
 				B9300A57154136C6008EAF1E /* UIKit.framework in Frameworks */,
 				B93008B415400652008EAF1E /* Foundation.framework in Frameworks */,
 			);
@@ -399,7 +399,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"copy TomatoSDK.h\"\nrm -rf ../TestADSDK/TestADSDK/libTomatoSDK.h\ncp -R ../TomatoSDK/TomatoSDK/TomatoSDK.h ../TestADSDK/TestADSDK/TomatoSDK.h\necho \"copy TomatoSDK.a\"\nrm -rf ../TestADSDK/TestADSDK/libTomatoSDK.a\ncp -R ${TARGET_BUILD_DIR}/libTomatoSDK.a ../TestADSDK/TestADSDK/libTomatoSDK.a";
+			shellScript = "#echo \"copy appInfo.plist\"\n#rm -rf ../TestADSDK/TestADSDK/appInfo.plist\n#cp -R ../TomatoSDK/TomatoSDK/appInfo.plist ../TestADSDK/TestADSDK/appInfo.plist\necho \"copy TomatoSDK.h\"\nrm -rf ../TestADSDK/TestADSDK/TomatoSDK.h\ncp -R ../TomatoSDK/TomatoSDK/TomatoSDK.h ../TestADSDK/TestADSDK/TomatoSDK.h\necho \"copy TomatoSDK.a\"\nrm -rf ../TestADSDK/TestADSDK/libTomatoSDK.a\ncp -R ${TARGET_BUILD_DIR}/libTomatoSDK.a ../TestADSDK/TestADSDK/libTomatoSDK.a";
 		};
 /* End PBXShellScriptBuildPhase section */
 

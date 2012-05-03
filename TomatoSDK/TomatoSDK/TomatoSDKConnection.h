@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @protocol PBASIHTTPRequestDelegate;
 
-@interface TomatoSDKConnection : NSObject <PBASIHTTPRequestDelegate >
+@interface TomatoSDKConnection : NSObject <PBASIHTTPRequestDelegate,CLLocationManagerDelegate >
 {
-    NSData          *receivedData_;
+    NSMutableData          *receivedData_;
     NSDictionary    *basicDatas_;
+    UIWebView       *webView_;
 }
 
 @property (nonatomic,retain)NSString *apiKey;

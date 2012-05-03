@@ -16,6 +16,8 @@
 #import "PBCJSONSerializer.h"
 #import "PBASIFormDataRequest.h"
 
+#import "PBReachability.h"
+
 static UIView *adParentView = nil;
 
 @interface TomatoSDKConnection()
@@ -36,13 +38,31 @@ static UIView *adParentView = nil;
 {
     if (self = [super init]) {
         //init received Data
-        receivedData_ = [[NSData alloc] init];
+        receivedData_ = [[NSMutableData alloc] init];
         //get Hardware Info
         UIDeviceExtend *device = [UIDeviceExtend currentDevice];
-        //get Locale Info
-        NSLocale *currentLocale = [NSLocale currentLocale];
-        NSLog(@"languageCode:%@",[currentLocale objectForKey:NSLocaleLanguageCode]);
-        NSLog(@"countryCode:%@",[currentLocale objectForKey:NSLocaleCountryCode]);
+        
+        PBReachability *r = [PBReachability reachabilityWithHostName:@"atm.punchbox.org"];
+        NSLog(@"current ReachabilityStatus:%i",[r currentReachabilityStatus]);
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reachabilityChanged:)
+                                                     name: PBkReachabilityChangedNotification
+                                                   object: nil];
+        
+        NSLog(@"startNotifier:%i",[r startNotifier]);
+        
+        NSLog(@"Mac Address:%@",device.getMacAddress);
+        
+        //get Location(GPS)
+        CLLocationManager *locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        [locationManager startUpdatingLocation];//
+        NSLog(@"CLLocationManager:%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude);
+        
+        //screen resolution
+        UIScreen *screen = [UIScreen mainScreen];
+        NSLog(@"uiScreen:%f,%f,%f",screen.currentMode.size.height,screen.currentMode.size.width,screen.currentMode.pixelAspectRatio);
         
         //init Basic Data
         basicDatas_ = [[NSDictionary alloc] initWithObjectsAndKeys:
@@ -59,12 +79,12 @@ static UIView *adParentView = nil;
                        device.model,TERMINALTYPE,
                        device.isJailBroken,JAILBREAK,
                        @"",RESOLUTION,
-                       @"",ORIENTATION,
-                       @"",COORDINATE,
-                       @"",NETTYPE,
-                       @"",CC,
+                       device.orientation,ORIENTATION,                 //can Changed
+                       @"",GPS,                         //can Changed
+                       [r currentReachabilityStatus],NETTYPE,   //can Changed
+                       [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],CC,
                        [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0],LANG,
-                       @"",WMAC,
+                       device.getMacAddress,WMAC,
                        nil];
         
         [self getBasicDatas];
@@ -126,7 +146,7 @@ static UIView *adParentView = nil;
     NSLog(@"device.systemName:%@",device.systemName);
     NSLog(@"device.systemVersion:%@",device.systemVersion);
     NSLog(@"device.orientation:%i",device.orientation);
-    NSLog(@"device.PBIdentifier:%@",device.PBIdentifier);
+    NSLog(@"device.PBIdentifier:%@",[device.PBIdentifier uppercaseString]);
     NSLog(@"device.platform:%@",device.platform);
     NSLog(@"device.hwmodel:%@",device.hwmodel);
     NSLog(@"device.platformType:%i",device.platformType);
@@ -177,6 +197,19 @@ static UIView *adParentView = nil;
     NSInteger type = [(NSNumber *)[data1 valueForKey:@"type"] integerValue];
     NSLog(@"nsuinteger type:%i",type);
      //*/
+}
+
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+    NSLog(@"notification:%@",notification);
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+	didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation
+{
+    NSLog(@"newLocation:%f,%f",newLocation.coordinate.latitude,newLocation.coordinate.longitude);
+    NSLog(@"oldLocation:%f,%f",newLocation.coordinate.latitude,newLocation.coordinate.longitude);
 }
 
 @end
