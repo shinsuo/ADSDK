@@ -14,7 +14,7 @@
 #define TEST                @"test=true"
 
 //URL MACRO
-#define SERVER_URL          @"http://192.168.202.49/TestADSDK"
+#define SERVER_URL          @"http://atm.punchbox.org"
 #define REQUEST_SESSION     @"/ses/?"
 #define APP_ACTIVE          @"/atv/?"
 #define APP_EVENT           @"/evt/?"
@@ -89,5 +89,21 @@ typedef enum {
     
     EventMax,
 }EventType;
+
+typedef enum 
+{
+    Unknown,
+    iOS,
+    Android,
+    BlackBerry,
+    iOS_Simulator,
+    Android_Simlator,
+}eOSType;
+
+typedef enum 
+{
+    NoJailBroken,
+    JailBroken,
+}eJailBroken;
 
 #endif

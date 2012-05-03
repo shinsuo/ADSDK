@@ -52,10 +52,10 @@ static UIDeviceExtend *uiDeviceExtend_ = nil;
     
 	sysctlbyname(typeSpecifier, NULL, &size, NULL, 0);
     char answer[size];
-
+    
 	sysctlbyname(typeSpecifier, answer, &size, NULL, 0);
 	NSString *results = [NSString stringWithCString:answer encoding: NSUTF8StringEncoding];
-
+    
 	return results;
 }
 
@@ -341,5 +341,38 @@ static const char* device_string_names[UIDeviceMAX] =
 	}
 }
 
+//add by ShinSuo
+- (NSString *)uniqueIdentifier
+{
+    return currentDev.uniqueIdentifier;
+}
+
+
+
+static const char* jailbreak_apps[] =
+{
+    "/Applications/Cydia.app", 
+    "/Applications/limera1n.app", 
+    "/Applications/greenpois0n.app", 
+    "/Applications/blackra1n.app",
+    "/Applications/blacksn0w.app",
+    "/Applications/redsn0w.app",
+    NULL,
+};
+
+- (BOOL) isJailBroken
+{
+    // Now check for known jailbreak apps. If we encounter one, the device is jailbroken.
+    for (int i = 0; jailbreak_apps[i] != NULL; ++i)
+    {
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithUTF8String:jailbreak_apps[i]]])
+        {
+            //NSLog(@"isjailbroken: %s", jailbreak_apps[i]);
+            return YES;
+        }
+    }
+    // TODO: Add more checks? This is an arms-race we're bound to lose.
+    return NO;
+}
 
 @end

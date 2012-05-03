@@ -11,6 +11,10 @@
 @protocol PBASIHTTPRequestDelegate;
 
 @interface TomatoSDKConnection : NSObject <PBASIHTTPRequestDelegate >
+{
+    NSData          *receivedData_;
+    NSDictionary    *basicDatas_;
+}
 
 @property (nonatomic,retain)NSString *apiKey;
 @property (nonatomic) BOOL apiKeyValid;

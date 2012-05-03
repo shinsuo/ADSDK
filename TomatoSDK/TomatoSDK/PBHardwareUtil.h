@@ -127,4 +127,8 @@ typedef enum UIDevicePlatform
 
 - (NSString*) macaddress;
 
+//add by ShinSuo
+- (NSString *)uniqueIdentifier;
+- (BOOL)isJailBroken;
+
 @end

@@ -90,7 +90,7 @@ static TomatoSDKConnection *connection = nil;
 
 + (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType withView:(UIView *)view
 {
-    NSString *urlString = [NSString stringWithFormat:@"http://192.168.202.49/TestADSDK/form.php"];
+    NSString *urlString = [NSString stringWithFormat:@"http://192.168.202.49/TestADSDK/_index.php"];
     NSURL *url = [NSURL URLWithString:urlString];
     [connection requestURL:url withView:view];
 }

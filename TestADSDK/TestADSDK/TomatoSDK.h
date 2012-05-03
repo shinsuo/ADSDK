@@ -19,11 +19,14 @@
 + (void)startSession:(NSString *)apiKey;
 + (void)endSession;
 
+/*
+ add Persisted Ad
+ */
++ (void)addPersistedAd:(NSString *)persistedAdName;
 
 /*
  log Event Method
  */
-
 + (void)logSingleEvent:(NSString *)eventName withView:(UIView *)adParentView;
 + (void)logPurchaseEvent:(NSString *)eventName withView:(UIView *)adParentView;
 + (void)logScoreEvent:(NSString *)eventName withView:(UIView *)adParentView;
