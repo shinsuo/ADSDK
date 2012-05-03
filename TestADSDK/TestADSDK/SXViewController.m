@@ -54,4 +54,15 @@
     
 }
 
+#pragma mark TomatoAdDelegate Method
+- (void)didReceived:(TomatoAdView *)adView
+{
+
+}
+
+- (void)didFailWithMessage:(NSString *)msg
+{
+
+}
+
 @end

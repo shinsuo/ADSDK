@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TomatoAdDelegate.h"
 
-@interface SXViewController : UIViewController
+@interface SXViewController : UIViewController <TomatoAdDelegate>
 
 - (IBAction)btnClicked:(id)sender;
 
