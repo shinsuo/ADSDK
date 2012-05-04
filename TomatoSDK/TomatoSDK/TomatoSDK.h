@@ -2,7 +2,7 @@
 //  TomatoSDK.h
 //  TomatoSDK
 //
-//  Created by xin suo on 12-4-19.
+//  Created by Shin Suo on 12-4-19.
 //  Copyright (c) 2012年 CocoaChina. All rights reserved.
 //
 

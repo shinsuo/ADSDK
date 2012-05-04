@@ -2,7 +2,7 @@
 //  TomatoADConstant.h
 //  TomatoSDK
 //
-//  Created by xin suo on 12-4-25.
+//  Created by Shin Suo on 12-4-25.
 //  Copyright (c) 2012年 CocoaChina. All rights reserved.
 //
 
