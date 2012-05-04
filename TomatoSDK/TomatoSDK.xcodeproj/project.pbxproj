@@ -161,11 +161,6 @@
 		B93008A515400651008EAF1E = {
 			isa = PBXGroup;
 			children = (
-				751C6E3C15482B9B00989868 /* libz.dylib */,
-				751C6E3A15482B8B00989868 /* CoreGraphics.framework */,
-				751C6E3815482B7F00989868 /* MobileCoreServices.framework */,
-				751C6E3615482B7500989868 /* SystemConfiguration.framework */,
-				751C6E3015482A6700989868 /* CFNetwork.framework */,
 				B93008B515400652008EAF1E /* TomatoSDK */,
 				B93008B215400652008EAF1E /* Frameworks */,
 				B93008B115400652008EAF1E /* Products */,
@@ -183,6 +178,11 @@
 		B93008B215400652008EAF1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				751C6E3C15482B9B00989868 /* libz.dylib */,
+				751C6E3A15482B8B00989868 /* CoreGraphics.framework */,
+				751C6E3815482B7F00989868 /* MobileCoreServices.framework */,
+				751C6E3615482B7500989868 /* SystemConfiguration.framework */,
+				751C6E3015482A6700989868 /* CFNetwork.framework */,
 				B9300A6D1541555D008EAF1E /* MediaPlayer.framework */,
 				B9300A59154136CF008EAF1E /* CoreLocation.framework */,
 				B9300A56154136C5008EAF1E /* UIKit.framework */,

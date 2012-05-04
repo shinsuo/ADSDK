@@ -11,6 +11,8 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MediaPlayer/MediaPlayer.h>
 
+#import "TomatoAdDelegate.h"
+
 @interface TomatoSDK : NSObject
 
 /*
@@ -18,6 +20,7 @@
  */
 + (void)startSession:(NSString *)apiKey;
 + (void)endSession;
++ (void)setDelegate:(id<TomatoAdDelegate>)delegate_;
 
 /*
  add Persisted Ad

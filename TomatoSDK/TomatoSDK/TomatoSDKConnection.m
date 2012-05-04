@@ -26,6 +26,10 @@ static UIView *adParentView = nil;
 - (void)addVideoAD;
 - (void)getBasicDatas;
 
+- (void)changedOrientation:(NSNotification *)notification;
+- (void)changedGPS:(NSNotification *)notification;
+- (void)changedNetType:(NSNotification *)notification;
+
 @end
 
 @implementation TomatoSDKConnection
@@ -43,29 +47,18 @@ static UIView *adParentView = nil;
         UIDeviceExtend *device = [UIDeviceExtend currentDevice];
         
         PBReachability *r = [PBReachability reachabilityWithHostName:@"atm.punchbox.org"];
-        NSLog(@"current ReachabilityStatus:%i",[r currentReachabilityStatus]);
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reachabilityChanged:)
                                                      name: PBkReachabilityChangedNotification
                                                    object: nil];
-        
-        NSLog(@"startNotifier:%i",[r startNotifier]);
-        
-        NSLog(@"Mac Address:%@",device.getMacAddress);
-        
-        //get Location(GPS)
+
         CLLocationManager *locationManager = [[CLLocationManager alloc] init];
         locationManager.delegate = self;
-        [locationManager startUpdatingLocation];//
-        NSLog(@"CLLocationManager:%f,%f",locationManager.location.coordinate.latitude,locationManager.location.coordinate.longitude);
-        
-        //screen resolution
-        UIScreen *screen = [UIScreen mainScreen];
-        NSLog(@"uiScreen:%f,%f,%f",screen.currentMode.size.height,screen.currentMode.size.width,screen.currentMode.pixelAspectRatio);
+        [locationManager startUpdatingLocation];
         
         //init Basic Data
-        basicDatas_ = [[NSDictionary alloc] initWithObjectsAndKeys:
+        basicDatas_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                        @"",APPUID, 
                        @"",APPVERSION,
                        @"",PARTID,
@@ -77,17 +70,30 @@ static UIView *adParentView = nil;
                        device.systemName,OSTYPE,
                        device.systemVersion,OSVERSION,
                        device.model,TERMINALTYPE,
-                       device.isJailBroken,JAILBREAK,
+                       [NSString stringWithFormat:@"%i",device.isJailBroken],JAILBREAK,
                        @"",RESOLUTION,
-                       device.orientation,ORIENTATION,                 //can Changed
+                       [NSString stringWithFormat:@"%i",device.orientation],ORIENTATION,                 //can Changed
                        @"",GPS,                         //can Changed
-                       [r currentReachabilityStatus],NETTYPE,   //can Changed
+                       [NSString stringWithFormat:@"%i",[r currentReachabilityStatus]],NETTYPE,   //can Changed
                        [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],CC,
                        [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0],LANG,
                        device.getMacAddress,WMAC,
                        nil];
         
-        [self getBasicDatas];
+        //register Notification
+        [[NSNotificationCenter defaultCenter] addObserver:self 
+                                                 selector:@selector(changedOrientation:) 
+                                                     name:UIDeviceOrientationDidChangeNotification 
+                                                   object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:self 
+//                                                 selector:@selector(changedGPS:) 
+//                                                     name:@""
+//                                                   object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:self 
+//                                                 selector:@selector(changedNetType:) 
+//                                                     name:PBkReachabilityChangedNotification 
+//                                                   object:nil];
+
     }
     return self;
 }
@@ -96,13 +102,15 @@ static UIView *adParentView = nil;
 {
     [super dealloc];
     [receivedData_ release];
+    [basicDatas_ release];
+    [webView_ release];
 }
 
 - (void)requestSession:(NSString *)apiKey_
 {
-    //默认apiKeyValid为NO
+    //defaule apiKeyValid value
     self.apiKeyValid = NO;
-    //保存一份apiKey_
+    //save apiKey
     self.apiKey = apiKey_;
     //向server发送apiKey_，验证apiKey是否合法
     
@@ -165,7 +173,18 @@ static UIView *adParentView = nil;
     //apiKey验证完成,设置apiKeyValid
     
     //
-    NSLog(@"requestFinished:%@",[request responseString]);
+//    NSLog(@"requestFinished:%@",[request responseString]);
+    //for Testing
+    int X = 0,Y = 0,W = 0,H = 0;
+    NSData *bodyData = nil;
+    
+    if (!webView_) {
+        webView_ = [[UIWebView alloc] initWithFrame:CGRectMake(X , Y , W, H)];
+    }
+    [webView_ loadData:bodyData MIMEType:nil textEncodingName:nil baseURL:nil];
+    if ([delegate_ respondsToSelector:@selector(didReceived:)]) {
+        [delegate_ didReceived:(TomatoAdView *)webView_];  
+    }
 }
 
 - (void)requestFailed:(PBASIHTTPRequest *)request
@@ -199,17 +218,25 @@ static UIView *adParentView = nil;
      //*/
 }
 
+#pragma mark Notification Method
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-    NSLog(@"notification:%@",notification);
+    NSLog(@"reachabilityChanged:notification:%@",notification);
 }
 
+- (void)changedOrientation:(NSNotification *)notification
+{
+    [basicDatas_ setObject:[NSString stringWithFormat:@"%i",[UIDevice currentDevice].orientation] forKey:ORIENTATION];
+}
+
+#pragma mark LocationDelegate Method
 - (void)locationManager:(CLLocationManager *)manager
 	didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-    NSLog(@"newLocation:%f,%f",newLocation.coordinate.latitude,newLocation.coordinate.longitude);
-    NSLog(@"oldLocation:%f,%f",newLocation.coordinate.latitude,newLocation.coordinate.longitude);
+    [basicDatas_ setObject:[NSString stringWithFormat:@"%.2f,.2%f",newLocation.coordinate.latitude,newLocation.coordinate.longitude] forKey:GPS];
 }
+
+//
 
 @end

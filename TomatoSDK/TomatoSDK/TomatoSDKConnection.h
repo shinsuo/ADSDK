@@ -9,13 +9,16 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 
+#import "TomatoAdDelegate.h"
+
 @protocol PBASIHTTPRequestDelegate;
 
 @interface TomatoSDKConnection : NSObject <PBASIHTTPRequestDelegate,CLLocationManagerDelegate >
 {
-    NSMutableData          *receivedData_;
-    NSDictionary    *basicDatas_;
-    UIWebView       *webView_;
+    NSMutableData           *receivedData_;
+    NSMutableDictionary     *basicDatas_;
+    UIWebView               *webView_;
+    id<TomatoAdDelegate>    delegate_;
 }
 
 @property (nonatomic,retain)NSString *apiKey;

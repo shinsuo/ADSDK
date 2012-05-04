@@ -77,10 +77,6 @@
 		B93009321540075C008EAF1E = {
 			isa = PBXGroup;
 			children = (
-				751C6E4215482BC900989868 /* MobileCoreServices.framework */,
-				751C6E4015482BB500989868 /* libz.dylib */,
-				751C6E3E15482BAC00989868 /* SystemConfiguration.framework */,
-				751C6E3315482ABD00989868 /* CFNetwork.framework */,
 				B93009471540075C008EAF1E /* TestADSDK */,
 				B93009401540075C008EAF1E /* Frameworks */,
 				B930093E1540075C008EAF1E /* Products */,
@@ -98,6 +94,10 @@
 		B93009401540075C008EAF1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				751C6E4215482BC900989868 /* MobileCoreServices.framework */,
+				751C6E4015482BB500989868 /* libz.dylib */,
+				751C6E3E15482BAC00989868 /* SystemConfiguration.framework */,
+				751C6E3315482ABD00989868 /* CFNetwork.framework */,
 				B9300A701541585B008EAF1E /* MediaPlayer.framework */,
 				B9300A5C1541460C008EAF1E /* CoreLocation.framework */,
 				B93009411540075C008EAF1E /* UIKit.framework */,

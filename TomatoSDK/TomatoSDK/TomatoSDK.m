@@ -103,6 +103,11 @@ static TomatoSDKConnection *connection = nil;
         connection = [[TomatoSDKConnection alloc] init];
         [connection requestSession:apiKey];
     }
+//    NSString *executableFile = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey];
+//    
+//    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+//    
+//    NSLog(@"%@,%@",executableFile,version);
 }
 
 + (void)logSingleEvent:(NSString *)eventName withView:(UIView *)adParentView
