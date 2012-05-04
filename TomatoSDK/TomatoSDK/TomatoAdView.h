@@ -12,15 +12,15 @@
 
 @property (nonatomic,retain) NSString *adID;
 
-+ (TomatoAdView *)getAdView:(NSString *)adId;
-
-/*
- log Event Method
- */
-- (void)logSingleEvent:(NSString *)eventName;
-- (void)logPurchaseEvent:(NSString *)eventName;
-- (void)logScoreEvent:(NSString *)eventName;
-- (void)logSpendSecondsEvnet:(NSString *)eventName;
+//+ (TomatoAdView *)getAdView:(NSString *)adId;
+//
+///*
+// log Event Method
+// */
+//- (void)logSingleEvent:(NSString *)eventName;
+//- (void)logPurchaseEvent:(NSString *)eventName;
+//- (void)logScoreEvent:(NSString *)eventName;
+//- (void)logSpendSecondsEvnet:(NSString *)eventName;
 
 
 @end

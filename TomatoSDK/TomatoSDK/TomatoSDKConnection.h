@@ -23,8 +23,9 @@
 
 @property (nonatomic,retain)NSString *apiKey;
 @property (nonatomic) BOOL apiKeyValid;
+@property (nonatomic,assign) id<TomatoAdDelegate> delegate;
 
 - (void)requestSession:(NSString *)apiKey_;
-- (void)requestURL:(NSURL *)url withView:(UIView *)view;
+- (void)requestURL:(NSURL *)url;
 
 @end

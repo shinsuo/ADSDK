@@ -55,7 +55,7 @@ static UIDeviceExtend *uiDeviceExtend_ = nil;
     
 	sysctlbyname(typeSpecifier, answer, &size, NULL, 0);
 	NSString *results = [NSString stringWithCString:answer encoding: NSUTF8StringEncoding];
-    
+    NSLog(@"getSys:%@",results);
 	return results;
 }
 

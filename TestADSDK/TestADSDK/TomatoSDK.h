@@ -17,9 +17,14 @@
 
 /*
  start session, attempt to send saved sessions to server 
+ end session
  */
 + (void)startSession:(NSString *)apiKey;
 + (void)endSession;
+
+/*
+ set Delegate
+ */
 + (void)setDelegate:(id<TomatoAdDelegate>)delegate_;
 
 /*
@@ -30,10 +35,10 @@
 /*
  log Event Method
  */
-+ (void)logSingleEvent:(NSString *)eventName withView:(UIView *)adParentView;
-+ (void)logPurchaseEvent:(NSString *)eventName withView:(UIView *)adParentView;
-+ (void)logScoreEvent:(NSString *)eventName withView:(UIView *)adParentView;
-+ (void)logSpendSecondsEvnet:(NSString *)eventName withView:(UIView *)adParentView;
++ (void)logSingleEvent:(NSString *)eventName;
++ (void)logPurchaseEvent:(NSString *)eventName ;
++ (void)logScoreEvent:(NSString *)eventName;
++ (void)logSpendSecondsEvnet:(NSString *)eventName;
 
 + (void)logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception;
 + (void)logError:(NSString *)errorID message:(NSString *)message error:(NSError *)error;

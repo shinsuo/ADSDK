@@ -13,7 +13,7 @@
 @protocol TomatoAdDelegate <NSObject>
 
 @required
-- (void)didReceived:(TomatoAdView *)adView;
+- (void)didReceived:(TomatoAdView *)adView withParameters:(NSDictionary *)parameters;
 - (void)didFailWithMessage:(NSString *)msg;
 
 @end

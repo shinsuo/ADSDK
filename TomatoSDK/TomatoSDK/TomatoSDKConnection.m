@@ -18,12 +18,8 @@
 
 #import "PBReachability.h"
 
-static UIView *adParentView = nil;
-
 @interface TomatoSDKConnection()
 
-- (void)addWebAD;
-- (void)addVideoAD;
 - (void)getBasicDatas;
 
 - (void)changedOrientation:(NSNotification *)notification;
@@ -36,6 +32,7 @@ static UIView *adParentView = nil;
 
 @synthesize apiKey;
 @synthesize apiKeyValid;
+@synthesize delegate = delegate_;
 
 #pragma mark Public Method
 - (id)init
@@ -56,7 +53,7 @@ static UIView *adParentView = nil;
         CLLocationManager *locationManager = [[CLLocationManager alloc] init];
         locationManager.delegate = self;
         [locationManager startUpdatingLocation];
-        
+
         //init Basic Data
         basicDatas_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                        @"",APPUID, 
@@ -93,6 +90,7 @@ static UIView *adParentView = nil;
 //                                                 selector:@selector(changedNetType:) 
 //                                                     name:PBkReachabilityChangedNotification 
 //                                                   object:nil];
+        [self getBasicDatas];
 
     }
     return self;
@@ -116,9 +114,8 @@ static UIView *adParentView = nil;
     
 }
 
-- (void)requestURL:(NSURL *)url withView:(UIView *)view
+- (void)requestURL:(NSURL *)url
 {
-    adParentView = view;
     //*
     PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:url];
     [request setDelegate:self];
@@ -136,15 +133,6 @@ static UIView *adParentView = nil;
 }
 
 #pragma mark Private Method
-- (void)addWebAD
-{
-
-}
-
-- (void)addVideoAD
-{
-    
-}
 
 - (void)getBasicDatas
 {
@@ -175,15 +163,18 @@ static UIView *adParentView = nil;
     //
 //    NSLog(@"requestFinished:%@",[request responseString]);
     //for Testing
-    int X = 0,Y = 0,W = 0,H = 0;
+    int X = 10,Y = 10,W = 300,H = 50;
     NSData *bodyData = nil;
     
     if (!webView_) {
         webView_ = [[UIWebView alloc] initWithFrame:CGRectMake(X , Y , W, H)];
+        webView_.backgroundColor = [UIColor clearColor];
     }
-    [webView_ loadData:bodyData MIMEType:nil textEncodingName:nil baseURL:nil];
-    if ([delegate_ respondsToSelector:@selector(didReceived:)]) {
-        [delegate_ didReceived:(TomatoAdView *)webView_];  
+//    [webView_ loadData:bodyData MIMEType:nil textEncodingName:nil baseURL:nil];
+    [webView_ loadHTMLString:[[NSString alloc] initWithData:receivedData_ encoding:NSUTF8StringEncoding] baseURL:nil];
+    webView_.scrollView.scrollEnabled = NO;
+    if ([delegate_ respondsToSelector:@selector(didReceived:withParameters:)]) {
+        [delegate_ didReceived:(TomatoAdView *)webView_ withParameters:nil];  
     }
 }
 
@@ -227,6 +218,26 @@ static UIView *adParentView = nil;
 - (void)changedOrientation:(NSNotification *)notification
 {
     [basicDatas_ setObject:[NSString stringWithFormat:@"%i",[UIDevice currentDevice].orientation] forKey:ORIENTATION];
+    switch ([UIDevice currentDevice].orientation) {
+        case UIDeviceOrientationPortrait:
+            webView_.frame =CGRectMake(10, 10, 300, 50);
+            [webView_ loadHTMLString:@"<html><body>UIDeviceOrientationPortrait</body></html>" baseURL:nil];
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            webView_.frame =CGRectMake(10, 10, 300, 50);
+            [webView_ loadHTMLString:@"<html><body>UIDeviceOrientationPortraitUpsideDown</body></html>" baseURL:nil];
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            webView_.frame =CGRectMake(10, 10, 460, 50);
+            [webView_ loadHTMLString:@"<html><body>UIDeviceOrientationLandscapeLeft</body></html>" baseURL:nil];
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            webView_.frame =CGRectMake(10, 10, 460, 50);
+            [webView_ loadHTMLString:@"<html><body>UIDeviceOrientationLandscapeRight</body></html>" baseURL:nil];
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark LocationDelegate Method

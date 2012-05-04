@@ -68,14 +68,14 @@ static TomatoSDKConnection *connection = nil;
 /*
  log events or errors after session has started
  */
-+ (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType withView:(UIView *)view;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters withEventType:(EventType)eventType withView:(UIView *)view;
++ (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType;
++ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters withEventType:(EventType)eventType;
 
 /* 
  start or end timed events
  */
-+ (void)logEvent:(NSString *)eventName timed:(BOOL)timed withEventType:(EventType)eventType withView:(UIView *)view;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed withEventType:(EventType)eventType withView:(UIView *)view;
++ (void)logEvent:(NSString *)eventName timed:(BOOL)timed withEventType:(EventType)eventType;
++ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed withEventType:(EventType)eventType;
 
 @end
 
@@ -88,11 +88,11 @@ static TomatoSDKConnection *connection = nil;
     
 }
 
-+ (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType withView:(UIView *)view
++ (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType
 {
-    NSString *urlString = [NSString stringWithFormat:@"http://192.168.202.49/TestADSDK/_index.php"];
+    NSString *urlString = [NSString stringWithFormat:@"http://192.168.202.49/TestADSDK/pic_ad.php"];
     NSURL *url = [NSURL URLWithString:urlString];
-    [connection requestURL:url withView:view];
+    [connection requestURL:url];
 }
 
 #pragma mark Public Method
@@ -103,31 +103,49 @@ static TomatoSDKConnection *connection = nil;
         connection = [[TomatoSDKConnection alloc] init];
         [connection requestSession:apiKey];
     }
-//    NSString *executableFile = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey];
-//    
-//    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
-//    
-//    NSLog(@"%@,%@",executableFile,version);
+    NSString *executableFile = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey];
+    
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
+    
+    NSString *family = [NSString stringWithFormat:@"%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"UIDeviceFamily"]];
+    NSUInteger index = [family rangeOfString:@"2"].location;
+    if (index == 6) {
+        //iPad
+    }else if (index == 13) {
+        //Universal
+    }else {
+        //iPhone
+    }
+//    NSLog(@"1---------%i",[family rangeOfString:@"1"].location);
+//    NSLog(@"2---------%i",[family rangeOfString:@"2"].location);
+    
+//    NSLog(@"%@,%@,%@",executableFile,version,family);
+    
 }
 
-+ (void)logSingleEvent:(NSString *)eventName withView:(UIView *)adParentView
++ (void)setDelegate:(id<TomatoAdDelegate>)delegate_
 {
-    [TomatoSDK logEvent:eventName withEventType:EventSingle withView:adParentView];
+    connection.delegate = delegate_;
 }
 
-+ (void)logPurchaseEvent:(NSString *)eventName withView:(UIView *)adParentView
++ (void)logSingleEvent:(NSString *)eventName
 {
-    [TomatoSDK logEvent:eventName withEventType:EventPurchase withView:adParentView];
+    [TomatoSDK logEvent:eventName withEventType:EventSingle];
 }
 
-+ (void)logScoreEvent:(NSString *)eventName withView:(UIView *)adParentView
++ (void)logPurchaseEvent:(NSString *)eventName
 {
-    [TomatoSDK logEvent:eventName withEventType:EventScore withView:adParentView];
+    [TomatoSDK logEvent:eventName withEventType:EventPurchase];
 }
 
-+ (void)logSpendSecondsEvnet:(NSString *)eventName withView:(UIView *)adParentView
++ (void)logScoreEvent:(NSString *)eventName
 {
-    [TomatoSDK logSingleEvent:eventName withView:adParentView];
+    [TomatoSDK logEvent:eventName withEventType:EventScore];
+}
+
++ (void)logSpendSecondsEvnet:(NSString *)eventName
+{
+    [TomatoSDK logSingleEvent:eventName];
 }
 
 + (void)endSession

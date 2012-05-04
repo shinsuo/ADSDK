@@ -23,6 +23,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     [TomatoSDK startSession:@"apiKey"];
+    [TomatoSDK setDelegate:self];
 }
 
 - (void)viewDidUnload
@@ -43,7 +44,7 @@
 - (IBAction)btnClicked:(id)sender {
     UIButton *btn = (UIButton *)sender;
     
-    [TomatoSDK logSingleEvent:[NSString stringWithFormat:@"Event%i",btn.tag] withView:self.view];
+    [TomatoSDK logSingleEvent:[NSString stringWithFormat:@"Event%i",btn.tag]];
  
     /*
     NSURL *url = [NSURL URLWithString:@"http://www.baidu.com"];
@@ -55,9 +56,10 @@
 }
 
 #pragma mark TomatoAdDelegate Method
-- (void)didReceived:(TomatoAdView *)adView
+- (void)didReceived:(TomatoAdView *)adView withParameters:(NSDictionary *)parameters
 {
-
+    NSLog(@"developer didReceived");
+    [self.view addSubview:adView];
 }
 
 - (void)didFailWithMessage:(NSString *)msg
