@@ -10,7 +10,7 @@
 
 @interface TomatoAdView : UIView
 
-@property (nonatomic,retain) NSString *adID;
+//@property (nonatomic,retain) NSString *adID;
 
 //+ (TomatoAdView *)getAdView:(NSString *)adId;
 //

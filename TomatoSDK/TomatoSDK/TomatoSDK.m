@@ -68,14 +68,14 @@ static TomatoSDKConnection *connection = nil;
 /*
  log events or errors after session has started
  */
-+ (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters withEventType:(EventType)eventType;
++ (void)logEvent:(NSString *)eventName withEventType:(EVENT_TYPE)eventType;
++ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters withEventType:(EVENT_TYPE)eventType;
 
 /* 
  start or end timed events
  */
-+ (void)logEvent:(NSString *)eventName timed:(BOOL)timed withEventType:(EventType)eventType;
-+ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed withEventType:(EventType)eventType;
++ (void)logEvent:(NSString *)eventName timed:(BOOL)timed withEventType:(EVENT_TYPE)eventType;
++ (void)logEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters timed:(BOOL)timed withEventType:(EVENT_TYPE)eventType;
 
 @end
 
@@ -88,7 +88,7 @@ static TomatoSDKConnection *connection = nil;
     
 }
 
-+ (void)logEvent:(NSString *)eventName withEventType:(EventType)eventType
++ (void)logEvent:(NSString *)eventName withEventType:(EVENT_TYPE)eventType
 {
     NSString *urlString = [NSString stringWithFormat:@"http://192.168.202.49/TestADSDK/pic_ad.php"];
     NSURL *url = [NSURL URLWithString:urlString];

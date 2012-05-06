@@ -76,7 +76,7 @@ typedef enum {
     ADScoreRankingType,
     
     ADMax
-}ADType;
+}AD_TYPE;
 
 typedef enum {
     EventOnLine = 0,
@@ -88,7 +88,7 @@ typedef enum {
     EventSpendSeconds,
     
     EventMax,
-}EventType;
+}EVENT_TYPE;
 
 typedef enum 
 {
@@ -98,13 +98,13 @@ typedef enum
     BlackBerry,
     iOS_Simulator,
     Android_Simlator,
-}eOSType;
+}OS_TYPE;
 
 typedef enum 
 {
     UnJailBroken,
     JailBroken,
-}eJailBroken;
+}JAIL_BREAK;
 
 typedef enum 
 {
