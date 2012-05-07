@@ -90,9 +90,9 @@ static TomatoSDKConnection *connection = nil;
 
 + (void)logEvent:(NSString *)eventName withEventType:(EVENT_TYPE)eventType
 {
-    NSString *urlString = [NSString stringWithFormat:@"http://192.168.202.49/TestADSDK/pic_ad.php"];
-    NSURL *url = [NSURL URLWithString:urlString];
-    [connection requestURL:url];
+//    NSString *urlString = [NSString stringWithFormat:@"http://192.168.202.49/TestADSDK/pic_ad.php"];
+//    NSURL *url = [NSURL URLWithString:urlString];
+//    [connection requestURL:url];
 }
 
 #pragma mark Public Method
@@ -130,22 +130,26 @@ static TomatoSDKConnection *connection = nil;
 
 + (void)logSingleEvent:(NSString *)eventName
 {
-    [TomatoSDK logEvent:eventName withEventType:EventSingle];
+//    [TomatoSDK logEvent:eventName withEventType:EventSingle];
+    [connection requestEventName:eventName withType:EventSingle];
 }
 
 + (void)logPurchaseEvent:(NSString *)eventName
 {
-    [TomatoSDK logEvent:eventName withEventType:EventPurchase];
+//    [TomatoSDK logEvent:eventName withEventType:EventPurchase];
+    [connection requestEventName:eventName withType:EventPurchase];
 }
 
 + (void)logScoreEvent:(NSString *)eventName
 {
-    [TomatoSDK logEvent:eventName withEventType:EventScore];
+//    [TomatoSDK logEvent:eventName withEventType:EventScore];
+    [connection requestEventName:eventName withType:EventScore];
 }
 
 + (void)logSpendSecondsEvnet:(NSString *)eventName
 {
-    [TomatoSDK logSingleEvent:eventName];
+//    [TomatoSDK logSingleEvent:eventName];
+    [connection requestEventName:eventName withType:EventSpendSeconds];
 }
 
 + (void)endSession

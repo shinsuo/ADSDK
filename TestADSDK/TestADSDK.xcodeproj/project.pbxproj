@@ -23,6 +23,8 @@
 		B93009C315400999008EAF1E /* libTomatoSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B93009C115400999008EAF1E /* libTomatoSDK.a */; };
 		B9300A5D1541460C008EAF1E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9300A5C1541460C008EAF1E /* CoreLocation.framework */; };
 		B9300A711541585B008EAF1E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9300A701541585B008EAF1E /* MediaPlayer.framework */; };
+		B93726E01557980C00630B99 /* sanguo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B93726DF1557980C00630B99 /* sanguo.mp4 */; };
+		B93726E315579DD900630B99 /* sanguo.mov in Resources */ = {isa = PBXBuildFile; fileRef = B93726E215579DD900630B99 /* sanguo.mov */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,6 +51,8 @@
 		B93009C215400999008EAF1E /* TomatoSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TomatoSDK.h; sourceTree = "<group>"; };
 		B9300A5C1541460C008EAF1E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		B9300A701541585B008EAF1E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		B93726DF1557980C00630B99 /* sanguo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = sanguo.mp4; sourceTree = "<group>"; };
+		B93726E215579DD900630B99 /* sanguo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = sanguo.mov; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +119,8 @@
 				B93009541540075C008EAF1E /* SXViewController.m */,
 				B93009561540075C008EAF1E /* SXViewController_iPhone.xib */,
 				B93009591540075C008EAF1E /* SXViewController_iPad.xib */,
+				B93726DF1557980C00630B99 /* sanguo.mp4 */,
+				B93726E215579DD900630B99 /* sanguo.mov */,
 				B93009481540075C008EAF1E /* Supporting Files */,
 			);
 			path = TestADSDK;
@@ -196,6 +202,8 @@
 				B930094C1540075C008EAF1E /* InfoPlist.strings in Resources */,
 				B93009581540075C008EAF1E /* SXViewController_iPhone.xib in Resources */,
 				B930095B1540075C008EAF1E /* SXViewController_iPad.xib in Resources */,
+				B93726E01557980C00630B99 /* sanguo.mp4 in Resources */,
+				B93726E315579DD900630B99 /* sanguo.mov in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,13 +301,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestADSDK/TestADSDK-Prefix.pch";
 				INFOPLIST_FILE = "TestADSDK/TestADSDK-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TestADSDK\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -310,13 +318,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TestADSDK/TestADSDK-Prefix.pch";
 				INFOPLIST_FILE = "TestADSDK/TestADSDK-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/TestADSDK\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

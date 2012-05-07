@@ -9,6 +9,8 @@
 #import "SXViewController.h"
 #import "TomatoSDK.h"
 
+#import <MediaPlayer/MediaPlayer.h>
+
 //#import "ASIHTTPRequest.h"
 //#import "ASIHTTPRequestDelegate.h"
 
@@ -24,6 +26,17 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [TomatoSDK startSession:@"apiKey"];
     [TomatoSDK setDelegate:self];
+    /*
+    MPMoviePlayerController *movieController = [[MPMoviePlayerController alloc] init];
+//    movieController.view.backgroundColor = [UIColor clearColor];
+    movieController.view.frame = CGRectMake(10, 10, 300, 460);
+    movieController.contentURL = [NSURL URLWithString:@"http://192.168.202.49/TestADSDK/sanguo.mp4"];
+    movieController.shouldAutoplay = YES;
+    movieController.controlStyle = MPMovieControlStyleEmbedded;
+    [self.view addSubview:movieController.view];
+    
+//    [movieController play];
+     //*/
 }
 
 - (void)viewDidUnload

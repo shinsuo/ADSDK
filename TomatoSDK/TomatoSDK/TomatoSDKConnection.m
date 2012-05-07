@@ -43,12 +43,10 @@
         //get Hardware Info
         UIDeviceExtend *device = [UIDeviceExtend currentDevice];
         
-        PBReachability *r = [PBReachability reachabilityWithHostName:@"atm.punchbox.org"];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reachabilityChanged:)
-                                                     name: PBkReachabilityChangedNotification
-                                                   object: nil];
+//        PBReachability *r = [PBReachability reachabilityWithHostName:@"atm.punchbox.org"];
+        PBReachability *r = [[PBReachability reachabilityForInternetConnection] retain];
+        [r connectionRequired];
+        [r startNotifier];
 
         CLLocationManager *locationManager = [[CLLocationManager alloc] init];
         locationManager.delegate = self;
@@ -77,11 +75,19 @@
                        device.getMacAddress,WMAC,
                        nil];
         
+        //init url Array
+        urlArray = [NSArray arrayWithObjects:@"",@"",@"",@"", nil];
+        
         //register Notification
-        [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(changedOrientation:) 
-                                                     name:UIDeviceOrientationDidChangeNotification 
-                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reachabilityChanged:)
+                                                     name: PBkReachabilityChangedNotification
+                                                   object: nil];
+        
+//        [[NSNotificationCenter defaultCenter] addObserver:self 
+//                                                 selector:@selector(changedOrientation:) 
+//                                                     name:UIDeviceOrientationDidChangeNotification 
+//                                                   object:nil];
 //        [[NSNotificationCenter defaultCenter] addObserver:self 
 //                                                 selector:@selector(changedGPS:) 
 //                                                     name:@""
@@ -91,7 +97,6 @@
 //                                                     name:PBkReachabilityChangedNotification 
 //                                                   object:nil];
         [self getBasicDatas];
-
     }
     return self;
 }
@@ -114,9 +119,11 @@
     
 }
 
-- (void)requestURL:(NSURL *)url
+- (void)requestEventName:(NSString *)eventName withType:(EVENT_TYPE)eventType
 {
     //*
+//    NSURL *url = [urlArray objectAtIndex:eventType];
+    NSURL *url = [NSURL URLWithString:@"http://192.168.8.184/TestADSDK/_index.php"];
     PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:url];
     [request setDelegate:self];
     [request startAsynchronous];
@@ -165,16 +172,30 @@
     //for Testing
     int X = 10,Y = 10,W = 300,H = 50;
     NSData *bodyData = nil;
+    UIView *view;
     
     if (!webView_) {
         webView_ = [[UIWebView alloc] initWithFrame:CGRectMake(X , Y , W, H)];
         webView_.backgroundColor = [UIColor clearColor];
+        webView_.scrollView.scrollEnabled = NO;
+        view = webView_;
     }
 //    [webView_ loadData:bodyData MIMEType:nil textEncodingName:nil baseURL:nil];
     [webView_ loadHTMLString:[[NSString alloc] initWithData:receivedData_ encoding:NSUTF8StringEncoding] baseURL:nil];
-    webView_.scrollView.scrollEnabled = NO;
+    
+    
+    if (!movieController_) {
+        movieController_ = [[MPMoviePlayerController alloc] init ];
+        movieController_.view.backgroundColor = [UIColor clearColor];
+        movieController_.view.frame =CGRectMake(10, 10, 300 , 200);
+        movieController_.shouldAutoplay = YES;
+        movieController_.controlStyle = MPMovieControlStyleEmbedded;
+//        view = movieController_.view;
+    }
+    movieController_.contentURL = [NSURL URLWithString:@"http://192.168.202.49/TestADSDK/sanguo.mp4"];
+    
     if ([delegate_ respondsToSelector:@selector(didReceived:withParameters:)]) {
-        [delegate_ didReceived:(TomatoAdView *)webView_ withParameters:nil];  
+        [delegate_ didReceived:(TomatoAdView *)view withParameters:nil];  
     }
 }
 
@@ -212,7 +233,23 @@
 #pragma mark Notification Method
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-    NSLog(@"reachabilityChanged:notification:%@",notification);
+//    NSLog(@"reachabilityChanged:notification:%@",notification);
+    PBReachability *curReach = [notification object];
+    NSParameterAssert([curReach isKindOfClass: [PBReachability class]]);
+    switch ([curReach currentReachabilityStatus]) {
+        case kNotReachable: // Apple's code depends upon 'NotReachable' being the same value as 'NO'.
+            NSLog(@"reachabilityChanged kNotReachable");
+            break;
+        case kReachableViaWWAN:    // Switched order from Apple's enum. WWAN is active before WiFi.
+            NSLog(@"reachabilityChanged kReachableViaWWAN");
+            break;
+        case kReachableViaWiFi:
+            NSLog(@"reachabilityChanged kReachableViaWiFi");
+            break;
+            
+        default:
+            break;
+    }
 }
 
 - (void)changedOrientation:(NSNotification *)notification

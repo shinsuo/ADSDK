@@ -8,8 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 #import "TomatoAdDelegate.h"
+#import "TomatoADConstant.h"
 
 @protocol PBASIHTTPRequestDelegate;
 
@@ -18,6 +20,8 @@
     NSMutableData           *receivedData_;
     NSMutableDictionary     *basicDatas_;
     UIWebView               *webView_;
+    MPMoviePlayerController *movieController_;
+    NSArray                 *urlArray;
     id<TomatoAdDelegate>    delegate_;
 }
 
@@ -26,6 +30,6 @@
 @property (nonatomic,assign) id<TomatoAdDelegate> delegate;
 
 - (void)requestSession:(NSString *)apiKey_;
-- (void)requestURL:(NSURL *)url;
+- (void)requestEventName:(NSString *)eventName withType:(EVENT_TYPE)eventType;
 
 @end
