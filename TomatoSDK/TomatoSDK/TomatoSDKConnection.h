@@ -19,9 +19,11 @@
 {
     NSMutableData           *receivedData_;
     NSMutableDictionary     *basicDatas_;
+    NSMutableArray          *eventArray_;
+    NSString                *currentEventName_;
     UIWebView               *webView_;
     MPMoviePlayerController *movieController_;
-    NSArray                 *urlArray;
+    NSArray                 *urlArray_;
     id<TomatoAdDelegate>    delegate_;
 }
 

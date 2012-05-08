@@ -21,6 +21,7 @@
 @interface TomatoSDKConnection()
 
 - (void)getBasicDatas;
+- (void)requestActivity;
 
 - (void)changedOrientation:(NSNotification *)notification;
 - (void)changedGPS:(NSNotification *)notification;
@@ -40,6 +41,8 @@
     if (self = [super init]) {
         //init received Data
         receivedData_ = [[NSMutableData alloc] init];
+        //init event Array
+        eventArray_ = [[NSMutableArray alloc] init];
         //get Hardware Info
         UIDeviceExtend *device = [UIDeviceExtend currentDevice];
         
@@ -52,10 +55,15 @@
         locationManager.delegate = self;
         [locationManager startUpdatingLocation];
 
+        CGSize screenSize = [[UIScreen mainScreen] bounds].size;
+        CGFloat screenScale = [[UIScreen mainScreen] scale];
+        NSLog(@"%@",[NSString stringWithFormat:@"%.f,%.f",screenSize.width*screenScale,screenSize.height*screenScale]);
+        
+        
         //init Basic Data
         basicDatas_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                       @"",APPUID, 
-                       @"",APPVERSION,
+                       @"11111111",APPUID, 
+                       [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey],APPVERSION,
                        @"",PARTID,
                        @"2",SDKVERSION,
                        @"2",URLVERSION,
@@ -64,9 +72,9 @@
                        @"",PUID,
                        device.systemName,OSTYPE,
                        device.systemVersion,OSVERSION,
-                       device.model,TERMINALTYPE,
+                       device.platform,DEVICETYPE,
                        [NSString stringWithFormat:@"%i",device.isJailBroken],JAILBREAK,
-                       @"",RESOLUTION,
+                       [NSString stringWithFormat:@"%.f,%.f",screenSize.width*screenScale,screenSize.height*screenScale],RESOLUTION,
                        [NSString stringWithFormat:@"%i",device.orientation],ORIENTATION,                 //can Changed
                        @"",GPS,                         //can Changed
                        [NSString stringWithFormat:@"%i",[r currentReachabilityStatus]],NETTYPE,   //can Changed
@@ -76,7 +84,7 @@
                        nil];
         
         //init url Array
-        urlArray = [NSArray arrayWithObjects:@"",@"",@"",@"", nil];
+        urlArray_ = [NSArray arrayWithObjects:@"",@"",@"",@"", nil];
         
         //register Notification
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -109,6 +117,11 @@
     [webView_ release];
 }
 
+- (void)requestActivity
+{
+    
+}
+
 - (void)requestSession:(NSString *)apiKey_
 {
     //defaule apiKeyValid value
@@ -116,6 +129,8 @@
     //save apiKey
     self.apiKey = apiKey_;
     //向server发送apiKey_，验证apiKey是否合法
+    
+    [self requestActivity];
     
 }
 
@@ -127,6 +142,7 @@
     PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:url];
     [request setDelegate:self];
     [request startAsynchronous];
+    currentEventName_ = [NSString stringWithFormat:eventName];
      //*/
     /*
     PBASIFormDataRequest *formRequest = [PBASIFormDataRequest requestWithURL:url];
@@ -183,7 +199,7 @@
 //    [webView_ loadData:bodyData MIMEType:nil textEncodingName:nil baseURL:nil];
     [webView_ loadHTMLString:[[NSString alloc] initWithData:receivedData_ encoding:NSUTF8StringEncoding] baseURL:nil];
     
-    
+    /*
     if (!movieController_) {
         movieController_ = [[MPMoviePlayerController alloc] init ];
         movieController_.view.backgroundColor = [UIColor clearColor];
@@ -193,15 +209,34 @@
 //        view = movieController_.view;
     }
     movieController_.contentURL = [NSURL URLWithString:@"http://192.168.202.49/TestADSDK/sanguo.mp4"];
+    */
     
     if ([delegate_ respondsToSelector:@selector(didReceived:withParameters:)]) {
-        [delegate_ didReceived:(TomatoAdView *)view withParameters:nil];  
+        [delegate_ didReceived:(TomatoAdView *)webView_ withParameters:nil];  
     }
+    NSError *error = nil;
+    NSMutableDictionary *dataDict = [[PBCJSONDeserializer deserializer] deserialize:receivedData_ error:&error];
+    if (error) {
+        NSLog(@"error:%@",[error userInfo]);
+    }
+    
+    NSString *result = [dataDict objectForKey:@"result"];
+    NSString *ver = [dataDict objectForKey:@"ver"];
+    NSString *items = [dataDict objectForKey:@"items"];
+    NSArray *datas = [dataDict objectForKey:@"datas"];
+    NSDictionary *adData = [datas objectAtIndex:items.intValue-1];
+    NSString *type = [adData objectForKey:@"type"];
+    NSString *body = [adData objectForKey:@"body"];
+    NSString *pos = [adData objectForKey:@"pos"];
+    NSString *size = [adData objectForKey:@"size"];
+    
+    NSLog(@"receiveData:%@,%@---%@",ver,datas,size);
 }
 
 - (void)requestFailed:(PBASIHTTPRequest *)request
 {
     NSLog(@"requestFailed");
+//    [eventArray_ addObject:currentEventName_];
 }
 
 - (void)request:(PBASIHTTPRequest *)request didReceiveData:(NSData *)data

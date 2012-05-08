@@ -103,10 +103,17 @@ static TomatoSDKConnection *connection = nil;
         connection = [[TomatoSDKConnection alloc] init];
         [connection requestSession:apiKey];
     }
+    
+    /*
+//     CFBundleVersion
     NSString *executableFile = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey];
     
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey];
     
+    NSString *version1 = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    
+    NSLog(@"executableFile:%@---version:%@----version1:%@",executableFile,version,version1);
+    */
     NSString *family = [NSString stringWithFormat:@"%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"UIDeviceFamily"]];
     NSUInteger index = [family rangeOfString:@"2"].location;
     if (index == 6) {

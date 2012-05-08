@@ -55,7 +55,7 @@ static UIDeviceExtend *uiDeviceExtend_ = nil;
     
 	sysctlbyname(typeSpecifier, answer, &size, NULL, 0);
 	NSString *results = [NSString stringWithCString:answer encoding: NSUTF8StringEncoding];
-    NSLog(@"getSys:%@",results);
+//    NSLog(@"getSys:%@",results);
 	return results;
 }
 
@@ -159,7 +159,7 @@ static const char* device_string_names[UIDeviceMAX] =
 	"iPhone 3G",
 	"iPhone 3GS",
 	"iPhone 4",
-	"iPhone 5",
+	"iPhone 4S",
 	
 	"iPod touch 1G",
 	"iPod touch 2G",
@@ -168,6 +168,10 @@ static const char* device_string_names[UIDeviceMAX] =
 	
 	"iPad 1G",
 	"iPad 2G",
+    "iPad 3G",
+    
+    "AppleTV2",
+    "Unknown AppleTV",
 	
 	"Unknown iPhone",
 	"Unknown iPod",
@@ -220,6 +224,13 @@ static const char* device_string_names[UIDeviceMAX] =
 	if ([platform isEqualToString:@"iPad2,1"])   
 		return UIDevice2GiPad;
 	
+    if ([platform isEqualToString:@"iPad3,1"])   
+		return UIDevice3GiPad;
+    
+    // Apple TV
+    if ([platform hasPrefix:@"AppleTV2"])           
+        return UIDeviceAppleTV2;
+    
 	// MISSING A SOLUTION HERE TO DATE TO DIFFERENTIATE iPAD and iPAD 3G.
 	
 	if ([platform hasPrefix:@"iPhone"]) 

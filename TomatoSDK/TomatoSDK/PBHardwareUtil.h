@@ -41,21 +41,30 @@ typedef enum UIDevicePlatform
 	UIDeviceiPhoneSimulator,
 	UIDeviceiPhoneSimulatoriPhone, // both regular and iPhone 4 devices
 	UIDeviceiPhoneSimulatoriPad,
+    
 	UIDevice1GiPhone,
 	UIDevice3GiPhone,
 	UIDevice3GSiPhone,
 	UIDevice4iPhone,
 	UIDevice5iPhone,
+    
 	UIDevice1GiPod,
 	UIDevice2GiPod,
 	UIDevice3GiPod,
 	UIDevice4GiPod,
+    
 	UIDevice1GiPad, // both regular and 3G
 	UIDevice2GiPad,
+    UIDevice3GiPad,
+    
+    UIDeviceAppleTV2,
+    UIDeviceUnknownAppleTV,
+    
 	UIDeviceUnknowniPhone,
 	UIDeviceUnknowniPod,
 	UIDeviceUnknowniPad,
 	UIDeviceIFPGA,
+    
 	UIDeviceMAX,
 } UIDevicePlatform;
 

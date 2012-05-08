@@ -34,7 +34,7 @@
 #define OSTYPE              @"ost"
 #define OSVERSION           @"osv"
 #define OSNAME              @"os"
-#define TERMINALTYPE        @"dt"
+#define DEVICETYPE          @"dt"
 #define JAILBREAK           @"jb"
 #define RESOLUTION          @"sr"
 #define ORIENTATION         @"ori"
