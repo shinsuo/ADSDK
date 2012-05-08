@@ -11,6 +11,9 @@
 
 #import <MediaPlayer/MediaPlayer.h>
 
+#import <CoreTelephony/CTCarrier.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+
 //#import "ASIHTTPRequest.h"
 //#import "ASIHTTPRequestDelegate.h"
 
@@ -19,6 +22,7 @@
 @end
 
 @implementation SXViewController
+@synthesize label;
 
 - (void)viewDidLoad
 {
@@ -37,10 +41,16 @@
     
 //    [movieController play];
      //*/
+    
+    CTTelephonyNetworkInfo *info = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *carrier = info.subscriberCellularProvider;
+    NSLog(@"carrier:%@", [carrier description]);
+    label.text = carrier.carrierName;
 }
 
 - (void)viewDidUnload
 {
+    [self setLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -82,4 +92,8 @@
 
 }
 
+- (void)dealloc {
+    [label release];
+    [super dealloc];
+}
 @end

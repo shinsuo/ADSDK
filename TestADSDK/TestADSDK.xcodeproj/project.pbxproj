@@ -25,6 +25,7 @@
 		B9300A711541585B008EAF1E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9300A701541585B008EAF1E /* MediaPlayer.framework */; };
 		B93726E01557980C00630B99 /* sanguo.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B93726DF1557980C00630B99 /* sanguo.mp4 */; };
 		B93726E315579DD900630B99 /* sanguo.mov in Resources */ = {isa = PBXBuildFile; fileRef = B93726E215579DD900630B99 /* sanguo.mov */; };
+		B937274215591B6500630B99 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B937274115591B6500630B99 /* CoreTelephony.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,7 @@
 		B9300A701541585B008EAF1E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		B93726DF1557980C00630B99 /* sanguo.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = sanguo.mp4; sourceTree = "<group>"; };
 		B93726E215579DD900630B99 /* sanguo.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = sanguo.mov; sourceTree = "<group>"; };
+		B937274115591B6500630B99 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B937274215591B6500630B99 /* CoreTelephony.framework in Frameworks */,
 				751C6E4315482BC900989868 /* MobileCoreServices.framework in Frameworks */,
 				751C6E4115482BB500989868 /* libz.dylib in Frameworks */,
 				751C6E3F15482BAC00989868 /* SystemConfiguration.framework in Frameworks */,
@@ -96,6 +99,7 @@
 		B93009401540075C008EAF1E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B937274115591B6500630B99 /* CoreTelephony.framework */,
 				751C6E4215482BC900989868 /* MobileCoreServices.framework */,
 				751C6E4015482BB500989868 /* libz.dylib */,
 				751C6E3E15482BAC00989868 /* SystemConfiguration.framework */,

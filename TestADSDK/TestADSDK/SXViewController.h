@@ -12,5 +12,6 @@
 @interface SXViewController : UIViewController <TomatoAdDelegate>
 
 - (IBAction)btnClicked:(id)sender;
+@property (retain, nonatomic) IBOutlet UILabel *label;
 
 @end
