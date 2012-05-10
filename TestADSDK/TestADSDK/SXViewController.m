@@ -70,15 +70,6 @@
     UIButton *btn = (UIButton *)sender;
     
     [TomatoSDK logSingleEvent:[NSString stringWithFormat:@"Event%i",btn.tag]];
- 
-    /*
-    NSURL *url = [NSURL URLWithString:@"http://www.baidu.com"];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
-    [request setDelegate:self];
-    [request startAsynchronous];
-    */
-    
-//    [TomatoSDK logOffLineEvent:0];
 }
 
 #pragma mark TomatoAdDelegate Method
@@ -98,12 +89,5 @@
 - (void)dealloc {
     [label release];
     [super dealloc];
-}
-- (IBAction)btnInsert:(id)sender {
-    [TomatoSDK logOffLineEvent:1];
-}
-
-- (IBAction)btnDelete:(id)sender {
-    [TomatoSDK logOffLineEvent:2];
 }
 @end

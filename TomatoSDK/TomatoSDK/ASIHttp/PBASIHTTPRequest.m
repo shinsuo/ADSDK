@@ -5122,4 +5122,8 @@ static NSOperationQueue *sharedQueue = nil;
 @synthesize PACFileData;
 
 @synthesize isSynchronous;
+
+#pragma mark ShinSuo Extend
+@synthesize sxId;
+@synthesize isOffLine;
 @end

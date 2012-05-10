@@ -13,7 +13,5 @@
 
 - (IBAction)btnClicked:(id)sender;
 @property (retain, nonatomic) IBOutlet UILabel *label;
-- (IBAction)btnInsert:(id)sender;
-- (IBAction)btnDelete:(id)sender;
 
 @end

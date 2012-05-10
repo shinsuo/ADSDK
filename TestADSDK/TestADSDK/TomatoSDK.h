@@ -49,9 +49,4 @@
  */
 + (void)setDebugMode;
 
-/*
- inner Test
- */
-+ (void)logOffLineEvent:(NSUInteger )InsertDelete;
-
 @end

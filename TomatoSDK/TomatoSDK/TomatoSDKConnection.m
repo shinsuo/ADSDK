@@ -18,10 +18,13 @@
 
 #import "PBReachability.h"
 
+#import "SSSqliteManager.h"
+
 @interface TomatoSDKConnection()
 
 - (void)getBasicDatas;
 - (void)requestActivity;
+- (void)requestOffLine;
 
 - (void)changedOrientation:(NSNotification *)notification;
 - (void)changedGPS:(NSNotification *)notification;
@@ -41,12 +44,16 @@
     if (self = [super init]) {
         //init received Data
         receivedData_ = [[NSMutableData alloc] init];
+        
+        //get EventRecord Count
+        eventCount = [[SSSqliteManager shareSqliteManager] getCount];
+        [[SSSqliteManager shareSqliteManager] Select];
         //init event Array
 //        eventArray_ = [[NSMutableArray alloc] init];
+        
         //get Hardware Info
         UIDeviceExtend *device = [UIDeviceExtend currentDevice];
         
-//        PBReachability *r = [PBReachability reachabilityWithHostName:@"atm.punchbox.org"];
         PBReachability *r = [[PBReachability reachabilityForInternetConnection] retain];
         [r connectionRequired];
         [r startNotifier];
@@ -57,8 +64,6 @@
 
         CGSize screenSize = [[UIScreen mainScreen] bounds].size;
         CGFloat screenScale = [[UIScreen mainScreen] scale];
-        NSLog(@"%@",[NSString stringWithFormat:@"%.f,%.f",screenSize.width*screenScale,screenSize.height*screenScale]);
-        
         
         //init Basic Data
         basicDatas_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
@@ -115,11 +120,6 @@
     [receivedData_ release];
     [basicDatas_ release];
     [webView_ release];
-}
-
-- (void)requestActivity
-{
-    
 }
 
 - (void)requestSession:(NSString *)apiKey_
@@ -179,11 +179,38 @@
 //    NSLog(@"device.macaddress:%@",device.macaddress);
 }
 
+- (void)requestActivity
+{
+    
+}
+
+- (void)requestOffLine
+{
+    if (eventCount > 0) {
+        NSArray *array = [NSArray arrayWithArray:[[SSSqliteManager shareSqliteManager] Select]];
+        PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:[array objectAtIndex:1]];
+        NSNumber *idNumber = (NSNumber *)[array objectAtIndex:0];
+        NSString *postBodyString = [array objectAtIndex:2];
+        request.sxId = idNumber.intValue;
+        request.isOffLine = YES;
+        request.postBody = (NSMutableData *)[postBodyString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        [request setDelegate:self];
+        [request startSynchronous];
+    }
+}
+
+
 #pragma mark PBASIHttpRequest Delegate
 - (void)requestFinished:(PBASIHTTPRequest *)request
 {
-    NSLog(@"requestFinished:postBody:%@--url:%@",[[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding],[request url]);
-    //apiKey验证完成,设置apiKeyValid
+    NSLog(@"requestFinished:postBody:%@--url:%@",[[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding],[[request url] absoluteURL]);
+    
+    //if isOffLine eventCount will reduce
+    if (request.isOffLine) {
+        eventCount--;
+        [[SSSqliteManager shareSqliteManager] Delete:request.sxId];
+    }
     
     //
 //    NSLog(@"requestFinished:%@",[request responseString]);
@@ -243,15 +270,8 @@
     NSString *postString = [[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding];
     NSString *urlString = [[request url] absoluteString];
     
-    NSLog(@"%@,%@",postString,urlString);
-    
-    
-    NSMutableData *newPostData = [request postBody];
-    PBASIHTTPRequest *newRequest = [PBASIHTTPRequest requestWithURL:[NSURL URLWithString:[[request url] absoluteString]]];
-    newRequest.postBody = newPostData;
-    [newRequest setDelegate:self];
-    [newRequest startAsynchronous];
-    
+    NSArray *tempData = [NSArray arrayWithObjects:urlString,postString, nil];
+    [[SSSqliteManager shareSqliteManager] Insert:tempData];
     
 //    [eventArray_ addObject:currentEventName_];
     

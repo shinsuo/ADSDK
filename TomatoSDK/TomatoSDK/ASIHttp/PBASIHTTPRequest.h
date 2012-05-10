@@ -1001,4 +1001,12 @@ typedef void (^PBASIDataBlock)(NSData *data);
 @property (retain) PBASIDataDecompressor *dataDecompressor;
 @property (assign) BOOL shouldWaitToInflateCompressedResponses;
 
+#pragma mark ShinSuo Extend
+/*
+ sxId           For deleting data from sqlite database
+ isOffLine      For judging Online or Offline
+ */
+@property (assign, nonatomic) NSUInteger sxId;
+@property (assign, nonatomic) BOOL       isOffLine;
+
 @end

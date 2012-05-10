@@ -13,13 +13,15 @@
 #import "TomatoAdDelegate.h"
 #import "TomatoADConstant.h"
 
+#import "PBASIHTTPRequestDelegate.h"
+
 @protocol PBASIHTTPRequestDelegate;
 
 @interface TomatoSDKConnection : NSObject <PBASIHTTPRequestDelegate,CLLocationManagerDelegate >
 {
     NSMutableData           *receivedData_;
     NSMutableDictionary     *basicDatas_;
-//    NSMutableArray          *eventArray_;
+    NSMutableArray          *eventIdArray_;
     NSUInteger              eventCount;
     NSString                *currentEventName_;
     UIWebView               *webView_;
