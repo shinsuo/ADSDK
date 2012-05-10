@@ -42,7 +42,7 @@
         //init received Data
         receivedData_ = [[NSMutableData alloc] init];
         //init event Array
-        eventArray_ = [[NSMutableArray alloc] init];
+//        eventArray_ = [[NSMutableArray alloc] init];
         //get Hardware Info
         UIDeviceExtend *device = [UIDeviceExtend currentDevice];
         
@@ -138,13 +138,14 @@
 {
     //*
 //    NSURL *url = [urlArray objectAtIndex:eventType];
-    NSURL *url = [NSURL URLWithString:@"http://192.168.8.184/TestADSDK/_index.php"];
+    NSURL *url = [NSURL URLWithString:@"http://192.168.8.184/TestADSDK/form.php?oo=123&tt=32"];
+    /*
     PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:url];
     [request setDelegate:self];
     [request startAsynchronous];
     currentEventName_ = [NSString stringWithFormat:eventName];
      //*/
-    /*
+    //*
     PBASIFormDataRequest *formRequest = [PBASIFormDataRequest requestWithURL:url];
     
     [formRequest setPostValue:@"suoxinname" forKey:@"username"];
@@ -181,11 +182,13 @@
 #pragma mark PBASIHttpRequest Delegate
 - (void)requestFinished:(PBASIHTTPRequest *)request
 {
+    NSLog(@"requestFinished:postBody:%@--url:%@",[[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding],[request url]);
     //apiKey验证完成,设置apiKeyValid
     
     //
 //    NSLog(@"requestFinished:%@",[request responseString]);
     //for Testing
+    
     int X = 10,Y = 10,W = 300,H = 50;
     NSData *bodyData = nil;
     UIView *view = nil;
@@ -237,8 +240,21 @@
 
 - (void)requestFailed:(PBASIHTTPRequest *)request
 {
-    NSLog(@"requestFailed");
+    NSString *postString = [[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding];
+    NSString *urlString = [[request url] absoluteString];
+    
+    NSLog(@"%@,%@",postString,urlString);
+    
+    
+    NSMutableData *newPostData = [request postBody];
+    PBASIHTTPRequest *newRequest = [PBASIHTTPRequest requestWithURL:[NSURL URLWithString:[[request url] absoluteString]]];
+    newRequest.postBody = newPostData;
+    [newRequest setDelegate:self];
+    [newRequest startAsynchronous];
+    
+    
 //    [eventArray_ addObject:currentEventName_];
+    
 }
 
 - (void)request:(PBASIHTTPRequest *)request didReceiveData:(NSData *)data

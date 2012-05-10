@@ -13,6 +13,7 @@
 #define SDK_VERSION         2
 #define TEST                @"test=true"
 #define SQLITEFILE          @"record.db"
+#define RECORDTABLE         @"EventRecord"
 //URL MACRO
 #define SERVER_URL          @"http://atm.punchbox.org"
 #define REQUEST_SESSION     @"/ses/?"

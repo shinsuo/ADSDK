@@ -69,7 +69,7 @@
 - (IBAction)btnClicked:(id)sender {
     UIButton *btn = (UIButton *)sender;
     
-//    [TomatoSDK logSingleEvent:[NSString stringWithFormat:@"Event%i",btn.tag]];
+    [TomatoSDK logSingleEvent:[NSString stringWithFormat:@"Event%i",btn.tag]];
  
     /*
     NSURL *url = [NSURL URLWithString:@"http://www.baidu.com"];
@@ -78,7 +78,7 @@
     [request startAsynchronous];
     */
     
-    [TomatoSDK logOffLineEvent:0];
+//    [TomatoSDK logOffLineEvent:0];
 }
 
 #pragma mark TomatoAdDelegate Method

@@ -41,7 +41,7 @@ static SSSqliteManager *staticSqliteManager = nil;
     if (!staticSqliteManager) {
         staticSqliteManager = [[SSSqliteManager alloc] init];
         NSString *createSQL = [NSString stringWithFormat:
-                               @"create table if not exists EventRecord("
+                               @"create table if not exists %@("
                                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                                 "type int,"
                                 "fr varchar,"
@@ -54,7 +54,7 @@ static SSSqliteManager *staticSqliteManager = nil;
                                 "ds int,"
                                 "spt int,"
                                 "tp int,"
-                                "vpos int)"];
+                                "vpos int)",RECORDTABLE];
         [staticSqliteManager Create:createSQL];
     }
     return staticSqliteManager;
@@ -72,9 +72,9 @@ static SSSqliteManager *staticSqliteManager = nil;
     }
     
     sqlite3_stmt *statement;
-    NSString *aString = [NSString stringWithFormat:@"%f",[[NSDate dateWithTimeIntervalSinceNow:0] timeIntervalSince1970]];
-    NSString *tsql = @"create table if not exists testTable(ID INTEGER PRIMARY KEY AUTOINCREMENT, testID int,testValue text)";
-    NSInteger sqlReturn = sqlite3_prepare_v2(_database, [tsql UTF8String], -1, &statement, nil);
+//    NSString *aString = [NSString stringWithFormat:@"%f",[[NSDate dateWithTimeIntervalSinceNow:0] timeIntervalSince1970]];
+//    NSString *tsql = @"create table if not exists testTable(ID INTEGER PRIMARY KEY AUTOINCREMENT, testID int,testValue text)";
+    NSInteger sqlReturn = sqlite3_prepare_v2(_database, [sql UTF8String], -1, &statement, nil);
     
     if (sqlReturn != SQLITE_OK) {
         NSLog(@"Error:failed to prepare statement:create test table");
@@ -136,15 +136,15 @@ static SSSqliteManager *staticSqliteManager = nil;
 
 - (BOOL)Select
 {
-    NSLog(@"select");
 //    NSMutableArray *array = [NSMutableArray arrayWithCapacity:10];
     if (![self Create:nil]) {
         return NO;
     }
     sqlite3_stmt *statement = nil;
-    char *sql = "select testID,testValue from testTable";
+//    char *sql = "select testID,testValue from testTable";
+    NSString *sql = @"select ";
     
-    if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+    if (sqlite3_prepare_v2(_database, [sql UTF8String], -1, &statement, NULL) != SQLITE_OK) {
         NSLog(@"Error:failed to prepare statement with message:get testValue");
         return NO;
     }else {
@@ -186,6 +186,11 @@ static SSSqliteManager *staticSqliteManager = nil;
     
     sqlite3_close(_database);
     return YES;
+}
+
+- (NSUInteger)getCount
+{
+    
 }
 
 @end

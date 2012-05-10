@@ -19,7 +19,8 @@
 {
     NSMutableData           *receivedData_;
     NSMutableDictionary     *basicDatas_;
-    NSMutableArray          *eventArray_;
+//    NSMutableArray          *eventArray_;
+    NSUInteger              eventCount;
     NSString                *currentEventName_;
     UIWebView               *webView_;
     MPMoviePlayerController *movieController_;

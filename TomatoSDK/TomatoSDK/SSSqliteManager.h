@@ -20,5 +20,6 @@
 - (BOOL)Insert:(NSString *)sql;
 - (BOOL)Select;
 - (BOOL)Delete:(NSUInteger )index;
+- (NSUInteger)getCount;
 
 @end
