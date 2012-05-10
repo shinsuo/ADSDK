@@ -188,7 +188,7 @@
     //for Testing
     int X = 10,Y = 10,W = 300,H = 50;
     NSData *bodyData = nil;
-    UIView *view;
+    UIView *view = nil;
     
     if (!webView_) {
         webView_ = [[UIWebView alloc] initWithFrame:CGRectMake(X , Y , W, H)];
@@ -198,6 +198,8 @@
     }
 //    [webView_ loadData:bodyData MIMEType:nil textEncodingName:nil baseURL:nil];
     [webView_ loadHTMLString:[[NSString alloc] initWithData:receivedData_ encoding:NSUTF8StringEncoding] baseURL:nil];
+//    NSURLRequest *trequest = [NSURLRequest requestWithURL:[NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"display_ad" ofType:@"htm"]]];
+//    [webView_ loadRequest:trequest];
     
     /*
     if (!movieController_) {
@@ -212,7 +214,7 @@
     */
     
     if ([delegate_ respondsToSelector:@selector(didReceived:withParameters:)]) {
-        [delegate_ didReceived:(TomatoAdView *)webView_ withParameters:nil];  
+        [delegate_ didReceived:(TomatoAdView *)view withParameters:nil];  
     }
     NSError *error = nil;
     NSMutableDictionary *dataDict = [[PBCJSONDeserializer deserializer] deserialize:receivedData_ error:&error];
@@ -230,7 +232,7 @@
     NSString *pos = [adData objectForKey:@"pos"];
     NSString *size = [adData objectForKey:@"size"];
     
-    NSLog(@"receiveData:%@,%@---%@",ver,datas,size);
+//    NSLog(@"receiveData:%@,%@---%@",ver,datas,size);
 }
 
 - (void)requestFailed:(PBASIHTTPRequest *)request
@@ -317,7 +319,8 @@
 	didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-    [basicDatas_ setObject:[NSString stringWithFormat:@"%.2f,.2%f",newLocation.coordinate.latitude,newLocation.coordinate.longitude] forKey:GPS];
+    [basicDatas_ setObject:[NSString stringWithFormat:@"%.2f,%.2f",newLocation.coordinate.latitude,newLocation.coordinate.longitude] forKey:GPS];
+    NSLog(@"%@",[NSString stringWithFormat:@"%.2f,%.2f",newLocation.coordinate.latitude,newLocation.coordinate.longitude]);
 }
 
 //

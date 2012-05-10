@@ -12,7 +12,7 @@
 #define REQUEST_TIME        10
 #define SDK_VERSION         2
 #define TEST                @"test=true"
-
+#define SQLITEFILE          @"record.db"
 //URL MACRO
 #define SERVER_URL          @"http://atm.punchbox.org"
 #define REQUEST_SESSION     @"/ses/?"

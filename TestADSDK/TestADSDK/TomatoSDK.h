@@ -44,4 +44,14 @@
 
 + (void)endTimedEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters;	// non-nil parameters will update the parameters
 
+/*
+ DebugMode
+ */
++ (void)setDebugMode;
+
+/*
+ inner Test
+ */
++ (void)logOffLineEvent:(NSUInteger )InsertDelete;
+
 @end

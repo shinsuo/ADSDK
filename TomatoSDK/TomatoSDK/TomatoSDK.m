@@ -10,6 +10,8 @@
 //#import "PBASIHTTPRequest.h"
 #import "TomatoADConstant.h"
 #import "TomatoSDKConnection.h"
+
+#import "SSSqliteManager.h"
 /*
 //URL接口版本
 static NSUInteger   URLVersion      = 2;
@@ -104,6 +106,8 @@ static TomatoSDKConnection *connection = nil;
         [connection requestSession:apiKey];
     }
     
+    
+
     /*
 //     CFBundleVersion
     NSString *executableFile = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleExecutableKey];
@@ -159,10 +163,33 @@ static TomatoSDKConnection *connection = nil;
     [connection requestEventName:eventName withType:EventSpendSeconds];
 }
 
++ (void)logOffLineEvent:(NSUInteger )InsertDelete
+{
+    switch (InsertDelete) {
+        case 0:
+            [[SSSqliteManager shareSqliteManager] Select];
+            break;
+        case 1:
+           [[SSSqliteManager shareSqliteManager] Insert:nil]; 
+            break; 
+        case 2:
+            [[SSSqliteManager shareSqliteManager] Delete:0]; 
+            break; 
+        default:
+            break;
+    }
+    
+}
+
 + (void)endSession
 {
     [connection release];
     connection = nil;
+}
+
++ (void)setDebugMode
+{
+    
 }
 
 @end

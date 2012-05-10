@@ -1,0 +1,78 @@
+<!-- saved from url=(0289)http://www.punchbox.org/click/display_ad?country_code=CN&language_code=zh&lad=0&size=480x40&app_version=1.0&os_version=2.2.1&device_type=android&app_id=3e0c0f2c99-cfdeef-63c338-4a4fe&library_version=1.4.1&udid=354635033165486&device_name=XT702&publisher_user_id=354635033165486&ad_name=ddd -->
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">document.ontouchmove = function(e){ e.preventDefault();} </script>
+<meta http-equiv="expires" content="Sunday 26 October 2008 01:00 GMT">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+<style>
+body{ width:480px; height:50px; background-color:#9CF;}
+.main { margin:0px auto; width:480px; height:50px;}
+</style>
+</head>
+<body>
+<div id="main" clsss="main" style="background-color:#9CF;"> 
+	<a href="http://d001.download.appget.cn/loading_war.html" onClick="send_server(&#39;http://atm.punchbox.org/clk/?v=1&amp;did=354635033165486&amp;jb=0&amp;sr=&amp;ori=0&amp;os=XT702&amp;gps=0,0&amp;net=4&amp;app=3e0c0f2c99-cfdeef-63c338-4a4fe&amp;appv=1.0&amp;part=D18FB5A7-F258-1F46-7D01-DF90D9478637&amp;cc=CN&amp;lang=zh&amp;sdk=1.4.1&amp;dev=0&amp;ad=83&amp;cr=238&amp;sid=z00000538k6y00000529v1y00000529v&amp;puid=354635033165486&amp;gd=222&amp;dt=android&amp;osv=2.2.1&amp;sz=480x40&amp;idt=1&#39;)" target="_blank">
+	<span style="margin:0; padding:0;display:block;"> <img src="./display_ad_files/124859310935801067437123.jpg" width="480" height="60"> </span></a> 
+</div>
+<div id="debug"></div>
+<script>
+function send_server(url){
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  	xmlhttp=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	  }
+	  
+	  xmlhttp.open("GET",url,false);
+	  xmlhttp.send();
+}
+function debug(str){
+	var id = document.getElementById('debug');
+	id.innerHTML = id.innerHTML + str+"<br/>"
+	}
+var  startWidth = 0;
+var  startHeight = 0;
+//var win = document.getElementById('main');
+
+function setWindowSize(){
+	var win = document.getElementById('main');
+	var img = document.getElementsByTagName('img')[0];
+	var Body = document.getElementsByTagName('body')[0]
+	var w = win.offsetWidth;
+	var h = win.offsetHeight;
+	//debug("w:"+w+" , h:"+h)
+	win.style.width = (w +(startWidth*0.05))+"px";
+	win.style.height = (h +(startHeight*0.05))+"px";
+	img.style.width = (w +(startWidth*0.05))+"px";
+	img.style.height = (h +(startHeight*0.05))+"px";
+	Body.style.width = (w +(startWidth*0.05))+"px";
+	Body.style.height = (h +(startHeight*0.05))+"px";
+	var size = h > startHeight || w > startWidth
+	if(size){
+		win.style.width = parseInt(startWidth/2)+"px";
+		win.style.height = parseInt(startHeight/2)+"px";
+		img.style.width = parseInt(startWidth/2)+"px";
+		img.style.height = parseInt(startHeight/2)+"px";
+		Body.style.width = parseInt(startWidth/2)+"px";
+		Body.style.height = parseInt(startHeight/2)+"px";
+		
+	}
+	setTimeout('setWindowSize()', 1000)
+}
+	
+window.onload = function(){
+	startWidth  = document.getElementById('main').scrollWidth;
+	startHeight  = document.getElementById('main').scrollHeight;
+	document.getElementById('main').style.width = parseInt(startWidth/2)
+	document.getElementById('main').style.height = parseInt(startHeight/2)
+	//debug(startWidth)
+	setWindowSize()
+}
+</script>
+</body>
+</html>

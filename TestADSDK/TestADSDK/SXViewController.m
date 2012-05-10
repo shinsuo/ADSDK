@@ -46,6 +46,8 @@
     CTCarrier *carrier = info.subscriberCellularProvider;
     NSLog(@"carrier:%@", [carrier description]);
     label.text = carrier.carrierName;
+    
+    NSLog(@"%@",label.text);
 }
 
 - (void)viewDidUnload
@@ -67,7 +69,7 @@
 - (IBAction)btnClicked:(id)sender {
     UIButton *btn = (UIButton *)sender;
     
-    [TomatoSDK logSingleEvent:[NSString stringWithFormat:@"Event%i",btn.tag]];
+//    [TomatoSDK logSingleEvent:[NSString stringWithFormat:@"Event%i",btn.tag]];
  
     /*
     NSURL *url = [NSURL URLWithString:@"http://www.baidu.com"];
@@ -76,6 +78,7 @@
     [request startAsynchronous];
     */
     
+    [TomatoSDK logOffLineEvent:0];
 }
 
 #pragma mark TomatoAdDelegate Method
@@ -84,7 +87,7 @@
     NSLog(@"developer didReceived");
     [self.view addSubview:adView];
     
-    [adView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:3];
+//    [adView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:3];
 }
 
 - (void)didFailWithMessage:(NSString *)msg
@@ -95,5 +98,12 @@
 - (void)dealloc {
     [label release];
     [super dealloc];
+}
+- (IBAction)btnInsert:(id)sender {
+    [TomatoSDK logOffLineEvent:1];
+}
+
+- (IBAction)btnDelete:(id)sender {
+    [TomatoSDK logOffLineEvent:2];
 }
 @end
