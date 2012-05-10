@@ -17,8 +17,8 @@
 
 + (SSSqliteManager *)shareSqliteManager;
 
-- (void)Insert:(NSString *)sql;
-- (void)Select;
-- (void)Delete:(NSUInteger )index;
+- (BOOL)Insert:(NSString *)sql;
+- (BOOL)Select;
+- (BOOL)Delete:(NSUInteger )index;
 
 @end

@@ -11,7 +11,7 @@
  
  EventRecord Table Formate:
          ---------------------------------------------------------------------------
- field  |id   |type|fr     |to       |n      |t  |dn |dm   |cu     |ds |spt|tp |vpos|      
+ field  |id   |type|fr     |tt(to)   |n      |t  |dn |dm   |cu     |ds |spt|tp |vpos|      
          ---------------------------------------------------------------------------
          ---------------------------------------------------------------------------
  type   |int  |int |varchar|varchar  |varchar|int|int|float|varchar|int|int|int|int |      
@@ -45,7 +45,7 @@ static SSSqliteManager *staticSqliteManager = nil;
                                 "id INTEGER PRIMARY KEY AUTOINCREMENT,"
                                 "type int,"
                                 "fr varchar,"
-                                "to varchar,"
+                                "tt varchar,"
                                 "n varchar,"
                                 "t int,"
                                 "dn int,"
@@ -64,6 +64,7 @@ static SSSqliteManager *staticSqliteManager = nil;
 - (BOOL)Create:(NSString *)sql
 {
     NSString *path = [(NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)) objectAtIndex:0];
+//    NSLog(@"path:%@",path);
     if (sqlite3_open([[path stringByAppendingPathComponent:SQLITEFILE] UTF8String], &_database) != SQLITE_OK) {
         sqlite3_close(_database);
         NSLog(@"Error:open database file.");
@@ -71,7 +72,9 @@ static SSSqliteManager *staticSqliteManager = nil;
     }
     
     sqlite3_stmt *statement;
-    NSInteger sqlReturn = sqlite3_prepare_v2(_database, [sql UTF8String], -1, &statement, nil);
+    NSString *aString = [NSString stringWithFormat:@"%f",[[NSDate dateWithTimeIntervalSinceNow:0] timeIntervalSince1970]];
+    NSString *tsql = @"create table if not exists testTable(ID INTEGER PRIMARY KEY AUTOINCREMENT, testID int,testValue text)";
+    NSInteger sqlReturn = sqlite3_prepare_v2(_database, [tsql UTF8String], -1, &statement, nil);
     
     if (sqlReturn != SQLITE_OK) {
         NSLog(@"Error:failed to prepare statement:create test table");
@@ -95,28 +98,94 @@ static SSSqliteManager *staticSqliteManager = nil;
 }
 
 #pragma mark Public Method
-- (void)Insert:(NSString *)sql
+- (BOOL)Insert:(NSString *)sql
 {
     NSLog(@"insert");
-    if (!sql) {
-        sql = @"";
+    if (![self Create:nil]) {
+        return ;
     }
+    
+    sqlite_int64 t = sqlite3_last_insert_rowid(_database);
+    if (!sql) {
+        sql = [NSString stringWithFormat:@"INSERT INTO testTable(testID,testValue) VALUES(2,'texttest')"];
+    }
+    
+    sqlite3_stmt *statement;
+    char *error;
+//    sqlite3_exec(_database, [sql UTF8String], nil, nil, &error);
+    
+    char *tsql = "INSERT INTO testTable(testID,testValue) VALUES(NULL,'texttest')";
+    NSInteger sqlReturn = sqlite3_prepare_v2(_database, tsql, -1, &statement, nil);
+    if (sqlReturn != SQLITE_OK) {
+        NSLog(@"Error:failed to prepare statement:insert into ");
+        return NO;
+    }
+    
+    int success = sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    
+    if (success == SQLITE_ERROR) {
+        NSLog(@"Error:failed to insert into the database");
+        sqlite3_close(_database);
+        return NO;
+    }
+    
+    sqlite3_close(_database);
+    return YES;
 }
 
-- (void)Select
+- (BOOL)Select
 {
     NSLog(@"select");
+//    NSMutableArray *array = [NSMutableArray arrayWithCapacity:10];
+    if (![self Create:nil]) {
+        return NO;
+    }
+    sqlite3_stmt *statement = nil;
+    char *sql = "select testID,testValue from testTable";
     
+    if (sqlite3_prepare_v2(_database, sql, -1, &statement, NULL) != SQLITE_OK) {
+        NSLog(@"Error:failed to prepare statement with message:get testValue");
+        return NO;
+    }else {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            printf("sqlite_row:%d,%s\n",sqlite3_column_int(statement, 0),sqlite3_column_text(statement, 1));
+        }
+    }
+    sqlite3_finalize(statement);
+    sqlite3_close(_database);
+    return YES;
 }
 
-- (void)Delete:(NSUInteger )index
+- (BOOL)Delete:(NSUInteger )index
 {
     NSLog(@"delete");
+    if (![self Create:nil]) {
+        return NO;
+    }
     
     NSString *sql = nil;
     if (!index) {
-        sql = @"";
+        sql = @"delete from testTable  where ID = 12";
     }
+    sqlite3_stmt *statement;    
+    NSInteger sqlReturn = sqlite3_prepare_v2(_database, [sql UTF8String], -1, &statement, nil);
+    if (sqlReturn != SQLITE_OK) {
+        NSLog(@"Error:failed to prepare statement:insert into ");
+        return NO;
+    }
+    
+    int success = sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    
+    if (success == SQLITE_ERROR) {
+        NSLog(@"Error:failed to insert into the database");
+        sqlite3_close(_database);
+        return NO;
+    }
+    
+    sqlite3_close(_database);
+    return YES;
 }
 
 @end
