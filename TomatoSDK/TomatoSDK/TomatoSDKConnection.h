@@ -20,13 +20,14 @@
 @interface TomatoSDKConnection : NSObject <PBASIHTTPRequestDelegate,CLLocationManagerDelegate >
 {
     NSMutableData           *receivedData_;
-    NSMutableDictionary     *basicDatas_;
+    NSMutableDictionary     *basicDataDicts_;
+    NSString                *basicDataString_;
     NSMutableArray          *eventIdArray_;
     NSUInteger              eventCount;
     NSString                *currentEventName_;
     UIWebView               *webView_;
     MPMoviePlayerController *movieController_;
-    NSArray                 *urlArray_;
+    NSMutableDictionary     *urlArray_;
     id<TomatoAdDelegate>    delegate_;
 }
 
