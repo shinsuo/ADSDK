@@ -37,4 +37,5 @@
 - (void)requestSession:(NSString *)apiKey_;
 - (void)requestEventName:(NSString *)eventName withType:(EVENT_TYPE)eventType;
 
++ (void)setDebugMode;
 @end

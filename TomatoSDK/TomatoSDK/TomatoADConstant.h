@@ -12,8 +12,12 @@
 #define REQUEST_TIME        10
 #define SDK_VERSION         2
 #define TEST                @"test=true"
+
+//database filename
 #define SQLITEFILE          @"record.db"
+//tablename
 #define RECORDTABLE         @"EventRecord"
+
 //URL MACRO
 #define SERVER_URL          @"http://atm.punchbox.org"
 #define REQUEST_SESSION     @"/ses/?"
@@ -36,7 +40,7 @@
 #define OSVERSION           @"osv"
 #define OSNAME              @"os"
 #define DEVICETYPE          @"dt"
-#define JAILBREAK           @"jb"
+#define ISJAILBREAK         @"jb"
 #define RESOLUTION          @"sr"
 #define ORIENTATION         @"ori"
 
@@ -69,50 +73,51 @@
 #define ENDTIME             @"to"
 
 
-
+//
 typedef enum {
-    ADHtml4Type = 0,
-    ADHtml5Type,
-    ADVideoType,
-    ADScoreRankingType,
+    ADHTML4TYPE = 0,
+    ADHTML5TYPE,
+    ADVIDEOTYPE,
+    ADSCROERANKINGTYPE,
     
-    ADMax
+    ADMAX
 }AD_TYPE;
 
 typedef enum {
-    EventOnLine = 0,
-    EventOffLine,
+    EVENTOFFLINE = 0,
+    EVENTONLINE,
     
-    EventSingle = 1,
-    EventPurchase,
-    EventScore,
-    EventSpendSeconds,
+    EVENTSINGLE = 1,
+    EVENTPURCHASE,
+    EVENTSCORE,
+    EVENTSPENDSECONDS,
     
-    EventMax,
+    EVENTMAX,
 }EVENT_TYPE;
 
 typedef enum 
 {
-    Unknown,
-    iOS,
-    Android,
-    BlackBerry,
-    iOS_Simulator,
-    Android_Simlator,
+    UNKNOWN,
+    IOS,
+    ANDROID,
+    BLACKBERRY,
+    IOS_SIMULATOR,
+    ANDROID_SIMULATOR,
 }OS_TYPE;
 
 typedef enum 
 {
-    UnJailBroken,
-    JailBroken,
+    JAILBREAK,
+    GENERAL,
 }JAIL_BREAK;
 
 typedef enum 
 {
     TOMATO_AD_BANNERSIZE_320X50,
-    TOMATO_AD_BANNERSIZE_480X32,
-    TOMATO_AD_BANNERSIZE_480X40,
+    TOMATO_AD_BANNERSIZE_480X60,
     TOMATO_AD_BANNERSIZE_728X90,
+    
+    TOMATO_AD_BANNERSIZE_300X250,
 }AD_BANNERSIZE;
 
 #endif

@@ -15,6 +15,13 @@
 @interface TomatoSDK : NSObject
 
 /*
+ DebugMode
+ Instruction:
+ first,you should call it before startSession;
+ */
++ (void)setDebugMode;
+
+/*
  start session, attempt to send saved sessions to server 
  end session
  */
@@ -44,9 +51,6 @@
 
 + (void)endTimedEvent:(NSString *)eventName withParameters:(NSDictionary *)parameters;	// non-nil parameters will update the parameters
 
-/*
- DebugMode
- */
-+ (void)setDebugMode;
+
 
 @end
