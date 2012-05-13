@@ -13,4 +13,4 @@ profile
 *.moved-aside
 
 # static Library
-*.a
+TestADSDK/TestADSDK/libTomatoSDK.a
