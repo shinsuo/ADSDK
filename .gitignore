@@ -11,4 +11,6 @@ build/*
 xcuserdata
 profile
 *.moved-aside
+
+# static Library
 *.a
