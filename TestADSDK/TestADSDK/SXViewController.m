@@ -75,10 +75,7 @@
 #pragma mark TomatoAdDelegate Method
 - (void)didReceived:(TomatoAdView *)adView withParameters:(NSDictionary *)parameters
 {
-    NSLog(@"developer didReceived");
     [self.view addSubview:adView];
-    
-//    [adView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:3];
 }
 
 - (void)didFailWithMessage:(NSString *)msg

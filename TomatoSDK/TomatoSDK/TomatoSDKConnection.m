@@ -54,7 +54,9 @@ static NSUInteger debugMode = 0;
         
         //get EventRecord Count
         eventCount = [[SSSqliteManager shareSqliteManager] getCount];
-        [[SSSqliteManager shareSqliteManager] Select];
+        if (eventCount) {
+            [[SSSqliteManager shareSqliteManager] Select];
+        }
         
         //init event Array
 //        eventArray_ = [[NSMutableArray alloc] init];
@@ -92,8 +94,8 @@ static NSUInteger debugMode = 0;
         }
         
         
-        //init Basic Data
-        basicDatas_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+        //init BasicData Dict
+        basicDataDicts_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                        @"11111111",APPUID, 
                        [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey],APPVERSION,
                        @"",PARTID,
@@ -105,7 +107,7 @@ static NSUInteger debugMode = 0;
                        device.systemName,OSTYPE,
                        device.systemVersion,OSVERSION,
                        device.platform,DEVICETYPE,
-                       [NSString stringWithFormat:@"%i",device.isJailBroken],JAILBREAK,
+                       [NSString stringWithFormat:@"%i",device.isJailBroken],ISJAILBREAK,
                        [NSString stringWithFormat:@"%.f,%.f",screenSize.width*screenScale,screenSize.height*screenScale],RESOLUTION,
                        [NSString stringWithFormat:@"%i",device.orientation],ORIENTATION,                 //can Changed
                        @"",GPS,                         //can Changed
@@ -115,8 +117,17 @@ static NSUInteger debugMode = 0;
                        device.getMacAddress,WMAC,
                        nil];
         
+        //init BasicData String
+        
+        
         //init url Array
-        urlArray_ = [NSArray arrayWithObjects:@"",@"",@"",@"", nil];
+        urlArray_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+                     [NSString stringWithFormat:@"%@%@",REQUEST_SESSION,basicDataString_],REQUEST_SESSION,
+                     @"",APP_ACTIVE,
+                     @"",APP_EVENT,
+                     @"",VIDEO_PLAY_STATS,
+                     @"",PERSISTENT_AD,
+                     nil];
         
         //register Notification
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -145,7 +156,7 @@ static NSUInteger debugMode = 0;
 {
     [super dealloc];
     [receivedData_ release];
-    [basicDatas_ release];
+    [basicDataDicts_ release];
     [webView_ release];
 }
 
@@ -219,7 +230,7 @@ static NSUInteger debugMode = 0;
 
 - (void)requestOffLine
 {
-    if (eventCount > 0) {
+    if (eventCount) {
         NSArray *array = [NSArray arrayWithArray:[[SSSqliteManager shareSqliteManager] Select]];
         NSNumber *idNumber = (NSNumber *)[array objectAtIndex:0];
         NSString *postBodyString = [array objectAtIndex:2];
@@ -238,14 +249,14 @@ static NSUInteger debugMode = 0;
 #pragma mark PBASIHttpRequest Delegate
 - (void)requestFinished:(PBASIHTTPRequest *)request
 {
-    NSLog(@"requestFinished:postBody:%@--url:%@",[[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding],[[request url] absoluteURL]);
+//    NSLog(@"requestFinished:postBody:%@--url:%@",[[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding],[[request url] absoluteURL]);
     
     //if isOffLine eventCount will reduce
     if (request.isOffLine) {
         eventCount--;
         [[SSSqliteManager shareSqliteManager] Delete:request.sxId];
     }else {
-        if (receivedData_) {
+        if ([receivedData_ length]) {
             NSError *error = nil;
             NSMutableDictionary *dataDict = [[PBCJSONDeserializer deserializer] deserialize:receivedData_ error:&error];
             if (error) {
@@ -315,6 +326,7 @@ static NSUInteger debugMode = 0;
             if ([delegate_ respondsToSelector:@selector(didReceived:withParameters:)]) {
                 [delegate_ didReceived:(TomatoAdView *)view withParameters:nil];  
             }
+            [receivedData_ setData:nil ];
         }
     }
 }
@@ -331,7 +343,9 @@ static NSUInteger debugMode = 0;
 }
 
 - (void)request:(PBASIHTTPRequest *)request didReceiveData:(NSData *)data
-{
+{   
+    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSLog(@"dataString:%@",dataString);
     [receivedData_ appendData:data];
 }
 
@@ -361,7 +375,7 @@ static NSUInteger debugMode = 0;
 
 - (void)changedOrientation:(NSNotification *)notification
 {
-    [basicDatas_ setObject:[NSString stringWithFormat:@"%i",[UIDevice currentDevice].orientation] forKey:ORIENTATION];
+    [basicDataDicts_ setObject:[NSString stringWithFormat:@"%i",[UIDevice currentDevice].orientation] forKey:ORIENTATION];
     switch ([UIDevice currentDevice].orientation) {
         case UIDeviceOrientationPortrait:
             webView_.frame =CGRectMake(10, 10, 300, 50);
@@ -389,7 +403,7 @@ static NSUInteger debugMode = 0;
 	didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-    [basicDatas_ setObject:[NSString stringWithFormat:@"%.2f,%.2f",newLocation.coordinate.latitude,newLocation.coordinate.longitude] forKey:GPS];
+    [basicDataDicts_ setObject:[NSString stringWithFormat:@"%.2f,%.2f",newLocation.coordinate.latitude,newLocation.coordinate.longitude] forKey:GPS];
 //    NSLog(@"%@",[NSString stringWithFormat:@"%.2f,%.2f",newLocation.coordinate.latitude,newLocation.coordinate.longitude]);
 }
 
