@@ -58,8 +58,6 @@ static SSSqliteManager *staticSqliteManager = nil;
     }
     
     sqlite3_stmt *statement;
-//    NSString *aString = [NSString stringWithFormat:@"%f",[[NSDate dateWithTimeIntervalSinceNow:0] timeIntervalSince1970]];
-//    NSString *tsql = @"create table if not exists testTable(ID INTEGER PRIMARY KEY AUTOINCREMENT, testID int,testValue text)";
     NSString *createSQL = [NSString stringWithFormat:
                            @"create table if not exists %@("
                            "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -96,12 +94,8 @@ static SSSqliteManager *staticSqliteManager = nil;
     }
     
     NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@(url,postData) VALUES ('%@','%@')",RECORDTABLE,[sqlArray objectAtIndex:0],[sqlArray objectAtIndex:1]];
-    
-    NSLog(@"sql:%@",sql);
+
     sqlite3_stmt *statement;
-//    sqlite3_exec(_database, [sql UTF8String], nil, nil, &error);
-    
-//    char *tsql = "INSERT INTO testTable(testID,testValue) VALUES(NULL,'texttest')";
     NSInteger sqlReturn = sqlite3_prepare_v2(_database, [sql UTF8String], -1, &statement, nil);
     if (sqlReturn != SQLITE_OK) {
         NSLog(@"Error:failed to prepare statement:insert into ");
@@ -123,12 +117,10 @@ static SSSqliteManager *staticSqliteManager = nil;
 
 - (NSArray *)Select
 {
-//    NSMutableArray *array = [NSMutableArray arrayWithCapacity:10];
     if (![self Create:nil]) {
         return NO;
     }
     sqlite3_stmt *statement = nil;
-//    char *sql = "select testID,testValue from testTable";
     NSString *sql = [NSString stringWithFormat:@"select id,url,postData from %@",RECORDTABLE];
     NSArray *array = nil;
     if (sqlite3_prepare_v2(_database, [sql UTF8String], -1, &statement, NULL) != SQLITE_OK) {
@@ -150,7 +142,6 @@ static SSSqliteManager *staticSqliteManager = nil;
 
 - (BOOL)Delete:(NSUInteger )index
 {
-    NSLog(@"delete");
     if (![self Create:nil]) {
         return NO;
     }

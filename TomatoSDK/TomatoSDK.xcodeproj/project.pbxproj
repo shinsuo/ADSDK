@@ -20,8 +20,6 @@
 		B901138D155A3E1D002A5702 /* SSSqliteManager.h in Headers */ = {isa = PBXBuildFile; fileRef = B901138B155A3E1C002A5702 /* SSSqliteManager.h */; };
 		B901138E155A3E1D002A5702 /* SSSqliteManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B901138C155A3E1D002A5702 /* SSSqliteManager.m */; };
 		B9011395155A7267002A5702 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = B9011394155A7266002A5702 /* libsqlite3.dylib */; };
-		B92C08C51552C2FC0008A0D9 /* TomatoAdView.h in Headers */ = {isa = PBXBuildFile; fileRef = B92C08C31552C2FC0008A0D9 /* TomatoAdView.h */; };
-		B92C08C61552C2FC0008A0D9 /* TomatoAdView.m in Sources */ = {isa = PBXBuildFile; fileRef = B92C08C41552C2FC0008A0D9 /* TomatoAdView.m */; };
 		B92C08C81552C31F0008A0D9 /* TomatoAdDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = B92C08C71552C31F0008A0D9 /* TomatoAdDelegate.h */; };
 		B93008B415400652008EAF1E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B93008B315400652008EAF1E /* Foundation.framework */; };
 		B93008BA15400652008EAF1E /* TomatoSDK.m in Sources */ = {isa = PBXBuildFile; fileRef = B93008B915400652008EAF1E /* TomatoSDK.m */; };
@@ -88,8 +86,6 @@
 		B901138C155A3E1D002A5702 /* SSSqliteManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSSqliteManager.m; sourceTree = "<group>"; };
 		B9011394155A7266002A5702 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		B9011399155A8313002A5702 /* display_ad.htm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = display_ad.htm; sourceTree = "<group>"; };
-		B92C08C31552C2FC0008A0D9 /* TomatoAdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TomatoAdView.h; sourceTree = "<group>"; };
-		B92C08C41552C2FC0008A0D9 /* TomatoAdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TomatoAdView.m; sourceTree = "<group>"; };
 		B92C08C71552C31F0008A0D9 /* TomatoAdDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TomatoAdDelegate.h; sourceTree = "<group>"; };
 		B93008B015400652008EAF1E /* libTomatoSDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libTomatoSDK.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B93008B315400652008EAF1E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -205,8 +201,6 @@
 			children = (
 				B93008B815400652008EAF1E /* TomatoSDK.h */,
 				B93008B915400652008EAF1E /* TomatoSDK.m */,
-				B92C08C31552C2FC0008A0D9 /* TomatoAdView.h */,
-				B92C08C41552C2FC0008A0D9 /* TomatoAdView.m */,
 				B92C08C71552C31F0008A0D9 /* TomatoAdDelegate.h */,
 				B930140E1547D7F6008EAF1E /* TomatoADConstant.h */,
 				B93013ED1547D551008EAF1E /* PBHardwareUtil.h */,
@@ -358,7 +352,6 @@
 				B93014091547D5FB008EAF1E /* PBGTMDefines.h in Headers */,
 				B930140C1547D6BB008EAF1E /* PBUuidManager.h in Headers */,
 				B9DFD3191549169A00FC6C17 /* TomatoSDKConnection.h in Headers */,
-				B92C08C51552C2FC0008A0D9 /* TomatoAdView.h in Headers */,
 				B92C08C81552C31F0008A0D9 /* TomatoAdDelegate.h in Headers */,
 				B901138D155A3E1D002A5702 /* SSSqliteManager.h in Headers */,
 			);
@@ -454,7 +447,6 @@
 				B93014081547D5FB008EAF1E /* PBGTMBase64.m in Sources */,
 				B930140D1547D6BB008EAF1E /* PBUuidManager.m in Sources */,
 				B9DFD31A1549169A00FC6C17 /* TomatoSDKConnection.m in Sources */,
-				B92C08C61552C2FC0008A0D9 /* TomatoAdView.m in Sources */,
 				B901138E155A3E1D002A5702 /* SSSqliteManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

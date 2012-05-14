@@ -56,12 +56,18 @@
     id<TomatoAdDelegate>    delegate_;
 }
 
-@property (nonatomic,retain)NSString *apiKey;
-@property (nonatomic) BOOL apiKeyValid;
 @property (nonatomic,assign) id<TomatoAdDelegate> delegate;
+@property (nonatomic,retain)NSString        *apiKey;
+@property (nonatomic) BOOL                  apiKeyValid;
+@property (nonatomic,assign) NSUInteger     dn;
+@property (nonatomic,assign) float          dm;
+@property (nonatomic,assign) NSString       *cu;
+@property (nonatomic,assign) NSUInteger     score;
 
-- (void)requestSession:(NSString *)apiKey_;
-- (void)requestEventName:(NSString *)eventName withType:(EVENT_TYPE)eventType;
+- (void)requestSession:     (NSString *)apiKey_;
+- (void)requestEventName:   (NSString *)eventName withType:(EVENT_TYPE)eventType;
 
 + (void)setDebugMode;
+
+
 @end

@@ -42,8 +42,8 @@
  log Event Method
  */
 + (void)logSingleEvent:(NSString *)eventName;
-+ (void)logPurchaseEvent:(NSString *)eventName ;
-+ (void)logScoreEvent:(NSString *)eventName ;
++ (void)logPurchaseEvent:(NSString *)eventName withDN:(NSUInteger)dn withDM:(float)dm withCU:(NSString *)cu;
++ (void)logScoreEvent:(NSString *)eventName withScore:(NSUInteger)score;
 + (void)logSpendSecondsEvnet:(NSString *)eventName ;
 
 + (void)logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception;

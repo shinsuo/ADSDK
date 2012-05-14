@@ -62,13 +62,17 @@ static TomatoSDKConnection *connection = nil;
     [connection requestEventName:eventName withType:EVENTSINGLE];
 }
 
-+ (void)logPurchaseEvent:(NSString *)eventName
++ (void)logPurchaseEvent:(NSString *)eventName withDN:(NSUInteger)dn withDM:(float)dm withCU:(NSString *)cu
 {
+    connection.dn = dn;
+    connection.dm = dm;
+    connection.cu = cu;
     [connection requestEventName:eventName withType:EVENTPURCHASE];
 }
 
-+ (void)logScoreEvent:(NSString *)eventName
++ (void)logScoreEvent:(NSString *)eventName withScore:(NSUInteger)score
 {
+    connection.score = score;
     [connection requestEventName:eventName withType:EVENTSCORE];
 }
 

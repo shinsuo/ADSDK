@@ -41,6 +41,11 @@ static NSUInteger debugMode = 0;
 @synthesize apiKeyValid;
 @synthesize delegate = delegate_;
 
+@synthesize dn;
+@synthesize dm;
+@synthesize cu;
+@synthesize score;
+
 #pragma mark Public Method
 + (void)setDebugMode
 {
@@ -60,7 +65,6 @@ static NSUInteger debugMode = 0;
         }
         
         //init event Array
-//        eventArray_ = [[NSMutableArray alloc] init];
         
         //set Debug
         if (debugMode) {
@@ -196,16 +200,19 @@ static NSUInteger debugMode = 0;
     [formRequest setPostValue:eventName forKey:@"n"];
     [formRequest setPostValue:@"1" forKey:@"oo"];
     [formRequest setPostValue:[NSString stringWithFormat:@"%i",(int)[[NSDate date] timeIntervalSince1970]] forKey:@"fr"];
+    [formRequest setPostValue:eventName forKey:@"n"];
     
     switch (eventType) {
         case EVENTSINGLE:
             
             break;
         case EVENTPURCHASE:
-            
+            [formRequest setPostValue:[NSString stringWithFormat:@"%i",self.dn] forKey:@"dn"];
+            [formRequest setPostValue:[NSString stringWithFormat:@"%f",self.dm] forKey:@"dm"];
+            [formRequest setPostValue:[NSString stringWithFormat:@"%s",self.cu] forKey:@"cu"];
             break;
         case EVENTSCORE:
-
+            [formRequest setPostValue:[NSString stringWithFormat:@"%i",self.score] forKey:@"ds"];
             break;
         case EVENTSPENDSECONDS:
 
@@ -214,7 +221,6 @@ static NSUInteger debugMode = 0;
             break;
     }
     
-    [formRequest setPostValue:eventName forKey:@"n"];
     [formRequest setDelegate:self];
     [formRequest startAsynchronous];
     //*/
