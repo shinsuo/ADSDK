@@ -19,7 +19,7 @@
 #define RECORDTABLE         @"EventRecord"
 
 //URL MACRO
-#define SERVER_URL          @"http://atm.punchbox.org"
+#define SERVER_URL          @"http://192.168.5.126"
 #define REQUEST_SESSION     @"/ses/?"
 #define APP_ACTIVE          @"/atv/?"
 #define APP_EVENT           @"/evt/?"

@@ -26,6 +26,7 @@
 - (void)sendActivity;
 - (void)requestOffLine;
 
+- (NSString *)addRND:(NSString *)string;
 - (void)changedOrientation:(NSNotification *)notification;
 - (void)changedGPS:(NSNotification *)notification;
 - (void)changedNetType:(NSNotification *)notification;
@@ -61,6 +62,12 @@ static NSUInteger debugMode = 0;
         //init event Array
 //        eventArray_ = [[NSMutableArray alloc] init];
         
+        //set Debug
+        if (debugMode) {
+            isDebug_ = [NSString stringWithFormat:@"&test=1"];
+        }else {
+            isDebug_ = [NSString stringWithFormat:@"&test=0"];
+        }
         //get Hardware Info
         UIDeviceExtend *device = [UIDeviceExtend currentDevice];
         
@@ -121,7 +128,7 @@ static NSUInteger debugMode = 0;
         
         
         //init url Array
-        urlArray_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+        urlDict_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                      [NSString stringWithFormat:@"%@%@",REQUEST_SESSION,basicDataString_],REQUEST_SESSION,
                      @"",APP_ACTIVE,
                      @"",APP_EVENT,
@@ -173,32 +180,41 @@ static NSUInteger debugMode = 0;
     
     //send Activity
     [self sendActivity];
-    
 }
 
 - (void)requestEventName:(NSString *)eventName withType:(EVENT_TYPE)eventType
 {
     //*
 //    NSURL *url = [urlArray objectAtIndex:eventType];
-    urlString_ = [NSString stringWithFormat:@"http://192.168.8.184/TestADSDK/form.php?oo=123&tt=32"];
+    urlString_ = [urlDict_ objectForKey:APP_EVENT];
+    urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&t=%i",eventType]];
+    urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&rnd=%i",arc4random()%10000]];
+    
     url_ = [NSURL URLWithString:urlString_];
-    /*
-    PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:url];
-    [request setDelegate:self];
-    [request startAsynchronous];
-    currentEventName_ = [NSString stringWithFormat:eventName];
-     //*/
-    //*
-    
-    
-    if (debugMode) {
-        [urlString_  stringByAppendingString:@"&test=1"];
-    }
     PBASIFormDataRequest *formRequest = [PBASIFormDataRequest requestWithURL:url_];
     
-    [formRequest setPostValue:@"suoxinname" forKey:@"username"];
-    [formRequest setPostValue:@"suoxinpasswor" forKey:@"password"];
+    [formRequest setPostValue:eventName forKey:@"n"];
+    [formRequest setPostValue:@"1" forKey:@"oo"];
+    [formRequest setPostValue:[NSString stringWithFormat:@"%i",(int)[[NSDate date] timeIntervalSince1970]] forKey:@"fr"];
     
+    switch (eventType) {
+        case EVENTSINGLE:
+            
+            break;
+        case EVENTPURCHASE:
+            
+            break;
+        case EVENTSCORE:
+
+            break;
+        case EVENTSPENDSECONDS:
+
+            break;
+        default:
+            break;
+    }
+    
+    [formRequest setPostValue:eventName forKey:@"n"];
     [formRequest setDelegate:self];
     [formRequest startAsynchronous];
     //*/
@@ -229,7 +245,12 @@ static NSUInteger debugMode = 0;
 
 - (void)sendActivity
 {
+    urlString_ = [urlDict_ objectForKey:APP_EVENT];
+    url_ = [NSURL URLWithString:[self addRND:urlString_]];
+    PBASIFormDataRequest *formRequest = [PBASIFormDataRequest requestWithURL:url_];
     
+    [formRequest setDelegate:self];
+    [formRequest startAsynchronous];
 }
 
 - (void)requestOffLine
@@ -239,7 +260,8 @@ static NSUInteger debugMode = 0;
         NSNumber *idNumber = (NSNumber *)[array objectAtIndex:0];
         NSString *postBodyString = [array objectAtIndex:2];
         
-        PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:[array objectAtIndex:1]];
+        NSString *tempURLString = [array objectAtIndex:1];
+        PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:[NSURL URLWithString:[tempURLString stringByAppendingString:@"&oo=0"]]];
         request.sxId = idNumber.intValue;
         request.isOffLine = YES;
         request.postBody = (NSMutableData *)[postBodyString dataUsingEncoding:NSUTF8StringEncoding];
@@ -249,6 +271,15 @@ static NSUInteger debugMode = 0;
     }
 }
 
+- (NSString *)addRND:(NSString *)string
+{
+    string = [string stringByAppendingString:isDebug_];
+    string = [string stringByAppendingString:[NSString stringWithFormat:@"&rnd=%i",arc4random()%10000]];
+    string = [string stringByAppendingString:[NSString stringWithFormat:@"&fr=%i",(int)[[NSDate date] timeIntervalSince1970]]];
+    //&oo=1 放在最后，偏于requestFail后删除该后缀，然后添加到数据库中
+    string = [string stringByAppendingString:[NSString stringWithFormat:@"&oo=1"]];
+    return string;
+}
 
 #pragma mark PBASIHttpRequest Delegate
 - (void)requestFinished:(PBASIHTTPRequest *)request
@@ -327,7 +358,10 @@ static NSUInteger debugMode = 0;
 {
     NSString *postString = [[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding];
     NSString *urlString = [[request url] absoluteString];
-    
+    if ([urlString hasSuffix:@"&oo=1"]) {
+        NSRange range = [urlString rangeOfString:@"&oo=1"];
+        urlString = [urlString substringToIndex:range.location];
+    };
     NSArray *tempData = [NSArray arrayWithObjects:urlString,postString, nil];
     if ([[SSSqliteManager shareSqliteManager] Insert:tempData]) {
         eventCount++;

@@ -28,15 +28,31 @@
     NSMutableArray          *eventIdArray_;
     NSUInteger              eventCount;
     NSString                *currentEventName_;
+    //Event Purchase
+    NSUInteger              dn;
+    float                   dm;
+    NSString                *cu;
+    //Event Score
+    float                   ds;
+    //Event Spend
+    NSTimeInterval          to;
+    NSUInteger              spt;
+    
+    //Video
+    NSUInteger              tp;
+    NSString                *sbd;
     
     //Container
     UIWebView               *webView_;
     MPMoviePlayerController *movieController_;
     
     //URL
-    NSMutableDictionary     *urlArray_;
+    NSMutableDictionary     *urlDict_;
     NSString                *urlString_;
     NSURL                   *url_;
+    
+    NSString                *isDebug_;
+    int                     *arcRandom;
     id<TomatoAdDelegate>    delegate_;
 }
 

@@ -43,8 +43,8 @@
  */
 + (void)logSingleEvent:(NSString *)eventName;
 + (void)logPurchaseEvent:(NSString *)eventName ;
-+ (void)logScoreEvent:(NSString *)eventName;
-+ (void)logSpendSecondsEvnet:(NSString *)eventName;
++ (void)logScoreEvent:(NSString *)eventName ;
++ (void)logSpendSecondsEvnet:(NSString *)eventName ;
 
 + (void)logError:(NSString *)errorID message:(NSString *)message exception:(NSException *)exception;
 + (void)logError:(NSString *)errorID message:(NSString *)message error:(NSError *)error;
