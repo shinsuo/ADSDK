@@ -10,7 +10,7 @@
 #define TomatoSDK_TomatoADConstant_h
 
 #define REQUEST_TIME        10
-#define SDK_VERSION         2
+#define SDKVERSION         2
 #define TEST                @"test=true"
 
 //database filename
@@ -30,7 +30,6 @@
 #define APPUID              @"app"
 #define APPVERSION          @"appv"
 #define PARTID              @"part"       
-#define SDKVERSION          @"sdk"
 
 #define URLVERSION          @"v"
 #define UDID                @"uid"

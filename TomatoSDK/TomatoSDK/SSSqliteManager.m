@@ -88,7 +88,6 @@ static SSSqliteManager *staticSqliteManager = nil;
 #pragma mark Public Method
 - (BOOL)Insert:(NSArray *)sqlArray
 {
-    NSLog(@"insert");
     if (![self Create:nil] && !sqlArray) {
         return NO;
     }

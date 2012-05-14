@@ -110,7 +110,6 @@ static NSUInteger debugMode = 0;
                        @"11111111",APPUID, 
                        [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey],APPVERSION,
                        @"",PARTID,
-                       @"2",SDKVERSION,
                        @"2",URLVERSION,
                        device.uniqueIdentifier,UDID,
                        @"",CKID,
@@ -129,13 +128,32 @@ static NSUInteger debugMode = 0;
                        nil];
         
         //init BasicData String
-        
+        basicDataString_ = [NSString stringWithFormat:@"&v=%i&uid=%s &ckid=%s&dt=%s&osv=%s&os=%s&jb=%s&sr=%s&ori=%s%&gps=%s&net=%i&app=%s&appv=%s&cc=%s&lang=%s&sdk=%s&dev=%s&puid=%s&wmac=%s",SDKVERSION,//v
+                            [basicDataDicts_ objectForKey:UDID],//uid
+                            [basicDataDicts_ objectForKey:CKID],//ckid
+                            [basicDataDicts_ objectForKey:DEVICETYPE],//dt
+                            [basicDataDicts_ objectForKey:OSVERSION],//osv
+                            [basicDataDicts_ objectForKey:OSVERSION],//os
+                            [basicDataDicts_ objectForKey:ISJAILBREAK],//jb
+                            [basicDataDicts_ objectForKey:RESOLUTION],//sr
+                            [basicDataDicts_ objectForKey:ORIENTATION],//ori
+                            [basicDataDicts_ objectForKey:GPS],//gps
+                            [basicDataDicts_ objectForKey:NETTYPE],//net
+                            [basicDataDicts_ objectForKey:APPUID],//app
+                             version,//appv
+                             [basicDataDicts_ objectForKey:CC],//cc
+                             [basicDataDicts_ objectForKey:LANG],//lang
+                             [basicDataDicts_ objectForKey:UDID],//sdk
+                             [basicDataDicts_ objectForKey:UDID],//dev
+                            [basicDataDicts_ objectForKey:OSTYPE],//puid
+                            [basicDataDicts_ objectForKey:WMAC]//wmac
+                            ];
         
         //init url Array
         urlDict_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                     [NSString stringWithFormat:@"%@%@",REQUEST_SESSION,basicDataString_],REQUEST_SESSION,
+                     [NSString stringWithFormat:@"%@%@%@",SERVER_URL,REQUEST_SESSION,basicDataString_],REQUEST_SESSION,
                      @"",APP_ACTIVE,
-                     @"",APP_EVENT,
+                    [NSString stringWithFormat:@"%@%@%@",SERVER_URL,APP_EVENT,basicDataString_],APP_EVENT,
                      @"",VIDEO_PLAY_STATS,
                      @"",PERSISTENT_AD,
                      nil];
@@ -146,19 +164,6 @@ static NSUInteger debugMode = 0;
                                                      name: PBkReachabilityChangedNotification
                                                    object: nil];
         
-//        [[NSNotificationCenter defaultCenter] addObserver:self 
-//                                                 selector:@selector(changedOrientation:) 
-//                                                     name:UIDeviceOrientationDidChangeNotification 
-//                                                   object:nil];
-//        [[NSNotificationCenter defaultCenter] addObserver:self 
-//                                                 selector:@selector(changedGPS:) 
-//                                                     name:@""
-//                                                   object:nil];
-//        [[NSNotificationCenter defaultCenter] addObserver:self 
-//                                                 selector:@selector(changedNetType:) 
-//                                                     name:PBkReachabilityChangedNotification 
-//                                                   object:nil];
-        [self getBasicDatas];
     }
     return self;
 }
@@ -251,7 +256,7 @@ static NSUInteger debugMode = 0;
 
 - (void)sendActivity
 {
-    urlString_ = [urlDict_ objectForKey:APP_EVENT];
+    urlString_ = [urlDict_ objectForKey:APP_ACTIVE];
     url_ = [NSURL URLWithString:[self addRND:urlString_]];
     PBASIFormDataRequest *formRequest = [PBASIFormDataRequest requestWithURL:url_];
     
@@ -363,12 +368,12 @@ static NSUInteger debugMode = 0;
 - (void)requestFailed:(PBASIHTTPRequest *)request
 {
     NSString *postString = [[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding];
-    NSString *urlString = [[request url] absoluteString];
-    if ([urlString hasSuffix:@"&oo=1"]) {
-        NSRange range = [urlString rangeOfString:@"&oo=1"];
-        urlString = [urlString substringToIndex:range.location];
+    NSString *tempURLString = [[request url] absoluteString];
+    if ([tempURLString hasSuffix:@"&oo=1"]) {
+        NSRange range = [tempURLString rangeOfString:@"&oo=1"];
+        tempURLString = [tempURLString substringToIndex:range.location];
     };
-    NSArray *tempData = [NSArray arrayWithObjects:urlString,postString, nil];
+    NSArray *tempData = [NSArray arrayWithObjects:tempURLString,postString, nil];
     if ([[SSSqliteManager shareSqliteManager] Insert:tempData]) {
         eventCount++;
     };
