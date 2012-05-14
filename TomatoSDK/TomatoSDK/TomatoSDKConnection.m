@@ -27,6 +27,7 @@
 - (void)requestOffLine;
 
 - (NSString *)addRND:(NSString *)string;
+- (NSString *)getURL:(NSString *)string;
 - (void)changedOrientation:(NSNotification *)notification;
 - (void)changedGPS:(NSNotification *)notification;
 - (void)changedNetType:(NSNotification *)notification;
@@ -126,9 +127,9 @@ static NSUInteger debugMode = 0;
                        [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0],LANG,
                        device.getMacAddress,WMAC,
                        nil];
-        
+        NSLog(@"device:%@",device.uniqueIdentifier);
         //init BasicData String
-        basicDataString_ = [NSString stringWithFormat:@"&v=%i&uid=%s &ckid=%s&dt=%s&osv=%s&os=%s&jb=%s&sr=%s&ori=%s%&gps=%s&net=%i&app=%s&appv=%s&cc=%s&lang=%s&sdk=%s&dev=%s&puid=%s&wmac=%s",SDKVERSION,//v
+        basicDataString_ = [NSString stringWithFormat:@"&v=%i&uid=%@&ckid=%@&dt=%@&osv=%@&os=%@&jb=%@&sr=%@&ori=%@&gps=%@&net=%i&app=%@&appv=%@&cc=%@&lang=%@&sdk=%@&dev=%@&puid=%@&wmac=%@",SDKVERSION,//v
                             [basicDataDicts_ objectForKey:UDID],//uid
                             [basicDataDicts_ objectForKey:CKID],//ckid
                             [basicDataDicts_ objectForKey:DEVICETYPE],//dt
@@ -149,14 +150,7 @@ static NSUInteger debugMode = 0;
                             [basicDataDicts_ objectForKey:WMAC]//wmac
                             ];
         
-        //init url Array
-        urlDict_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                     [NSString stringWithFormat:@"%@%@%@",SERVER_URL,REQUEST_SESSION,basicDataString_],REQUEST_SESSION,
-                     @"",APP_ACTIVE,
-                    [NSString stringWithFormat:@"%@%@%@",SERVER_URL,APP_EVENT,basicDataString_],APP_EVENT,
-                     @"",VIDEO_PLAY_STATS,
-                     @"",PERSISTENT_AD,
-                     nil];
+        
         
         //register Notification
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -256,7 +250,7 @@ static NSUInteger debugMode = 0;
 
 - (void)sendActivity
 {
-    urlString_ = [urlDict_ objectForKey:APP_ACTIVE];
+    urlString_ = [self getURL:APP_ACTIVE];
     url_ = [NSURL URLWithString:[self addRND:urlString_]];
     PBASIFormDataRequest *formRequest = [PBASIFormDataRequest requestWithURL:url_];
     
@@ -290,6 +284,25 @@ static NSUInteger debugMode = 0;
     //&oo=1 放在最后，偏于requestFail后删除该后缀，然后添加到数据库中
     string = [string stringByAppendingString:[NSString stringWithFormat:@"&oo=1"]];
     return string;
+}
+
+- (NSString *)getURL:(NSString *)string
+{
+
+    NSString *tempURL = nil;
+    if ([string isEqualToString:REQUEST_SESSION]) {
+        tempURL = [NSString stringWithFormat:@"%@%@%@",SERVER_URL,REQUEST_SESSION,basicDataString_];
+    }else if ([string isEqualToString:APP_ACTIVE]) {
+        tempURL = [NSString stringWithFormat:@"%@%@%@",SERVER_URL,APP_ACTIVE,basicDataString_];
+    }else if ([string isEqualToString:APP_EVENT]) {
+        tempURL = [NSString stringWithFormat:@"%@%@%@",SERVER_URL,APP_EVENT,basicDataString_];
+    }else if ([string isEqualToString:VIDEO_PLAY_STATS]) {
+        tempURL = [NSString stringWithFormat:@"%@%@%@",SERVER_URL,VIDEO_PLAY_STATS,basicDataString_];
+    }else if ([string isEqualToString:PERSISTENT_AD]) {
+        tempURL = [NSString stringWithFormat:@"%@%@%@",SERVER_URL,PERSISTENT_AD,basicDataString_];
+    }
+    NSLog(@"tempURL:%@",tempURL);
+    return tempURL;
 }
 
 #pragma mark PBASIHttpRequest Delegate
