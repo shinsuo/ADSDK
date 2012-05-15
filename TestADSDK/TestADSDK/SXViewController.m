@@ -30,6 +30,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     [TomatoSDK startSession:@"1234567890" withDEVID:@"34565456" withPUID:@"37856483"];
     [TomatoSDK setDelegate:self];
+    NSLog(@"yes or no:%i,%i",YES,NO);
     /*
     MPMoviePlayerController *movieController = [[MPMoviePlayerController alloc] init];
 //    movieController.view.backgroundColor = [UIColor clearColor];

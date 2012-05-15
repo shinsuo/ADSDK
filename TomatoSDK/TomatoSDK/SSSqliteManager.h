@@ -17,9 +17,10 @@
 
 + (SSSqliteManager *)shareSqliteManager;
 
-- (NSUInteger)Insert:(NSArray *)sqlArray;
-- (NSArray *)Select;
+- (NSUInteger)Insert:(NSString *)urlString_ withPostString:(NSString *)postString_;
+- (NSArray *)SelectBut:(NSUInteger)sessionID;
 - (BOOL)Delete:(NSUInteger )index;
 - (NSUInteger)getCount;
+- (BOOL)Update:(NSUInteger)rowID withString:(NSString *)urlString_;
 
 @end

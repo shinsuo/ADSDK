@@ -19,10 +19,15 @@
 
 @interface TomatoSDKConnection : NSObject <PBASIHTTPRequestDelegate,CLLocationManagerDelegate >
 {
+    //sessionId
+    NSUInteger              sessionID;
+    NSString                *fr_;
     //Data
     NSMutableData           *receivedData_;
     NSMutableDictionary     *basicDataDicts_;
     NSString                *basicDataString_;
+    
+    NSString                *netType_;
     
     //Event
     NSMutableArray          *eventIdArray_;

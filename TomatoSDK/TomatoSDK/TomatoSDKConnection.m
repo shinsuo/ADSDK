@@ -25,10 +25,12 @@
 
 - (void)getBasicDatas;
 - (void)sendActivity;
-- (void)requestOffLine;
+- (void)sendOffLineData;
 
 - (NSString *)addRND:(NSString *)string;
 - (NSString *)getURL:(NSString *)string;
+- (NSString *)getSessionURL;
+- (void)updateEndSessionTime;
 - (void)getBasicDataString;
 - (void)changedOrientation:(NSNotification *)notification;
 - (void)changedGPS:(NSNotification *)notification;
@@ -70,7 +72,7 @@ static NSUInteger debugMode = 0;
         //get EventRecord Count
         eventCount = [[SSSqliteManager shareSqliteManager] getCount];
         if (eventCount) {
-            [[SSSqliteManager shareSqliteManager] Select];
+//            [[SSSqliteManager shareSqliteManager] Select];
         }
         //init Location;
         currentLocation = CGSizeZero;
@@ -78,13 +80,13 @@ static NSUInteger debugMode = 0;
         
         //set Debug
         if (debugMode) {
-            isDebug_ = [NSString stringWithFormat:@"&test=1"];
+            isDebug_ = @"&test=1";
         }else {
-            isDebug_ = [NSString stringWithFormat:@"&test=0"];
+            isDebug_ = @"&test=0";
         }
         //get Hardware Info
         UIDeviceExtend *device = [UIDeviceExtend currentDevice];
-        
+
         PBReachability *r = [[PBReachability reachabilityForInternetConnection] retain];
         [r connectionRequired];
         [r startNotifier];
@@ -118,6 +120,7 @@ static NSUInteger debugMode = 0;
             tempDeviceType = [NSString stringWithFormat:@"iPhone"];
         }
         
+        netType_ = [[NSString alloc] initWithFormat:@"%i",[r currentReachabilityStatus]];
         //init BasicData Dict
         basicDataDicts_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                            [NSString stringWithFormat:@"%i",SDK_VERSION],URLVERSION,
@@ -132,14 +135,20 @@ static NSUInteger debugMode = 0;
                            [NSString stringWithFormat:@"%i",device.orientation],ORIENTATION, 
                            @"0,0",GPS,
                            appKey,APPUID, 
+                           puID,PUID,
+                           devID,DEVUID,
                            [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],CC,
                            [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0],LANG,
                             [NSString stringWithFormat:@"%i",SDK_VERSION],SDKVERSION,
-                           puID,PUID,
-                           devID,DEVUID,
                            device.getMacAddress,WMAC,
-                           [NSString stringWithFormat:@"%i",[r currentReachabilityStatus]],NETTYPE,   //can Changed
+                           netType_,NETTYPE,
                        nil];
+        
+        if ([basicDataDicts_ objectForKey:DEVUID] == nil) {
+            NSLog(@"basicDataDicts nil");
+        }else{
+            NSLog(@"basicDataDicts %@",[basicDataDicts_ objectForKey:devID]);
+        }
         
         //register Notification
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -160,14 +169,24 @@ static NSUInteger debugMode = 0;
 
 - (void)requestSession
 {
-    //defaule apiKeyValid value
-//    self.apiKeyValid = NO;
-    //save apiKey
-//    self.apiKey = apiKey;
-    //向server发送apiKey_，验证apiKey是否合法
+    if (eventCount) {//如果数据库中有数据就要发送离线数据
+        
+        //先发送离线数据，其中包含了上一次的session开始时间和结束时间
+        [self sendOffLineData];
+    }
     
-    //send Session
+    //获取当前session的开始时间，此刻开始时间和结束时间一样
+    fr_ = [[NSString alloc] initWithFormat:@"%i",(int)[[NSDate date] timeIntervalSince1970]];
+    urlString_ = [self getURL:REQUEST_SESSION];
+    urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&fr=%@",fr_]];
+    urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&to=%@",fr_]];
+    urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&rnd=%i",arc4random()%10000]];
     
+    //将当前的session数据插入数据库中，session中的post数据之中为空
+    [[SSSqliteManager shareSqliteManager] Insert:urlString_ withPostString:@""];
+    
+    //每隔RECORDENDRATE秒记录一次end的时间
+    [self performSelector:@selector(updateEndSessionTime) withObject:nil afterDelay:RECORDENDRATE];
     
     //send Activity
     [self sendActivity];
@@ -175,18 +194,15 @@ static NSUInteger debugMode = 0;
 
 - (void)requestEventName:(NSString *)eventName withType:(EVENT_TYPE)eventType
 {
-    //*
-//    NSURL *url = [urlArray objectAtIndex:eventType];
+
     urlString_ = [self getURL:APP_EVENT];
+    //事件类型不同t值不同
     urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&t=%i",eventType]];
-    urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&rnd=%i",arc4random()%10000]];
     
-    url_ = [NSURL URLWithString:urlString_];
+    url_ = [NSURL URLWithString:[self addRND:urlString_]];
     PBASIFormDataRequest *formRequest = [PBASIFormDataRequest requestWithURL:url_];
     
-    [formRequest setPostValue:eventName forKey:@"n"];
-    [formRequest setPostValue:@"1" forKey:@"oo"];
-    [formRequest setPostValue:[NSString stringWithFormat:@"%i",(int)[[NSDate date] timeIntervalSince1970]] forKey:@"fr"];
+    //设置post数据，不同事件类型，post的键值对不一样
     [formRequest setPostValue:eventName forKey:@"n"];
     
     switch (eventType) {
@@ -210,7 +226,6 @@ static NSUInteger debugMode = 0;
     
     [formRequest setDelegate:self];
     [formRequest startAsynchronous];
-    //*/
 }
 
 #pragma mark Private Method
@@ -233,29 +248,39 @@ static NSUInteger debugMode = 0;
 
 - (void)sendActivity
 {
+    //获取activity相关的url
     urlString_ = [self getURL:APP_ACTIVE];
-    url_ = [NSURL URLWithString:[self addRND:urlString_]];
-    PBASIFormDataRequest *formRequest = [PBASIFormDataRequest requestWithURL:url_];
+    urlString_ = [self addRND:urlString_];
+    url_ = [NSURL URLWithString:urlString_];
     
+    PBASIFormDataRequest *formRequest = [PBASIFormDataRequest requestWithURL:url_];
     [formRequest setDelegate:self];
     [formRequest startAsynchronous];
 }
 
-- (void)requestOffLine
+- (void)sendOffLineData
 {
-    if (eventCount) {
-        NSArray *array = [NSArray arrayWithArray:[[SSSqliteManager shareSqliteManager] Select]];
-        NSNumber *idNumber = (NSNumber *)[array objectAtIndex:0];
-        NSString *postBodyString = [array objectAtIndex:2];
+    if (eventCount>1) {//因为数据库中始终会有一条是当前session的，所以当eventCount为1的时候就不用发送，当前session是在下次启动的时候才发送，session的发送始终是离线
         
-        NSString *tempURLString = [array objectAtIndex:1];
-        PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:[NSURL URLWithString:[tempURLString stringByAppendingString:@"&oo=0"]]];
-        request.sxId = idNumber.intValue;
-        request.isOffLine = YES;
-        request.postBody = (NSMutableData *)[postBodyString dataUsingEncoding:NSUTF8StringEncoding];
-        
-        [request setDelegate:self];
-        [request startSynchronous];
+        //selectBut是除了本次的session记录外，其他数据库中的离线数据都需要发送
+        NSArray *array = [NSArray arrayWithArray:[[SSSqliteManager shareSqliteManager] SelectBut:sessionID]];
+        if (array) {
+            NSNumber *idNumber = (NSNumber *)[array objectAtIndex:0];
+            NSString *postBodyString = [array objectAtIndex:2];
+            
+            NSString *tempURLString = [array objectAtIndex:1];
+            PBASIHTTPRequest *request = [PBASIHTTPRequest requestWithURL:[NSURL URLWithString:[tempURLString stringByAppendingString:@"&oo=0"]]];
+            
+            //sxId和isOffLine扩展出来的
+            //sxId便于离线数据发送成功后，在数据库中删除改离线数据
+            //isOffLine是便于在发送成功或者失败后做出相应的处理，如，发送失败不用再次添加到数据库中，如果不是离线数据发送失败需要添加到数据库中
+            request.sxId = idNumber.intValue;
+            request.isOffLine = YES;
+            request.postBody = (NSMutableData *)[postBodyString dataUsingEncoding:NSUTF8StringEncoding];
+            
+            [request setDelegate:self];
+            [request startSynchronous];
+        }
     }
 }
 
@@ -271,7 +296,6 @@ static NSUInteger debugMode = 0;
 
 - (NSString *)getURL:(NSString *)string
 {
-
     NSString *tempURL = nil;
     [self getBasicDataString];
     if ([string isEqualToString:REQUEST_SESSION]) {
@@ -285,7 +309,6 @@ static NSUInteger debugMode = 0;
     }else if ([string isEqualToString:PERSISTENT_AD]) {
         tempURL = [NSString stringWithFormat:@"%@%@%@",SERVER_URL,PERSISTENT_AD,basicDataString_];
     }
-    NSLog(@"tempURL:%@",tempURL);
     return tempURL;
 }
 
@@ -308,19 +331,32 @@ static NSUInteger debugMode = 0;
                         ([basicDataDicts_ objectForKey:CC] == nil)?@"":[basicDataDicts_ objectForKey:CC],//cc
                         ([basicDataDicts_ objectForKey:LANG] == nil)?@"":[basicDataDicts_ objectForKey:LANG],//lang
                         ([basicDataDicts_ objectForKey:SDKVERSION] == nil)?@"":[basicDataDicts_ objectForKey:SDKVERSION],//sdk
-                        ([basicDataDicts_ objectForKey:DEVUID] == nil)?@"":[basicDataDicts_ objectForKey:DEVUID],//dev
-                        ([basicDataDicts_ objectForKey:PUID] == nil)?@"":[basicDataDicts_ objectForKey:PUID],//puid
-                        ([basicDataDicts_ objectForKey:WMAC] == nil)?@"":[basicDataDicts_ objectForKey:WMAC],//wmac
+//                        ([basicDataDicts_ objectForKey:DEVUID] == nil)?@"":[basicDataDicts_ objectForKey:DEVUID],//dev
+                        (devID == nil)?@"":devID,
+//                        ([basicDataDicts_ objectForKey:PUID] == nil)?@"":[basicDataDicts_ objectForKey:PUID],//puid
+                        (puID == nil)?@"":puID,
+//                        ([basicDataDicts_ objectForKey:WMAC] == nil)?@"":[basicDataDicts_ objectForKey:WMAC],//wmac
+                        [UIDeviceExtend currentDevice].getMacAddress,
                         ([basicDataDicts_ objectForKey:NETTYPE] == nil)?@"":[basicDataDicts_ objectForKey:NETTYPE]//net
                         ];
+}
+
+- (void)updateEndSessionTime
+{
+    urlString_ = [self getURL:REQUEST_SESSION];
+    urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&fr=%@",fr_]];
+    urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&to=%@",[NSString stringWithFormat:@"%i",(int)[[NSDate date] timeIntervalSince1970]]]];
+    urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&rnd=%i",arc4random()%10000]];
+    [[SSSqliteManager shareSqliteManager] Update:sessionID withString:urlString_];
 }
 
 #pragma mark PBASIHttpRequest Delegate
 - (void)requestFinished:(PBASIHTTPRequest *)request
 {
-    if (request.isOffLine) {
+    if (request.isOffLine) {//处理离线数据
         eventCount--;
         [[SSSqliteManager shareSqliteManager] Delete:request.sxId];
+        [self sendOffLineData];
     }else {
         if ([receivedData_ length]) {
             NSError *error = nil;
@@ -401,7 +437,7 @@ static NSUInteger debugMode = 0;
         postString = @"";
     }
     NSArray *tempData = [NSArray arrayWithObjects:tempURLString,postString, nil];
-    if ([[SSSqliteManager shareSqliteManager] Insert:tempData]) {
+    if ([[SSSqliteManager shareSqliteManager] Insert:tempURLString withPostString:postString]) {
         eventCount++;
     };
 }
@@ -423,12 +459,12 @@ static NSUInteger debugMode = 0;
         case kReachableViaWWAN:    // Switched order from Apple's enum. WWAN is active before WiFi.
             NSLog(@"reachabilityChanged kReachableViaWWAN");
             [basicDataDicts_ setObject:[NSString stringWithFormat:@"3G"] forKey:NETTYPE];
-            [self requestOffLine];
+            [self sendOffLineData];
             break;
         case kReachableViaWiFi:
             NSLog(@"reachabilityChanged kReachableViaWiFi");
             [basicDataDicts_ setObject:[NSString stringWithFormat:@"WiFi"] forKey:NETTYPE];
-            [self requestOffLine];
+            [self sendOffLineData];
             break;
             
         default:

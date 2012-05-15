@@ -18,6 +18,8 @@
 //tablename
 #define RECORDTABLE         @"EventRecord"
 
+#define RECORDENDRATE       60
+
 //URL MACRO
 #define SERVER_URL          @"http://192.168.5.126"
 #define REQUEST_SESSION     @"/ses/?"

@@ -86,13 +86,13 @@ static SSSqliteManager *staticSqliteManager = nil;
 }
 
 #pragma mark Public Method
-- (NSUInteger)Insert:(NSArray *)sqlArray
+- (NSUInteger)Insert:(NSString *)urlString_ withPostString:(NSString *)postString_
 {
-    if (![self Create:nil] && !sqlArray) {
+    if (![self Create:nil] && !urlString_) {
         return NO;
     }
     
-    NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@(url,postData) VALUES ('%@','%@')",RECORDTABLE,[sqlArray objectAtIndex:0],[sqlArray objectAtIndex:1]];
+    NSString *sql = [NSString stringWithFormat:@"INSERT INTO %@(url,postData) VALUES ('%@','%@')",RECORDTABLE,urlString_,postString_];
 
     sqlite3_stmt *statement;
     NSInteger sqlReturn = sqlite3_prepare_v2(_database, [sql UTF8String], -1, &statement, nil);
@@ -114,25 +114,27 @@ static SSSqliteManager *staticSqliteManager = nil;
     return sqlite3_last_insert_rowid(_database);;
 }
 
-- (NSArray *)Select
+- (NSArray *)SelectBut:(NSUInteger)sessionID
 {
     if (![self Create:nil]) {
         return NO;
     }
     sqlite3_stmt *statement = nil;
-    NSString *sql = [NSString stringWithFormat:@"select id,url,postData from %@",RECORDTABLE];
+    NSString *sql = [NSString stringWithFormat:@"select id,url,postData from %@ where id <> %i",RECORDTABLE,sessionID];
     NSArray *array = nil;
     if (sqlite3_prepare_v2(_database, [sql UTF8String], -1, &statement, NULL) != SQLITE_OK) {
         NSLog(@"Error:failed to prepare statement with message:get testValue");
         return NO;
     }else {
-        sqlite3_step(statement);
+        while(sqlite3_step(statement) == SQLITE_ROW){
             const unsigned char *url = sqlite3_column_text(statement, 1);
             const unsigned char *postData = sqlite3_column_text(statement, 2);
             array = [NSArray arrayWithObjects:
                      [NSNumber numberWithInt:sqlite3_column_int(statement, 0)],
-                      [NSString stringWithCString:(const char *)url encoding:NSUTF8StringEncoding],
-                      [NSString stringWithCString:(const char *)postData encoding:NSUTF8StringEncoding], nil];
+                     [NSString stringWithCString:(const char *)url encoding:NSUTF8StringEncoding],
+                     [NSString stringWithCString:(const char *)postData encoding:NSUTF8StringEncoding], nil];
+            break;
+        }  
     }
     sqlite3_finalize(statement);
     sqlite3_close(_database);
@@ -182,6 +184,33 @@ static SSSqliteManager *staticSqliteManager = nil;
         count = sqlite3_column_int(statement, 0);
     }
     return count;
+}
+
+- (BOOL)Update:(NSUInteger)rowID withString:(NSString *)urlString_
+{
+    if (![self Create:nil]) {
+        return NO;
+    }
+    
+    NSString *sql = [NSString stringWithFormat:@"update %@ set url = '%@' where id = %i",RECORDTABLE,urlString_,rowID];
+    sqlite3_stmt *statement;    
+    NSInteger sqlReturn = sqlite3_prepare_v2(_database, [sql UTF8String], -1, &statement, nil);
+    if (sqlReturn != SQLITE_OK) {
+        NSLog(@"Error:failed to prepare statement:insert into ");
+        return NO;
+    }
+    
+    int success = sqlite3_step(statement);
+    sqlite3_finalize(statement);
+    
+    if (success == SQLITE_ERROR) {
+        NSLog(@"Error:failed to insert into the database");
+        sqlite3_close(_database);
+        return NO;
+    }
+    
+    sqlite3_close(_database);
+    return YES;
 }
 
 @end
