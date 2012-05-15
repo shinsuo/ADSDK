@@ -11,6 +11,7 @@
 #import "TomatoADConstant.h"
 
 #import "PBHardwareUtil.h"
+#import "PBUuidManager.h"
 #import "PBASIHTTPRequest.h"
 #import "PBCJSONDeserializer.h"
 #import "PBCJSONSerializer.h"
@@ -28,6 +29,7 @@
 
 - (NSString *)addRND:(NSString *)string;
 - (NSString *)getURL:(NSString *)string;
+- (void)getBasicDataString;
 - (void)changedOrientation:(NSNotification *)notification;
 - (void)changedGPS:(NSNotification *)notification;
 - (void)changedNetType:(NSNotification *)notification;
@@ -38,10 +40,11 @@ static NSUInteger debugMode = 0;
 
 @implementation TomatoSDKConnection
 
-@synthesize apiKey;
-@synthesize apiKeyValid;
 @synthesize delegate = delegate_;
 
+@synthesize appKey;
+@synthesize devID;
+@synthesize puID;
 @synthesize dn;
 @synthesize dm;
 @synthesize cu;
@@ -53,9 +56,14 @@ static NSUInteger debugMode = 0;
     debugMode = 1;
 }
 
-- (id)init
+- (id)initWithAppKey:(NSString *)appKey_ withDEVID:(NSString *)devID_ withPUID:(NSString *)puID_;
 {
     if (self = [super init]) {
+        //id
+        appKey = appKey_;
+        devID = devID_;
+        puID = puID_;
+        
         //init received Data
         receivedData_ = [[NSMutableData alloc] init];
         
@@ -98,60 +106,46 @@ static NSUInteger debugMode = 0;
         
         NSString *family = [NSString stringWithFormat:@"%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"UIDeviceFamily"]];
         NSUInteger index = [family rangeOfString:@"2"].location;
+        NSString *tempDeviceType = nil;
         if (index == 6) {
             //iPad
+            tempDeviceType = [NSString stringWithFormat:@"iPad"];
         }else if (index == 13) {
             //Universal
+            tempDeviceType = device.model;
         }else {
             //iPhone
+            tempDeviceType = [NSString stringWithFormat:@"iPhone"];
         }
         
-        NSLog(@"cc:%@",[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
         //init BasicData Dict
         basicDataDicts_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-                       @"11111111",APPUID, 
-                       [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey],APPVERSION,
-                       @"",PARTID,
-                       @"2",URLVERSION,
-                       device.uniqueIdentifier,UDID,
-                       @"",CKID,
-                       @"",PUID,
-                       device.systemName,OSTYPE,
-                       device.systemVersion,OSVERSION,
-                       device.platform,DEVICETYPE,
-                       [NSString stringWithFormat:@"%.f,%.f",screenSize.width*screenScale,screenSize.height*screenScale],RESOLUTION,
-                       [NSString stringWithFormat:@"%i",device.orientation],ORIENTATION,                 //can Changed
-                       @"0,0",GPS,                         //can Changed
-                       [NSString stringWithFormat:@"%i",[r currentReachabilityStatus]],NETTYPE,   //can Changed
+                           [NSString stringWithFormat:@"%i",SDK_VERSION],URLVERSION,
+                           [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString *)kCFBundleVersionKey],APPVERSION,
+                           device.uniqueIdentifier,UDID,
+                           [[PBUuidManager sharedManager] getCKID:device.getMacAddress],CKID,
+                           tempDeviceType,DEVICETYPE,
+                           device.systemVersion,OSVERSION,
+                           device.platform,OSTYPE,
+                           [NSString stringWithFormat:@"%i",device.isJailBroken],ISJAILBREAK,
+                           [NSString stringWithFormat:@"%.f,%.f",screenSize.width*screenScale,screenSize.height*screenScale],RESOLUTION,
+                           [NSString stringWithFormat:@"%i",device.orientation],ORIENTATION, 
+                           @"0,0",GPS,
+                           appKey,APPUID, 
+                           [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],CC,
+                           [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0],LANG,
+                            [NSString stringWithFormat:@"%i",SDK_VERSION],SDKVERSION,
+                           puID,PUID,
+                           devID,DEVUID,
+                           device.getMacAddress,WMAC,
+                           [NSString stringWithFormat:@"%i",[r currentReachabilityStatus]],NETTYPE,   //can Changed
                        nil];
         
-        //init BasicData String
-        basicDataString_ = [NSString stringWithFormat:@"&v=%i&appv=%@&uid=%@&ckid=%@&dt=%@&osv=%@&os=%@&jb=%i&sr=%@&ori=%i&gps=%@&app=%@&cc=%@&lang=%@&sdk=%@&dev=%@&puid=%@&wmac=%@&net=%i",SDKVERSION,//v
-                            version,//appV
-                            device.uniqueIdentifier,//uid
-                            [basicDataDicts_ objectForKey:CKID],//ckid
-                            [basicDataDicts_ objectForKey:DEVICETYPE],//dt
-                            [basicDataDicts_ objectForKey:OSVERSION],//osv
-                            [basicDataDicts_ objectForKey:OSVERSION],//os
-                            device.isJailBroken,//jb
-                            [NSString stringWithFormat:@"%.f,%.f",screenSize.width*screenScale,screenSize.height*screenScale],//sr
-                            device.orientation,//ori
-                            [NSString stringWithFormat:@"%f,%f",currentLocation.width,currentLocation.height],//gps
-                            self.apiKey,//app
-                            [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],//cc
-                            [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0],//lang
-                            @"sdk",//sdk
-                            @"dev",//dev
-                            @"puid",//puid
-                            device.getMacAddress,//wmac
-                            [NSString stringWithFormat:@"%i",[r currentReachabilityStatus]]//net
-                            ];
         //register Notification
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reachabilityChanged:)
                                                      name: PBkReachabilityChangedNotification
                                                    object: nil];
-        
     }
     return self;
 }
@@ -164,12 +158,12 @@ static NSUInteger debugMode = 0;
     [webView_ release];
 }
 
-- (void)requestSession:(NSString *)apiKey_
+- (void)requestSession
 {
     //defaule apiKeyValid value
-    self.apiKeyValid = NO;
+//    self.apiKeyValid = NO;
     //save apiKey
-    self.apiKey = apiKey_;
+//    self.apiKey = apiKey;
     //向server发送apiKey_，验证apiKey是否合法
     
     //send Session
@@ -183,7 +177,7 @@ static NSUInteger debugMode = 0;
 {
     //*
 //    NSURL *url = [urlArray objectAtIndex:eventType];
-    urlString_ = [urlDict_ objectForKey:APP_EVENT];
+    urlString_ = [self getURL:APP_EVENT];
     urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&t=%i",eventType]];
     urlString_ = [urlString_  stringByAppendingString:[NSString stringWithFormat:@"&rnd=%i",arc4random()%10000]];
     
@@ -235,11 +229,6 @@ static NSUInteger debugMode = 0;
     NSLog(@"device.platformType:%i",device.platformType);
     NSLog(@"device.platformString:%@",device.platformString);
     NSLog(@"device.platformCode:%@",device.platformCode);
-//    NSLog(@"device.cpuFrequency:%i",device.cpuFrequency);
-//    NSLog(@"device.busFrequency:%i",device.busFrequency);
-//    NSLog(@"device.totalMemory:%i",device.totalMemory);
-//    NSLog(@"device.freeDiskSpace:%@",device.freeDiskSpace);
-//    NSLog(@"device.macaddress:%@",device.macaddress);
 }
 
 - (void)sendActivity
@@ -284,6 +273,7 @@ static NSUInteger debugMode = 0;
 {
 
     NSString *tempURL = nil;
+    [self getBasicDataString];
     if ([string isEqualToString:REQUEST_SESSION]) {
         tempURL = [NSString stringWithFormat:@"%@%@%@",SERVER_URL,REQUEST_SESSION,basicDataString_];
     }else if ([string isEqualToString:APP_ACTIVE]) {
@@ -299,75 +289,99 @@ static NSUInteger debugMode = 0;
     return tempURL;
 }
 
+- (void)getBasicDataString
+{
+    //init BasicData String
+    basicDataString_ = [NSString stringWithFormat:@"v=%@&appv=%@&uid=%@&ckid=%@&dt=%@&osv=%@&os=%@&jb=%@&sr=%@&ori=%@&gps=%@&app=%@&cc=%@&lang=%@&sdk=%@&dev=%@&puid=%@&wmac=%@&net=%@",
+                        ([basicDataDicts_ objectForKey:URLVERSION] == nil)?@"":[basicDataDicts_ objectForKey:URLVERSION],//v
+                        ([basicDataDicts_ objectForKey:APPVERSION] == nil)?@"":[basicDataDicts_ objectForKey:APPVERSION],//appV
+                        ([basicDataDicts_ objectForKey:UDID] == nil)?@"":[basicDataDicts_ objectForKey:UDID],//uid
+                        ([basicDataDicts_ objectForKey:CKID] == nil)?@"":[basicDataDicts_ objectForKey:CKID],//ckid
+                        ([basicDataDicts_ objectForKey:DEVICETYPE] == nil)?@"":[basicDataDicts_ objectForKey:DEVICETYPE],//dt
+                        ([basicDataDicts_ objectForKey:OSVERSION] == nil)?@"":[basicDataDicts_ objectForKey:OSVERSION],//osv
+                        ([basicDataDicts_ objectForKey:OSVERSION] == nil)?@"":[basicDataDicts_ objectForKey:OSTYPE],//os
+                        ([basicDataDicts_ objectForKey:ISJAILBREAK] == nil)?@"":[basicDataDicts_ objectForKey:ISJAILBREAK],//jb
+                        ([basicDataDicts_ objectForKey:RESOLUTION] == nil)?@"":[basicDataDicts_ objectForKey:RESOLUTION],//sr
+                        ([basicDataDicts_ objectForKey:ORIENTATION] == nil)?@"":[basicDataDicts_ objectForKey:ORIENTATION],//ori
+                        ([basicDataDicts_ objectForKey:GPS] == nil)?@"":[basicDataDicts_ objectForKey:GPS],//gps
+                        ([basicDataDicts_ objectForKey:APPUID] == nil)?@"":[basicDataDicts_ objectForKey:APPUID],//app
+                        ([basicDataDicts_ objectForKey:CC] == nil)?@"":[basicDataDicts_ objectForKey:CC],//cc
+                        ([basicDataDicts_ objectForKey:LANG] == nil)?@"":[basicDataDicts_ objectForKey:LANG],//lang
+                        ([basicDataDicts_ objectForKey:SDKVERSION] == nil)?@"":[basicDataDicts_ objectForKey:SDKVERSION],//sdk
+                        ([basicDataDicts_ objectForKey:DEVUID] == nil)?@"":[basicDataDicts_ objectForKey:DEVUID],//dev
+                        ([basicDataDicts_ objectForKey:PUID] == nil)?@"":[basicDataDicts_ objectForKey:PUID],//puid
+                        ([basicDataDicts_ objectForKey:WMAC] == nil)?@"":[basicDataDicts_ objectForKey:WMAC],//wmac
+                        ([basicDataDicts_ objectForKey:NETTYPE] == nil)?@"":[basicDataDicts_ objectForKey:NETTYPE]//net
+                        ];
+}
+
 #pragma mark PBASIHttpRequest Delegate
 - (void)requestFinished:(PBASIHTTPRequest *)request
 {
-//    NSLog(@"requestFinished:postBody:%@--url:%@",[[NSString alloc] initWithData:[request postBody] encoding:NSUTF8StringEncoding],[[request url] absoluteURL]);
-    
-    //if isOffLine eventCount will reduce
     if (request.isOffLine) {
         eventCount--;
         [[SSSqliteManager shareSqliteManager] Delete:request.sxId];
     }else {
         if ([receivedData_ length]) {
             NSError *error = nil;
-            NSMutableDictionary *dataDict = [[PBCJSONDeserializer deserializer] deserialize:receivedData_ error:&error];
+            id dataDict = [[PBCJSONDeserializer deserializer] deserialize:receivedData_ error:&error];
             if (error) {
                 NSLog(@"error:%@",[error userInfo]);
             }
-            
-            NSString *result        = [dataDict objectForKey:@"result"];
-            NSString *ver           = [dataDict objectForKey:@"ver"];
-            NSString *items         = [dataDict objectForKey:@"items"];
-            NSArray *datas          = [dataDict objectForKey:@"datas"];
-            NSDictionary *adData    = [datas objectAtIndex:items.intValue-1];
-            NSString *type          = [adData objectForKey:@"type"];
-            NSString *body          = [adData objectForKey:@"body"];
-            NSString *pos           = [adData objectForKey:@"pos"];
-            NSString *size          = [adData objectForKey:@"size"];
-            
-            UIView *view = nil;
-            CGPoint tempPos;
-            CGSize tempSize;
-            switch (type.intValue) {
-                case ADHTML4TYPE:
-                case ADHTML5TYPE:
-                {   
-                    if (!webView_) {
-                        webView_ = [[UIWebView alloc] initWithFrame:CGRectMake(tempPos.x , tempPos.y , tempSize.width, tempSize.height)];
-                        webView_.backgroundColor = [UIColor clearColor];
-                        webView_.scrollView.scrollEnabled = NO;
+            if ([dataDict isKindOfClass:[NSDictionary class]]) {
+                NSString *result        = [dataDict objectForKey:@"result"];
+                NSString *ver           = [dataDict objectForKey:@"ver"];
+                NSString *items         = [dataDict objectForKey:@"items"];
+                NSArray *datas          = [dataDict objectForKey:@"datas"];
+                NSDictionary *adData    = [datas objectAtIndex:items.intValue-1];
+                NSString *type          = [adData objectForKey:@"type"];
+                NSString *body          = [adData objectForKey:@"body"];
+                NSString *pos           = [adData objectForKey:@"pos"];
+                NSString *size          = [adData objectForKey:@"size"];
+                
+                UIView *view = nil;
+                CGPoint tempPos;
+                CGSize tempSize;
+                switch (type.intValue) {
+                    case ADHTML4TYPE:
+                    case ADHTML5TYPE:
+                    {   
+                        if (!webView_) {
+                            webView_ = [[UIWebView alloc] initWithFrame:CGRectMake(tempPos.x , tempPos.y , tempSize.width, tempSize.height)];
+                            webView_.backgroundColor = [UIColor clearColor];
+                            webView_.scrollView.scrollEnabled = NO;
+                        }
+                        [webView_ loadHTMLString:body baseURL:nil];
+                        
+                        view = webView_;
                     }
-                    [webView_ loadHTMLString:body baseURL:nil];
-                    
-                    view = webView_;
+                        break;
+                    case ADSCROERANKINGTYPE:
+                        
+                        break;
+                    case ADVIDEOTYPE:
+                    {
+                        if (!movieController_) {
+                            movieController_ = [[MPMoviePlayerController alloc] init ];
+                            movieController_.view.backgroundColor = [UIColor clearColor];
+                            movieController_.view.frame =CGRectMake(tempPos.x , tempPos.y , tempSize.width, tempSize.height);
+                            movieController_.shouldAutoplay = YES;
+                            movieController_.controlStyle = MPMovieControlStyleEmbedded;      
+                        }
+                        movieController_.contentURL = [NSURL URLWithString:body];
+                        
+                        view = movieController_.view;
+                    } 
+                        break;
+                    default:
+                        break;
                 }
-                    break;
-                case ADSCROERANKINGTYPE:
-                    
-                    break;
-                case ADVIDEOTYPE:
-                {
-                     if (!movieController_) {
-                     movieController_ = [[MPMoviePlayerController alloc] init ];
-                     movieController_.view.backgroundColor = [UIColor clearColor];
-                     movieController_.view.frame =CGRectMake(tempPos.x , tempPos.y , tempSize.width, tempSize.height);
-                     movieController_.shouldAutoplay = YES;
-                     movieController_.controlStyle = MPMovieControlStyleEmbedded;      
-                     }
-                     movieController_.contentURL = [NSURL URLWithString:body];
-                    
-                     view = movieController_.view;
-                } 
-                    break;
-                default:
-                    break;
+                
+                if ([delegate_ respondsToSelector:@selector(didReceived:withParameters:)]) {
+                    [delegate_ didReceived:(TomatoAdView *)view withParameters:nil];  
+                }
+                [receivedData_ setData:nil ];
             }
-            
-            if ([delegate_ respondsToSelector:@selector(didReceived:withParameters:)]) {
-                [delegate_ didReceived:(TomatoAdView *)view withParameters:nil];  
-            }
-            [receivedData_ setData:nil ];
         }
     }
 }
@@ -380,6 +394,12 @@ static NSUInteger debugMode = 0;
         NSRange range = [tempURLString rangeOfString:@"&oo=1"];
         tempURLString = [tempURLString substringToIndex:range.location];
     };
+    if (tempURLString == nil) {
+        tempURLString = @"";
+    }
+    if (postString == nil) {
+        postString = @"";
+    }
     NSArray *tempData = [NSArray arrayWithObjects:tempURLString,postString, nil];
     if ([[SSSqliteManager shareSqliteManager] Insert:tempData]) {
         eventCount++;
@@ -388,16 +408,12 @@ static NSUInteger debugMode = 0;
 
 - (void)request:(PBASIHTTPRequest *)request didReceiveData:(NSData *)data
 {   
-//    NSString *dataString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//    NSLog(@"dataString:%@",dataString);
-//    [dataString release];
     [receivedData_ appendData:data];
 }
 
 #pragma mark Notification Method
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-//    NSLog(@"reachabilityChanged:notification:%@",notification);
     PBReachability *curReach = [notification object];
     NSParameterAssert([curReach isKindOfClass: [PBReachability class]]);
     switch ([curReach currentReachabilityStatus]) {
@@ -406,10 +422,12 @@ static NSUInteger debugMode = 0;
             break;
         case kReachableViaWWAN:    // Switched order from Apple's enum. WWAN is active before WiFi.
             NSLog(@"reachabilityChanged kReachableViaWWAN");
+            [basicDataDicts_ setObject:[NSString stringWithFormat:@"3G"] forKey:NETTYPE];
             [self requestOffLine];
             break;
         case kReachableViaWiFi:
             NSLog(@"reachabilityChanged kReachableViaWiFi");
+            [basicDataDicts_ setObject:[NSString stringWithFormat:@"WiFi"] forKey:NETTYPE];
             [self requestOffLine];
             break;
             
@@ -421,6 +439,7 @@ static NSUInteger debugMode = 0;
 - (void)changedOrientation:(NSNotification *)notification
 {
     [basicDataDicts_ setObject:[NSString stringWithFormat:@"%i",[UIDevice currentDevice].orientation] forKey:ORIENTATION];
+    /*
     switch ([UIDevice currentDevice].orientation) {
         case UIDeviceOrientationPortrait:
             webView_.frame =CGRectMake(10, 10, 300, 50);
@@ -441,6 +460,7 @@ static NSUInteger debugMode = 0;
         default:
             break;
     }
+     */
 }
 
 #pragma mark LocationDelegate Method
@@ -448,9 +468,9 @@ static NSUInteger debugMode = 0;
 	didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-    currentLocation.width = newLocation.coordinate.latitude;
-    currentLocation.height = newLocation.coordinate.longitude;
-
+//    currentLocation.width = newLocation.coordinate.latitude;
+//    currentLocation.height = newLocation.coordinate.longitude;
+    [basicDataDicts_ setObject:[NSString stringWithFormat:@"%.2f,%.2f",newLocation.coordinate.latitude,newLocation.coordinate.longitude] forKey:GPS];
 //    NSLog(@"%@",[NSString stringWithFormat:@"%.2f,%.2f",newLocation.coordinate.latitude,newLocation.coordinate.longitude]);
 }
 

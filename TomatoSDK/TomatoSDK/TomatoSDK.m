@@ -43,13 +43,19 @@ static TomatoSDKConnection *connection = nil;
     [TomatoSDKConnection setDebugMode];
 }
 
-+ (void)startSession:(NSString *)apiKey
++ (void)startSession:(NSString *)apiKey withDEVID:(NSString *)devID withPUID:(NSString *)puID
 {
     if (!connection) {
         //        [TomatoSDK getBaseInfo];
-        connection = [[TomatoSDKConnection alloc] init];
-        [connection requestSession:apiKey];
+        connection = [[TomatoSDKConnection alloc] initWithAppKey:apiKey withDEVID:devID withPUID:puID];
+        [connection requestSession];
     }
+}
+
++ (void)endSession
+{
+    [connection release];
+    connection = nil;
 }
 
 + (void)setDelegate:(id<TomatoAdDelegate>)delegate_
@@ -79,12 +85,6 @@ static TomatoSDKConnection *connection = nil;
 + (void)logSpendSecondsEvnet:(NSString *)eventName
 {
     [connection requestEventName:eventName withType:EVENTSPENDSECONDS];
-}
-
-+ (void)endSession
-{
-    [connection release];
-    connection = nil;
 }
 
 @end

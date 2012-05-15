@@ -157,5 +157,9 @@ static PBUuidManager *  _sharedUuidManager = nil;
 	return hash;
 }
 
+- (NSString *)getCKID:(NSString *)macAddr
+{
+    return [self sha1:macAddr];
+}
 
 @end

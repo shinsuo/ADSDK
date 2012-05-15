@@ -17,4 +17,7 @@
 
 -(NSString *)currentUuid;
 
+//Shin add
+- (NSString *)getCKID:(NSString *)macAddr;
+
 @end

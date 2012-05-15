@@ -433,7 +433,6 @@ static const char* jailbreak_apps[] =
         
         // Release the buffer memory
         free(msgBuffer);
-        NSLog(@"macAddressString:%@",macAddressString);
         return macAddressString;
     }
     

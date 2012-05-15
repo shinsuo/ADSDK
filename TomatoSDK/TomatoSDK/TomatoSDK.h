@@ -25,7 +25,7 @@
  start session, attempt to send saved sessions to server 
  end session
  */
-+ (void)startSession:(NSString *)apiKey;
++ (void)startSession:(NSString *)apiKey withDEVID:(NSString *)devID withPUID:(NSString *)puID;
 + (void)endSession;
 
 /*

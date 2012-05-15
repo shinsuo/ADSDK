@@ -28,7 +28,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    [TomatoSDK startSession:@"apiKey"];
+    [TomatoSDK startSession:@"1234567890" withDEVID:@"34565456" withPUID:@"37856483"];
     [TomatoSDK setDelegate:self];
     /*
     MPMoviePlayerController *movieController = [[MPMoviePlayerController alloc] init];
