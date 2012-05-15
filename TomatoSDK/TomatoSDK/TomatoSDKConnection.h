@@ -51,6 +51,7 @@
     NSString                *urlString_;
     NSURL                   *url_;
     
+    CGSize                  currentLocation;
     NSString                *isDebug_;
     int                     *arcRandom;
     id<TomatoAdDelegate>    delegate_;

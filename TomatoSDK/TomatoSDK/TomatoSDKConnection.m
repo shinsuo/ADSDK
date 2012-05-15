@@ -64,7 +64,8 @@ static NSUInteger debugMode = 0;
         if (eventCount) {
             [[SSSqliteManager shareSqliteManager] Select];
         }
-        
+        //init Location;
+        currentLocation = CGSizeZero;
         //init event Array
         
         //set Debug
@@ -105,7 +106,7 @@ static NSUInteger debugMode = 0;
             //iPhone
         }
         
-        
+        NSLog(@"cc:%@",[[NSLocale currentLocale] objectForKey:NSLocaleCountryCode]);
         //init BasicData Dict
         basicDataDicts_ = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                        @"11111111",APPUID, 
@@ -118,40 +119,33 @@ static NSUInteger debugMode = 0;
                        device.systemName,OSTYPE,
                        device.systemVersion,OSVERSION,
                        device.platform,DEVICETYPE,
-                       [NSString stringWithFormat:@"%i",device.isJailBroken],ISJAILBREAK,
                        [NSString stringWithFormat:@"%.f,%.f",screenSize.width*screenScale,screenSize.height*screenScale],RESOLUTION,
                        [NSString stringWithFormat:@"%i",device.orientation],ORIENTATION,                 //can Changed
-                       @"",GPS,                         //can Changed
+                       @"0,0",GPS,                         //can Changed
                        [NSString stringWithFormat:@"%i",[r currentReachabilityStatus]],NETTYPE,   //can Changed
-                       [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],CC,
-                       [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0],LANG,
-                       device.getMacAddress,WMAC,
                        nil];
-        NSLog(@"device:%@",device.uniqueIdentifier);
+        
         //init BasicData String
-        basicDataString_ = [NSString stringWithFormat:@"&v=%i&uid=%@&ckid=%@&dt=%@&osv=%@&os=%@&jb=%@&sr=%@&ori=%@&gps=%@&net=%i&app=%@&appv=%@&cc=%@&lang=%@&sdk=%@&dev=%@&puid=%@&wmac=%@",SDKVERSION,//v
-                            [basicDataDicts_ objectForKey:UDID],//uid
+        basicDataString_ = [NSString stringWithFormat:@"&v=%i&appv=%@&uid=%@&ckid=%@&dt=%@&osv=%@&os=%@&jb=%i&sr=%@&ori=%i&gps=%@&app=%@&cc=%@&lang=%@&sdk=%@&dev=%@&puid=%@&wmac=%@&net=%i",SDKVERSION,//v
+                            version,//appV
+                            device.uniqueIdentifier,//uid
                             [basicDataDicts_ objectForKey:CKID],//ckid
                             [basicDataDicts_ objectForKey:DEVICETYPE],//dt
                             [basicDataDicts_ objectForKey:OSVERSION],//osv
                             [basicDataDicts_ objectForKey:OSVERSION],//os
-                            [basicDataDicts_ objectForKey:ISJAILBREAK],//jb
-                            [basicDataDicts_ objectForKey:RESOLUTION],//sr
-                            [basicDataDicts_ objectForKey:ORIENTATION],//ori
-                            [basicDataDicts_ objectForKey:GPS],//gps
-                            [basicDataDicts_ objectForKey:NETTYPE],//net
-                            [basicDataDicts_ objectForKey:APPUID],//app
-                             version,//appv
-                             [basicDataDicts_ objectForKey:CC],//cc
-                             [basicDataDicts_ objectForKey:LANG],//lang
-                             [basicDataDicts_ objectForKey:UDID],//sdk
-                             [basicDataDicts_ objectForKey:UDID],//dev
-                            [basicDataDicts_ objectForKey:OSTYPE],//puid
-                            [basicDataDicts_ objectForKey:WMAC]//wmac
+                            device.isJailBroken,//jb
+                            [NSString stringWithFormat:@"%.f,%.f",screenSize.width*screenScale,screenSize.height*screenScale],//sr
+                            device.orientation,//ori
+                            [NSString stringWithFormat:@"%f,%f",currentLocation.width,currentLocation.height],//gps
+                            self.apiKey,//app
+                            [[NSLocale currentLocale] objectForKey:NSLocaleCountryCode],//cc
+                            [[[NSUserDefaults standardUserDefaults] objectForKey:@"AppleLanguages"] objectAtIndex:0],//lang
+                            @"sdk",//sdk
+                            @"dev",//dev
+                            @"puid",//puid
+                            device.getMacAddress,//wmac
+                            [NSString stringWithFormat:@"%i",[r currentReachabilityStatus]]//net
                             ];
-        
-        
-        
         //register Notification
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reachabilityChanged:)
@@ -454,7 +448,9 @@ static NSUInteger debugMode = 0;
 	didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation
 {
-    [basicDataDicts_ setObject:[NSString stringWithFormat:@"%.2f,%.2f",newLocation.coordinate.latitude,newLocation.coordinate.longitude] forKey:GPS];
+    currentLocation.width = newLocation.coordinate.latitude;
+    currentLocation.height = newLocation.coordinate.longitude;
+
 //    NSLog(@"%@",[NSString stringWithFormat:@"%.2f,%.2f",newLocation.coordinate.latitude,newLocation.coordinate.longitude]);
 }
 
