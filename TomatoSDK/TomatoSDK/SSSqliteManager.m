@@ -86,7 +86,7 @@ static SSSqliteManager *staticSqliteManager = nil;
 }
 
 #pragma mark Public Method
-- (BOOL)Insert:(NSArray *)sqlArray
+- (NSUInteger)Insert:(NSArray *)sqlArray
 {
     if (![self Create:nil] && !sqlArray) {
         return NO;
@@ -111,7 +111,7 @@ static SSSqliteManager *staticSqliteManager = nil;
     }
     
     sqlite3_close(_database);
-    return YES;
+    return sqlite3_last_insert_rowid(_database);;
 }
 
 - (NSArray *)Select

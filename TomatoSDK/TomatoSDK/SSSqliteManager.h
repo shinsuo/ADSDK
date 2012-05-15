@@ -17,7 +17,7 @@
 
 + (SSSqliteManager *)shareSqliteManager;
 
-- (BOOL)Insert:(NSArray *)sqlArray;
+- (NSUInteger)Insert:(NSArray *)sqlArray;
 - (NSArray *)Select;
 - (BOOL)Delete:(NSUInteger )index;
 - (NSUInteger)getCount;
